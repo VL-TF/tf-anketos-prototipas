@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vaikų linija | TF anketos prototipas</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@500;700;800&family=Sansita:wght@700;800&display=swap');
+
+:root {
+  --orange:#E64011;
+  --blue:#005386;
+  --cream:#FEFDE9;
+  --lightblue:#D9F0FA;
+  --pink:#F08C75;
+  --green:#E7E867;
+  --cyan:#29ABE2;
+  --text:#123044;
+  --muted:#65737A;
+  --white:#FFFFFF;
+  --line:#D8E8EF;
+  --danger:#B42318;
+}
+
+* { box-sizing:border-box; }
+
+body {
+  margin:0;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at top left, rgba(230,64,17,.18), transparent 32%),
+    radial-gradient(circle at bottom right, rgba(41,171,226,.22), transparent 36%),
+    var(--cream);
+  font-family:'Dosis', Arial, sans-serif;
+  color:var(--text);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:24px;
+}
+
+.phone {
+  width:410px;
+  height:860px;
+  background:#0B1117;
+  border-radius:46px;
+  padding:14px;
+  box-shadow:0 30px 80px rgba(0,0,0,.35);
+  position:relative;
+}
+
+.phone::before {
+  content:"";
+  position:absolute;
+  top:9px;
+  left:50%;
+  transform:translateX(-50%);
+  width:128px;
+  height:26px;
+  background:#0B1117;
+  border-radius:0 0 18px 18px;
+  z-index:10;
+}
+
+.screen {
+  height:100%;
+  overflow-y:auto;
+  background:var(--cream);
+  border-radius:34px;
+  padding:38px 22px 26px;
+  position:relative;
+}
+
+.wave {
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.22;
+  background-image:repeating-linear-gradient(174deg, transparent 0px, transparent 38px, rgba(0,83,134,.18) 39px, transparent 42px);
+}
+
+.content { position:relative; z-index:2; }
+
+.brand {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:18px;
+}
+
+.logo {
+  font-family:'Sansita', cursive;
+  color:var(--orange);
+  font-size:30px;
+  line-height:1;
+}
+
+.bird {
+  background:var(--blue);
+  color:white;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  font-weight:800;
+}
+
+.step { display:none; }
+.step.active { display:block; }
+
+.hero {
+  background:var(--blue);
+  color:white;
+  border-radius:30px;
+  padding:28px 24px;
+  margin-bottom:18px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 12px 0 rgba(0,83,134,.18);
+}
+
+.hero::after {
+  content:"";
+  position:absolute;
+  width:180px;
+  height:180px;
+  right:-72px;
+  bottom:-82px;
+  background:var(--orange);
+  border-radius:50%;
+}
+
+.hero > * { position:relative; z-index:2; }
+
+.card {
+  background:white;
+  border:2px solid rgba(0,83,134,.10);
+  border-radius:26px;
+  padding:24px;
+  box-shadow:0 12px 0 rgba(0,83,134,.08);
+  margin-bottom:18px;
+}
+
+h1,h2 {
+  font-family:'Sansita', cursive;
+  margin:0 0 14px;
+  line-height:1.08;
+}
+
+h1 { font-size:34px; }
+h2 { font-size:28px; color:var(--blue); }
+
+p {
+  font-size:17px;
+  line-height:1.45;
+  margin:0 0 16px;
+}
+
+.helper {
+  color:var(--muted);
+  font-size:15px;
+}
+
+.progress-text {
+  text-align:center;
+  color:var(--blue);
+  font-weight:800;
+  margin-bottom:8px;
+}
+
+.progress-track {
+  height:10px;
+  background:#EAF3F7;
+  border-radius:999px;
+  overflow:hidden;
+  margin-bottom:18px;
+}
+
+.progress-fill {
+  height:100%;
+  background:linear-gradient(90deg, var(--orange), var(--cyan));
+}
+
+label {
+  font-weight:800;
+  font-size:15px;
+  display:block;
+  margin:12px 0 8px;
+}
+
+select,input,textarea {
+  width:100%;
+  border:2px solid var(--line);
+  border-radius:18px;
+  padding:14px;
+  font-family:'Dosis', Arial, sans-serif;
+  font-size:17px;
+  background:white;
+  color:var(--text);
+}
+
+textarea { min-height:96px; resize:vertical; }
+
+select:focus,input:focus,textarea:focus {
+  outline:none;
+  border-color:var(--cyan);
+  box-shadow:0 0 0 4px rgba(41,171,226,.18);
+}
+
+.option {
+  background:#fff;
+  border:2px solid var(--line);
+  border-radius:18px;
+  padding:13px;
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  margin-bottom:10px;
+  font-size:16px;
+}
+
+.option input {
+  width:auto;
+  margin-top:4px;
+}
+
+.tooltip {
+  display:block;
+  color:var(--muted);
+  font-size:13px;
+  margin-top:4px;
+  font-weight:500;
+}
+
+button,.link-button {
+  border:none;
+  border-radius:22px;
+  padding:15px 18px;
+  font-family:'Dosis', Arial, sans-serif;
+  font-size:17px;
+  font-weight:800;
+  cursor:pointer;
+  text-align:center;
+  text-decoration:none;
+  display:block;
+  width:100%;
+}
+
+.btn-primary {
+  background:var(--orange);
+  color:white;
+  box-shadow:0 6px 0 #B8320D;
+}
+
+.btn-secondary {
+  background:var(--lightblue);
+  color:var(--blue);
+  border:2px solid rgba(0,83,134,.14);
+}
+
+.btn-back {
+  background:#F1F4F5;
+  color:var(--blue);
+}
+
+.button-row {
+  display:flex;
+  gap:10px;
+  margin-top:18px;
+}
+
+.note {
+  background:var(--lightblue);
+  border:2px solid rgba(0,83,134,.10);
+  border-radius:20px;
+  padding:14px;
+  margin:14px 0;
+  color:var(--blue);
+  font-size:15px;
+  font-weight:700;
+}
+
+.upload-box {
+  border:2px dashed var(--cyan);
+  background:#F8FCFE;
+  border-radius:22px;
+  padding:18px;
+  text-align:center;
+  margin:12px 0;
+}
+
+.comment-panel {
+  background:#FFF;
+  border:2px dashed var(--orange);
+  border-radius:24px;
+  padding:16px;
+  margin-top:18px;
+}
+
+.comment-panel h3 {
+  font-size:18px;
+  margin:0 0 10px;
+  color:var(--blue);
+}
+
+.saved-comment {
+  background:var(--cream);
+  border:1px solid rgba(0,83,134,.18);
+  border-radius:16px;
+  padding:12px;
+  margin-top:8px;
+  font-size:15px;
+  position:relative;
+}
+
+.delete-comment {
+  width:auto;
+  padding:5px 9px;
+  font-size:13px;
+  position:absolute;
+  right:8px;
+  top:8px;
+  background:#FDECEC;
+  color:var(--danger);
+  box-shadow:none;
+}
+
+.error {
+  display:none;
+  color:var(--danger);
+  font-weight:800;
+  margin-top:8px;
+}
+
+.error.show { display:block; }
+
+.review-item {
+  background:var(--cream);
+  border-radius:18px;
+  padding:13px;
+  margin-bottom:10px;
+}
+
+.review-item strong {
+  display:block;
+  color:var(--blue);
+  margin-bottom:4px;
+}
+
+.support-box {
+  background:var(--lightblue);
+  border:2px solid rgba(0,83,134,.12);
+  border-radius:24px;
+  padding:20px;
+  margin:18px 0;
+}
+
+.phone-number {
+  font-family:'Sansita', cursive;
+  color:var(--orange);
+  font-size:42px;
+  margin:10px 0 16px;
+}
+
+.phone-number a {
+  color:inherit;
+  text-decoration:none;
+}
+
+.case-id {
+  background:var(--blue);
+  color:white;
+  border-radius:20px;
+  padding:16px;
+  text-align:center;
+  font-weight:800;
+  font-size:22px;
+  margin:16px 0;
+}
+
+.admin-toggle {
+  position:fixed;
+  top:10px;
+  right:10px;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:8px 12px;
+  z-index:99;
+  font-size:13px;
+}
+
+.admin-toggle input {
+  width:auto;
+  margin-right:6px;
+}
+
+@media(max-width:460px){
+  body { padding:0; }
+  .phone { width:100%; height:100vh; border-radius:0; padding:0; }
+  .phone::before { display:none; }
+  .screen { border-radius:0; }
+}
+</style>
+</head>
+
+<body>
+
+<label class="admin-toggle">
+  <input type="checkbox" id="adminMode" onchange="renderComments(currentStep)">
+  Admin
+</label>
+
+<div class="phone">
+  <div class="screen">
+    <div class="wave"></div>
+    <div class="content">
+
+      <div class="brand">
+        <div class="logo">Vaikų linija</div>
+        <div class="bird">VL</div>
+      </div>
+
+      <section id="step1" class="step active">
+        <div class="hero">
+          <h1>Internete neturi būti nesaugu.</h1>
+          <p>Čia gali pranešti apie tai, kas tave neramina internete.</p>
+        </div>
+        <div class="card">
+          <p>Užpildyk kelis trumpus žingsnius. Jei nori tik pasikalbėti, gali iškart rinktis pokalbį su Vaikų linija.</p>
+          <button class="btn-primary" onclick="goToStep(2)">Pradėti</button>
+          <button class="btn-secondary" style="margin-top:12px" onclick="goToStep(99)">Nori tik pasikalbėti?</button>
+        </div>
+        <comment-box step="1" title="Pradžios langas"></comment-box>
+      </section>
+
+      <section id="step2" class="step">
+        <progress-block current="1" total="15" percent="7"></progress-block>
+        <div class="card">
+          <h2>Kur tai pastebėjai?</h2>
+          <label>Platforma</label>
+          <select id="platform" onchange="updateContentTypes(); updatePlatformNote(); toggleOtherPlatform();">
+            <option value="">Pasirink platformą</option>
+            <option value="facebook">Facebook</option>
+            <option value="instagram">Instagram</option>
+            <option value="tiktok">TikTok</option>
+            <option value="youtube">YouTube</option>
+            <option value="snapchat">Snapchat</option>
+            <option value="x">X</option>
+            <option value="telegram">Telegram</option>
+            <option value="whatsapp">WhatsApp</option>
+            <option value="discord">Discord</option>
+            <option value="reddit">Reddit</option>
+            <option value="ebay">eBay</option>
+            <option value="viber">Viber</option>
+            <option value="grok">Grok</option>
+            <option value="other">Kita</option>
+          </select>
+
+          <div id="otherPlatformWrap" style="display:none;">
+            <label>Įrašyk platformą</label>
+            <input id="otherPlatform" type="text" placeholder="Platformos pavadinimas" />
+          </div>
+
+          <div id="platformNote" class="note" style="display:none;"></div>
+          <div id="error2" class="error">Pasirink platformą.</div>
+
+          <div class="button-row">
+            <button class="btn-back" onclick="goToStep(1)">Atgal</button>
+            <button class="btn-primary" onclick="nextPlatform()">Toliau</button>
+          </div>
+        </div>
+        <comment-box step="2" title="Platformos pasirinkimas"></comment-box>
+      </section>
+
+      <section id="step3" class="step">
+        <progress-block current="2" total="15" percent="14"></progress-block>
+        <div class="card">
+          <h2>Kur tai radai?</h2>
+
+          <label>Turinio tipas</label>
+          <select id="contentType">
+            <option value="">Pirma pasirink platformą</option>
+          </select>
+          <div id="error3" class="error">Pasirink turinio tipą.</div>
+
+          <div class="button-row">
+            <button class="btn-back" onclick="goToStep(2)">Atgal</button>
+            <button class="btn-primary" onclick="nextContentType()">Toliau</button>
+          </div>
+        </div>
+        <comment-box step="3" title="Turinio tipo pasirinkimas"></comment-box>
+      </section>
+
+      <section id="step4" class="step">
+        <progress-block current="3" total="15" percent="21"></progress-block>
+        <div class="card">
+          <h2>Kas čia blogai?</h2>
+            <div class="note">Jei nesi tikra/s, pasirink panašiausią. Mes vis tiek peržiūrėsime.</div>
+          <p class="helper">Gali pažymėti kelis variantus.</p>
+
+          <label class="option"><input type="checkbox" class="category" value="Elektroninės patyčios"> Elektroninės patyčios <span class="tooltip">Pvz., kai kažkas tyčiojasi, žemina ar nuolat rašo nemalonius dalykus.</span></label>
+          <label class="option"><input type="checkbox" class="category" value="Vieši įžeidimai"> Vieši įžeidimai <span class="tooltip">Pvz., „tu niekam tikęs“, „visi iš tavęs juokiasi“.</span></label>
+          <label class="option"><input type="checkbox" class="category" value="Vieši grasinimai"> Vieši grasinimai <span class="tooltip">Pvz., kai žmogus viešai grasina pakenkti.</span></label>
+          <label class="option"><input type="checkbox" class="category" value="Turinys, skatinantis savižudybę ar savęs žalojimą"> Turinys, skatinantis savižudybę ar savęs žalojimą</label>
+          <label class="option"><input type="checkbox" class="category" value="Neapykantos kalba / kurstymas prieš grupę"> Neapykantos kalba / kurstymas prieš grupę</label>
+          <label class="option"><input type="checkbox" class="category" value="Įžeidžiantis ar žalingas turinys nepilnamečiams"> Įžeidžiantis ar žalingas turinys nepilnamečiams</label>
+          <label class="option"><input type="checkbox" class="category" value="Smurtas"> Smurtas</label>
+          <label class="option"><input type="checkbox" class="category" value="Pavojingi internetiniai iššūkiai"> Pavojingi internetiniai iššūkiai</label>
+          <label class="option"><input type="checkbox" class="category" value="Kita" onchange="toggleOtherCategory()"> Kita</label>
+
+          <input id="otherCategory" type="text" placeholder="Įrašyk, kas kita" style="display:none;margin-top:10px;" />
+
+          <div id="error4" class="error">Pažymėk bent vieną variantą.</div>
+
+          <div class="button-row">
+            <button class="btn-back" onclick="goToStep(3)">Atgal</button>
+            <button class="btn-primary" onclick="nextCategory()">Toliau</button>
+          </div>
+        </div>
+        <comment-box step="4" title="Kategorijos"></comment-box>
+      </section>
+
+      <section id="step5" class="step">
+        <progress-block current="4" total="15" percent="28"></progress-block>
+        <div class="card">
+          <h2>Ar tai susiję su nepilnamečiu?</h2>
+          <label class="option"><input type="radio" name="minor" value="Taip"> Taip</label>
+          <label class="option"><input type="radio" name="minor" value="Ne"> Ne</label>
+          <label class="option"><input type="radio" name="minor" value="Nežinau" checked> Nežinau</label>
+
+          <div class="button-row">
+            <button class="btn-back" onclick="goToStep(4)">Atgal</button>
+            <button class="btn-primary" onclick="goToStep(6)">Toliau</button>
+          </div>
+        </div>
+        <comment-box step="5" title="Nepilnamečio įtraukimas"></comment-box>
+      </section>
+
+      <section id="step6" class="step">
+        <progress-block current="5" total="15" percent="35"></progress-block>
+        <div class="card">
+          <h2>Įklijuok nuorodą</h2>
+          <p class="helper">Įklijuok pilną puslapio adresą. Laukas priima tik URL formatą.</p>
+          <input id="url" type="url" inputmode="url" placeholder="https://..." oninput="validateUrlLive()" />
+          <div id="error6" class="error">Įvesk pilną URL, pvz. https://example.com/...</div>
+
+          <div class="button-row">
+            <button class="btn-back" onclick="goToStep(5)">Atgal</button>
+            <button class="btn-primary" onclick="nextUrl()">Toliau</button>
+          </div>
+        </div>
+        <comment-box step="6" title="Nuorodos laukas"></comment-box>
+      </section>
+
+      <section id="step7" class="step">
+        <progress-block current="6" total="15" percent="42"></progress-block>
+        <div class="card">
+          <h2>Įkelk įrodymą</h2>
+          <p class="helper">Įkelk pilno ekrano nuotrauką ar vaizdo įrašą. Nekelk asmeninių nuotraukų ar privačių duomenų.</p>
+
+          <div class="upload-box">
+            <strong>Ekrano nuotrauka arba video</strong>
+            <input id="evidence" type="file" multiple onchange="showUploadStatus()" />
+            <p id="uploadStatus" class="helper"></p>
+          </div>
+
+          <label class="option"><input id="safeEvidence" type="checkbox"> Įkeliu tik tokį turinį, kuriuo saugu dalintis.</label>
+          <div id="error7" class="error">Pažymėk, kad įkeli saugų dalintis turinį.</div>
+
+          <div class="button-row">
+            <button class="btn-back" onclick="goToStep(6)">Atgal</button>
+            <button class="btn-primary" onclick="nextEvidence()">Toliau</button>
+          </div>
+        </div>
+        <comment-box step="7" title="Įrodymai"></comment-box>
+      </section>
+
+      <section id="step8" class="step">
+        <progress-block current="7" total="15" percent="49"></progress-block>
+        <div class="card">
+          <h2>Aprašymas</h2>
+          <p class="helper">Nebūtina, bet padeda suprasti situaciją.</p>
+          <textarea id="description" placeholder="Kas nutiko?"></textarea>
+
+          <div class="button-row">
+            <button class="btn-back" onclick="goToStep(7)">Atgal</button>
+            <button class="btn-primary" onclick="goToStep(9)">Toliau</button>
+          </div>
+        </div>
+        <comment-box step="8" title="Aprašymas"></comment-box>
+      </section>
+
+      <section id="step9" class="step">
+        <progress-block current="8" total="15" percent="56"></progress-block>
+        <div class="card">
+          <h2>Ar jau pranešei platformai?</h2>
+
+          <label class="option"><input type="radio" name="reported" value="Taip" onchange="toggleReportedDetails()"> Taip</label>
+          <label class="option"><input type="radio" name="reported" value="Ne" onchange="toggleReportedDetails()" checked> Ne</label>
+
+          <div id="reportedDetails" style="display:none;">
+            <label>Kada?</label>
+            <input id="reportedDate" type="date" />
+
+            <label>Ar gavai atsakymą?</label>
+            <select id="platformResponse">
+              <option value="">Pasirink</option>
+              <option>Taip</option>
+              <option>Ne</option>
+              <option>Nežinau</option>
+            </select>
+          </div>
+
+          <div class="button-row">
+            <button class="btn-back" onclick="goToStep(8)">Atgal</button>
+            <button class="btn-primary" onclick="goToStep(10)">Toliau</button>
+          </div>
+        </div>
+        <comment-box step="9" title="Ar jau pranešta platformai"></comment-box>
+      </section>
+
+      <section id="step10" class="step">
+        <progress-block current="9" total="15" percent="63"></progress-block>
+        <div class="card">
+          <h2>Ar turinys vis dar pasiekiamas?</h2>
+
+          <label class="option"><input type="radio" name="contentStatus" value="Taip, vis dar aktyvus" onchange="toggleLastSeen()" checked> Taip, vis dar aktyvus</label>
+          <label class="option"><input type="radio" name="contentStatus" value="Nežinau" onchange="toggleLastSeen()"> Nežinau</label>
+          <label class="option"><input type="radio" name="contentStatus" value="Jau pašalintas" onchange="toggleLastSeen()"> Jau pašalintas</label>
+
+          <div id="lastSeenWrap" style="display:none;">
+            <label>Kada paskutinį kartą matei?</label>
+            <input id="lastSeen" type="text" placeholder="Pvz., vakar, prieš savaitę..." />
+          </div>
+
+          <div class="button-row">
+            <button class="btn-back" onclick="goToStep(9)">Atgal</button>
+            <button class="btn-primary" onclick="goToStep(11)">Toliau</button>
+          </div>
+        </div>
+        <comment-box step="10" title="Turinio pasiekiamumas"></comment-box>
+      </section>
+
+      <section id="step11" class="step">
+        <progress-block current="10" total="15" percent="70"></progress-block>
+        <div class="card">
+          <h2>Kiek kartų / kiek laiko tai vyksta?</h2>
+
+          <select id="frequency" onchange="toggleFrequencyDetails()">
+            <option>Vienkartinis</option>
+            <option>Kartojasi</option>
+            <option>Vyksta dabar</option>
+          </select>
+
+          <input id="frequencyDetails" type="text" placeholder="Jei kartojasi, trumpai parašyk kaip dažnai" style="margin-top:12px;display:none;" />
+
+          <div class="button-row">
+            <button class="btn-back" onclick="goToStep(10)">Atgal</button>
+            <button class="btn-primary" onclick="goToStep(12)">Toliau</button>
+          </div>
+        </div>
+        <comment-box step="11" title="Dažnumas"></comment-box>
+      </section>
+
+      <section id="step12" class="step">
+        <progress-block current="11" total="15" percent="77"></progress-block>
+        <div class="card">
+          <h2>Ar tai tas pats asmuo?</h2>
+
+          <select id="samePerson">
+            <option>Nežinau</option>
+            <option>Taip</option>
+            <option>Ne</option>
+          </select>
+
+          <label>Ar turi daugiau nuorodų?</label>
+          <select id="moreUrls" onchange="toggleMoreUrls()">
+            <option selected>Ne</option>
+            <option>Taip</option>
+          </select>
+
+          <textarea id="moreUrlsText" placeholder="Įklijuok papildomas nuorodas" style="display:none;margin-top:12px;"></textarea>
+
+          <div class="button-row">
+            <button class="btn-back" onclick="goToStep(11)">Atgal</button>
+            <button class="btn-primary" onclick="goToStep(13)">Toliau</button>
+          </div>
+        </div>
+        <comment-box step="12" title="Tas pats asmuo ir daugiau nuorodų"></comment-box>
+      </section>
+
+      <section id="step13" class="step">
+        <progress-block current="12" total="15" percent="84"></progress-block>
+        <div class="card">
+          <h2>Kontaktai</h2>
+
+          <label class="option"><input id="anonymous" type="checkbox" onchange="toggleEmail()"> Noriu likti anonimiškas</label>
+
+          <div id="emailWrap">
+            <label>El. paštas</label>
+            <input id="email" type="email" placeholder="tavo@email.com" />
+            <p class="helper">El. paštas naudojamas tik pranešimui patvirtinti arba, jei reikėtų grįžti dėl informacijos.</p>
+          </div>
+
+          <div class="button-row">
+            <button class="btn-back" onclick="goToStep(12)">Atgal</button>
+            <button class="btn-primary" onclick="goToStep(14)">Toliau</button>
+          </div>
+        </div>
+        <comment-box step="13" title="Kontaktai"></comment-box>
+      </section>
+
+      <section id="step14" class="step">
+        <progress-block current="13" total="15" percent="91"></progress-block>
+        <div class="card">
+          <h2>Patikrink</h2>
+
+          <div class="review-item"><strong>Atvejo numeris</strong><span id="reviewCaseId">-</span></div>
+          <div class="review-item"><strong>Platforma</strong><span id="reviewPlatform">-</span></div>
+          <div class="review-item"><strong>Turinio tipas</strong><span id="reviewType">-</span></div>
+          <div class="review-item"><strong>Priežastis</strong><span id="reviewCategory">-</span></div>
+          <div class="review-item"><strong>Nuoroda</strong><span id="reviewUrl">-</span></div>
+          <div class="review-item"><strong>Aprašymas</strong><span id="reviewDescription">-</span></div>
+
+          <div class="button-row">
+            <button class="btn-back" onclick="goToStep(13)">Atgal</button>
+            <button class="btn-primary" onclick="submitForm()">Pateikti</button>
+          </div>
+        </div>
+        <comment-box step="14" title="Peržiūra"></comment-box>
+      </section>
+
+      <section id="step15" class="step">
+        <div class="card">
+          <h2>Ačiū, pranešimas gautas</h2>
+          <div class="case-id" id="finalCaseId">VL-XX-0000-01</div>
+          <p>Peržiūrėsime informaciją ir, jei reikės, perduosime platformai.</p>
+
+          <button class="btn-secondary" onclick="goToStep(16)">Atsakyti į trumpą apklausą</button>
+          <button class="btn-primary" style="margin-top:12px;" onclick="resetForm()">Pradėti iš naujo</button>
+        </div>
+        <comment-box step="15" title="Pabaigos langas"></comment-box>
+      </section>
+
+      <section id="step16" class="step">
+        <div class="card">
+          <h2>Trumpa apklausa</h2>
+          <p class="helper">Ši dalis neprivaloma. Ji padės suprasti, ar anketa aiški.</p>
+
+          <label>Kas tu?</label>
+          <select id="surveyIdentity">
+            <option value="">Pasirink</option>
+            <option>Mergaitė</option>
+            <option>Berniukas</option>
+            <option>Kita</option>
+            <option>Nenoriu sakyti</option>
+          </select>
+
+          <label>Kiek tau metų?</label>
+          <select id="surveyAge">
+            <option value="">Pasirink</option>
+            <option>Iki 10</option>
+            <option>11–14</option>
+            <option>15–17</option>
+            <option>18+</option>
+            <option>Nenoriu sakyti</option>
+          </select>
+
+          <label>Iš kur esi?</label>
+          <select id="surveyCity">
+            <option value="">Pasirink</option>
+            <option>Vilnius</option>
+            <option>Kaunas</option>
+            <option>Klaipėda</option>
+            <option>Šiauliai</option>
+            <option>Panevėžys</option>
+            <option>Kita</option>
+            <option>Nenoriu sakyti</option>
+          </select>
+
+          <label>Ar buvo lengva pildyti?</label>
+          <select id="surveyEase">
+            <option>Taip</option>
+            <option>Iš dalies</option>
+            <option>Ne</option>
+          </select>
+
+          <label>Kas buvo neaišku?</label>
+          <textarea id="surveyComment" placeholder="Parašyk, jei nori."></textarea>
+
+          <button class="btn-primary" onclick="submitSurvey()">Pateikti apklausą</button>
+          <button class="btn-back" style="margin-top:12px;" onclick="resetForm()">Praleisti</button>
+        </div>
+        <comment-box step="16" title="Survey"></comment-box>
+      </section>
+
+      <section id="step99" class="step">
+        <div class="hero">
+          <h1>Nori tik pasikalbėti?</h1>
+          <p>Gali susisiekti su Vaikų linija telefonu arba internetu.</p>
+        </div>
+
+        <div class="support-box">
+          <p class="helper">Telefonas</p>
+          <div class="phone-number"><a href="tel:116111">116 111</a></div>
+          <a class="link-button btn-primary" href="https://www.vaikulinija.lt/" target="_blank">Atidaryti pokalbį internetu</a>
+          <p class="helper" style="margin-top:14px;">Pokalbis gali būti anonimiškas.</p>
+        </div>
+
+        <button class="btn-back" onclick="goToStep(1)">Atgal</button>
+        <comment-box step="99" title="Tik pasikalbėti"></comment-box>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<script>
+const contentMap = {
+  facebook:["Postas","Komentaras","Paskyra","Grupė","Žinutė"],
+  instagram:["Postas","Story","Reels","Komentaras","Paskyra","Žinutė"],
+  tiktok:["Video","Komentaras","Paskyra","Tiesioginė transliacija"],
+  youtube:["Video","Shorts","Komentaras","Kanalas"],
+  snapchat:["Paskyra","Story","Žinutė"],
+  x:["Įrašas","Komentaras","Paskyra"],
+  telegram:["Grupė / kanalas","Žinutė","Paskyra"],
+  whatsapp:["Grupė","Žinutė","Paskyra"],
+  discord:["Serveris","Kanalas","Žinutė","Paskyra"],
+  reddit:["Postas","Komentaras","Subreddit","Paskyra"],
+  ebay:["Skelbimas","Paskyra","Žinutė"],
+  viber:["Grupė","Žinutė","Paskyra"],
+  grok:["Atsakymas","Paskyra","Kita"],
+  other:["Įrašas","Komentaras","Paskyra","Kita"]
+};
+
+const platformNotes = {
+  instagram:"Pastaba: jei tai story, naudinga matyti username ir story UI.",
+  tiktok:"Pastaba: naudinga, kad matytųsi video ir username.",
+  snapchat:"Pastaba: pirmiausia kreipiamasi per viešą kanalą, tik jei nepavyksta – per TF. Reikia username ir aprašymo. Draudžiama kelti pornografinio tipo įrodymus.",
+  viber:"Pastaba: jei tai grupė, naudinga įkelti grupės pavadinimą ir narių sąrašo ekrano nuotrauką.",
+  discord:"Pastaba: naudinga serverio, kanalo ar žinutės nuoroda / ID.",
+  telegram:"Pastaba: jei tai kanalas ar grupė, naudinga pavadinimas ir konkreti žinutės nuoroda.",
+  whatsapp:"Pastaba: jei tai grupė, naudinga grupės pavadinimas ir konkreti žinutė."
+};
+
+const platformCodes = {
+  facebook:"FB",
+  instagram:"IG",
+  tiktok:"TT",
+  youtube:"YT",
+  snapchat:"SC",
+  x:"X",
+  telegram:"TG",
+  whatsapp:"WA",
+  discord:"DC",
+  reddit:"RD",
+  ebay:"EB",
+  viber:"VB",
+  grok:"GK",
+  other:"OT"
+};
+
+let currentStep = 1;
+let generatedCaseId = "";
+let commentStore = JSON.parse(localStorage.getItem("tfPrototypeComments") || "{}");
+let submissions = JSON.parse(localStorage.getItem("tfPrototypeSubmissions") || "[]");
+let surveyStore = JSON.parse(localStorage.getItem("tfPrototypeSurvey") || "[]");
+
+class CommentBox extends HTMLElement {
+  connectedCallback(){
+    const step = this.getAttribute("step");
+    const title = this.getAttribute("title");
+    this.innerHTML = `
+      <div class="comment-panel">
+        <h3>Komentarai apie šį langą</h3>
+        <textarea id="commentInput${step}" placeholder="Parašyk komentarą apie: ${escapeHtml(title)}"></textarea>
+        <div style="margin-top:10px;">
+          <button class="btn-secondary" onclick="saveComment('${step}','${escapeHtml(title)}')">Išsaugoti komentarą</button>
+        </div>
+        <div class="saved-comments" id="comments${step}"></div>
+      </div>
+    `;
+    renderComments(step);
+  }
+}
+customElements.define("comment-box", CommentBox);
+
+class ProgressBlock extends HTMLElement {
+  connectedCallback(){
+    this.innerHTML = `
+      <div class="progress-text">${this.getAttribute("current")}/${this.getAttribute("total")}</div>
+      <div class="progress-track">
+        <div class="progress-fill" style="width:${this.getAttribute("percent")}%"></div>
+      </div>
+    `;
+  }
+}
+customElements.define("progress-block", ProgressBlock);
+
+function goToStep(step){
+  document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
+  const target = document.getElementById("step" + step);
+  if (!target) return;
+  target.classList.add("active");
+  currentStep = step;
+  if (step === 14) updateReview();
+  renderComments(step);
+}
+
+function toggleOtherPlatform(){
+  const isOther = document.getElementById("platform").value === "other";
+  document.getElementById("otherPlatformWrap").style.display = isOther ? "block" : "none";
+}
+
+function updateContentTypes(){
+  const platform = document.getElementById("platform").value;
+  const select = document.getElementById("contentType");
+  select.innerHTML = '<option value="">Pasirink turinio tipą</option>';
+
+  if(!platform || !contentMap[platform]) return;
+
+  contentMap[platform].forEach(type=>{
+    const opt = document.createElement("option");
+    opt.value = type;
+    opt.textContent = type;
+    select.appendChild(opt);
+  });
+}
+
+function updatePlatformNote(){
+  const platform = document.getElementById("platform").value;
+  const note = document.getElementById("platformNote");
+
+  if(platformNotes[platform]){
+    note.textContent = platformNotes[platform];
+    note.style.display = "block";
+  } else {
+    note.style.display = "none";
+  }
+}
+
+function showError(id, show){
+  document.getElementById(id).classList.toggle("show", show);
+}
+
+function nextPlatform(){
+  const platform = document.getElementById("platform").value;
+  const other = document.getElementById("otherPlatform").value.trim();
+
+  const invalid = !platform || (platform === "other" && !other);
+  showError("error2", invalid);
+
+  if(!invalid) goToStep(3);
+}
+
+function nextContentType(){
+  const value = document.getElementById("contentType").value;
+  showError("error3", !value);
+  if(value) goToStep(4);
+}
+
+function toggleOtherCategory(){
+  const checked = [...document.querySelectorAll(".category:checked")].some(c=>c.value==="Kita");
+  document.getElementById("otherCategory").style.display = checked ? "block" : "none";
+}
+
+function nextCategory(){
+  const checked = document.querySelectorAll(".category:checked");
+  showError("error4", checked.length === 0);
+  if(checked.length) goToStep(5);
+}
+
+function isValidUrl(value){
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
+function validateUrlLive(){
+  const value = document.getElementById("url").value.trim();
+  if(!value) {
+    showError("error6", false);
+    return;
+  }
+  showError("error6", !isValidUrl(value));
+}
+
+function nextUrl(){
+  const value = document.getElementById("url").value.trim();
+  const invalid = !isValidUrl(value);
+  showError("error6", invalid);
+  if(!invalid) goToStep(7);
+}
+
+function showUploadStatus(){
+  const files = document.getElementById("evidence").files;
+  document.getElementById("uploadStatus").textContent = files.length ? `Pasirinkta failų: ${files.length}` : "";
+}
+
+function nextEvidence(){
+  const checked = document.getElementById("safeEvidence").checked;
+  showError("error7", !checked);
+  if(checked) goToStep(8);
+}
+
+function toggleReportedDetails(){
+  const reported = document.querySelector('input[name="reported"]:checked')?.value;
+  const show = reported === "Taip";
+  document.getElementById("reportedDetails").style.display = show ? "block" : "none";
+
+  if(!show){
+    document.getElementById("reportedDate").value = "";
+    document.getElementById("platformResponse").selectedIndex = 0;
+  }
+}
+
+function toggleLastSeen(){
+  const status = document.querySelector('input[name="contentStatus"]:checked')?.value;
+  const show = status === "Jau pašalintas";
+  document.getElementById("lastSeenWrap").style.display = show ? "block" : "none";
+
+  if(!show){
+    document.getElementById("lastSeen").value = "";
+  }
+}
+
+function toggleFrequencyDetails(){
+  const value = document.getElementById("frequency").value;
+  const show = value === "Kartojasi" || value === "Vyksta dabar";
+  document.getElementById("frequencyDetails").style.display = show ? "block" : "none";
+
+  if(!show){
+    document.getElementById("frequencyDetails").value = "";
+  }
+}
+
+function toggleMoreUrls(){
+  const value = document.getElementById("moreUrls").value;
+  const show = value === "Taip";
+  document.getElementById("moreUrlsText").style.display = show ? "block" : "none";
+
+  if(!show){
+    document.getElementById("moreUrlsText").value = "";
+  }
+}
+
+function toggleEmail(){
+  const anon = document.getElementById("anonymous").checked;
+  document.getElementById("emailWrap").style.display = anon ? "none" : "block";
+
+  if(anon){
+    document.getElementById("email").value = "";
+  }
+}
+
+function generateRandom4(){
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let out = "";
+  for(let i=0;i<4;i++){
+    out += chars[Math.floor(Math.random()*chars.length)];
+  }
+  return out;
+}
+
+function generateCaseId(platform, index = 1){
+  const code = platformCodes[platform] || "OT";
+  return `VL-${code}-${generateRandom4()}-${String(index).padStart(2,"0")}`;
+}
+
+function collectData(){
+  const platform = document.getElementById("platform").value;
+  if(!generatedCaseId) generatedCaseId = generateCaseId(platform, 1);
+
+  return {
+    caseId: generatedCaseId,
+    platform,
+    otherPlatform: document.getElementById("otherPlatform").value,
+    contentType: document.getElementById("contentType").value,
+    categories: [...document.querySelectorAll(".category:checked")].map(c => c.value === "Kita" ? (document.getElementById("otherCategory").value || "Kita") : c.value),
+    minor: document.querySelector('input[name="minor"]:checked')?.value || "",
+    url: document.getElementById("url").value,
+    evidenceCount: document.getElementById("evidence").files.length,
+    safeEvidence: document.getElementById("safeEvidence").checked,
+    description: document.getElementById("description").value,
+    reported: document.querySelector('input[name="reported"]:checked')?.value || "",
+    reportedDate: document.getElementById("reportedDate").value,
+    platformResponse: document.getElementById("platformResponse").value,
+    contentStatus: document.querySelector('input[name="contentStatus"]:checked')?.value || "",
+    lastSeen: document.getElementById("lastSeen").value,
+    frequency: document.getElementById("frequency").value,
+    frequencyDetails: document.getElementById("frequencyDetails").value,
+    samePerson: document.getElementById("samePerson").value,
+    moreUrls: document.getElementById("moreUrls").value,
+    moreUrlsText: document.getElementById("moreUrlsText").value,
+    anonymous: document.getElementById("anonymous").checked,
+    email: document.getElementById("anonymous").checked ? "" : document.getElementById("email").value,
+    createdAt: new Date().toISOString()
+  };
+}
+
+function updateReview(){
+  const data = collectData();
+  const platformSelect = document.getElementById("platform");
+  const platformLabel = data.platform === "other"
+    ? data.otherPlatform
+    : platformSelect.options[platformSelect.selectedIndex]?.text || "-";
+
+  document.getElementById("reviewCaseId").textContent = data.caseId;
+  document.getElementById("reviewPlatform").textContent = platformLabel || "-";
+  document.getElementById("reviewType").textContent = data.contentType || "-";
+  document.getElementById("reviewCategory").textContent = data.categories.join(", ") || "-";
+  document.getElementById("reviewUrl").textContent = data.url || "-";
+  document.getElementById("reviewDescription").textContent = data.description || "-";
+}
+
+function submitForm(){
+  const data = collectData();
+  submissions.push(data);
+  localStorage.setItem("tfPrototypeSubmissions", JSON.stringify(submissions));
+  document.getElementById("finalCaseId").textContent = data.caseId;
+  goToStep(15);
+}
+
+function submitSurvey(){
+  const survey = {
+    caseId: generatedCaseId,
+    identity: document.getElementById("surveyIdentity").value,
+    age: document.getElementById("surveyAge").value,
+    city: document.getElementById("surveyCity").value,
+    ease: document.getElementById("surveyEase").value,
+    comment: document.getElementById("surveyComment").value,
+    createdAt: new Date().toISOString()
+  };
+
+  surveyStore.push(survey);
+  localStorage.setItem("tfPrototypeSurvey", JSON.stringify(surveyStore));
+  resetForm();
+}
+
+function resetForm(){
+  generatedCaseId = "";
+
+  document.querySelectorAll("input[type='text'], input[type='url'], input[type='email'], textarea").forEach(el => el.value = "");
+  document.querySelectorAll("input[type='checkbox']").forEach(el => el.checked = false);
+  document.querySelectorAll("select").forEach(el => el.selectedIndex = 0);
+
+  document.querySelector('input[name="minor"][value="Nežinau"]').checked = true;
+  document.querySelector('input[name="reported"][value="Ne"]').checked = true;
+  document.querySelector('input[name="contentStatus"][value="Taip, vis dar aktyvus"]').checked = true;
+
+  document.getElementById("otherPlatformWrap").style.display = "none";
+  document.getElementById("platformNote").style.display = "none";
+  document.getElementById("otherCategory").style.display = "none";
+  document.getElementById("reportedDetails").style.display = "none";
+  document.getElementById("lastSeenWrap").style.display = "none";
+  document.getElementById("frequencyDetails").style.display = "none";
+  document.getElementById("moreUrlsText").style.display = "none";
+  document.getElementById("emailWrap").style.display = "block";
+
+  goToStep(1);
+}
+
+function saveComment(step, title){
+  const input = document.getElementById("commentInput" + step);
+  const text = input.value.trim();
+  if(!text) return;
+
+  if(!commentStore[step]) commentStore[step] = [];
+
+  commentStore[step].unshift({
+    text,
+    title,
+    createdAt: new Date().toLocaleString("lt-LT"),
+    status:"Active"
+  });
+
+  localStorage.setItem("tfPrototypeComments", JSON.stringify(commentStore));
+  input.value = "";
+  renderComments(step);
+}
+
+function renderComments(step){
+  const container = document.getElementById("comments" + step);
+  if(!container) return;
+
+  const isAdmin = document.getElementById("adminMode")?.checked;
+  const comments = (commentStore[step] || []).filter(c => c.status === "Active");
+
+  container.innerHTML = comments.map((c, index) => `
+    <div class="saved-comment">
+      ${isAdmin ? `<button class="delete-comment" onclick="deleteComment('${step}', ${index})">Trinti</button>` : ""}
+      ${escapeHtml(c.text)}
+      <small>${escapeHtml(c.createdAt)}</small>
+    </div>
+  `).join("");
+}
+
+function deleteComment(step, visibleIndex){
+  const active = (commentStore[step] || []).filter(c => c.status === "Active");
+  const target = active[visibleIndex];
+  if(!target) return;
+
+  target.status = "Deleted";
+  localStorage.setItem("tfPrototypeComments", JSON.stringify(commentStore));
+  renderComments(step);
+}
+
+function escapeHtml(text){
+  return String(text || "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+</script>
+
+</body>
+</html>
