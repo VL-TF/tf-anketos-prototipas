@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TF prototipo komentarai | Admin</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+const SUPABASE_URL = "https://zqvaqlmxstjindlcbef.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_xAQ2OqaewT3seUJkNUE1dg_nTU8OlQj";
+
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #FEFDE9;
+  color: #123044;
+  margin: 0;
+  padding: 24px;
+}
+
+h1 {
+  color: #005386;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+select, input, button {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #D8E8EF;
+  font-size: 15px;
+}
+
+button {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.card {
+  background: white;
+  border: 1px solid #D8E8EF;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.meta {
+  color: #65737A;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.comment {
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.delete { background: #FDECEC; color: #B42318; }
+.duplicate { background: #FFF3CD; color: #856404; }
+.bad { background: #FFE3E3; color: #B42318; }
+.restore { background: #D9F0FA; color: #005386; }
+.export { background: #E64011; color: white; border: none; }
+.refresh { background: #005386; color: white; border: none; }
+</style>
+</head>
+
+<body>
+
+<h1>TF prototipo komentarai</h1>
+
+<div class="controls">
+  <select id="stepFilter" onchange="loadComments()">
+    <option value="">Visi žingsniai</option>
+    <option value="1">1 Pradžios langas</option>
+    <option value="2">2 Platforma</option>
+    <option value="3">3 Turinio tipas</option>
+    <option value="4">4 Kas nutiko?</option>
+    <option value="5">5 Nepilnametis</option>
+    <option value="6">6 Nuoroda</option>
+    <option value="7">7 Įrodymai</option>
+    <option value="8">8 Aprašymas</option>
+    <option value="9">9 Pranešta platformai</option>
+    <option value="10">10 Turinys pasiekiamas</option>
+    <option value="11">11 Dažnumas</option>
+    <option value="12">12 Daugiau nuorodų</option>
+    <option value="13">13 Kontaktai</option>
+    <option value="14">14 Peržiūra</option>
+    <option value="15">15 Pabaiga</option>
+    <option value="16">16 Survey</option>
+    <option value="99">99 Tik pasikalbėti</option>
+  </select>
+
+  <select id="statusFilter" onchange="loadComments()">
+    <option value="active">Active</option>
+    <option value="deleted">Deleted</option>
+    <option value="duplicate">Duplicate</option>
+    <option value="inappropriate">Inappropriate</option>
+    <option value="">Visi statusai</option>
+  </select>
+
+  <input id="searchInput" placeholder="Ieškoti komentaruose..." oninput="loadComments()" />
+
+  <button class="refresh" onclick="loadComments()">Atnaujinti</button>
+  <button class="export" onclick="exportCsv()">Eksportuoti CSV</button>
+</div>
+
+<div id="count"></div>
+<div id="comments"></div>
+
+<script>
+const SUPABASE_URL = "ĮKLIJUOK_SUPABASE_PROJECT_URL";
+const SUPABASE_ANON_KEY = "ĮKLIJUOK_SUPABASE_ANON_KEY";
+
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let currentRows = [];
+
+async function loadComments() {
+  const step = document.getElementById("stepFilter").value;
+  const status = document.getElementById("statusFilter").value;
+  const search = document.getElementById("searchInput").value.toLowerCase();
+
+  let query = supabaseClient
+    .from("prototype_comments")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (step) query = query.eq("step_id", step);
+  if (status) query = query.eq("status", status);
+
+  const { data, error } = await query;
+
+  if (error) {
+    document.getElementById("comments").innerHTML = `<p>Klaida: ${error.message}</p>`;
+    return;
+  }
+
+  currentRows = (data || []).filter(row =>
+    !search ||
+    (row.comment_text || "").toLowerCase().includes(search) ||
+    (row.step_title || "").toLowerCase().includes(search)
+  );
+
+  renderComments(currentRows);
+}
+
+function renderComments(rows) {
+  document.getElementById("count").innerHTML = `<p>Rodoma komentarų: <b>${rows.length}</b></p>`;
+
+  document.getElementById("comments").innerHTML = rows.map(row => `
+    <div class="card">
+      <div class="meta">
+        Step ${escapeHtml(row.step_id)} | ${escapeHtml(row.step_title)} | ${escapeHtml(row.status)} | ${new Date(row.created_at).toLocaleString("lt-LT")}
+      </div>
+      <div class="comment">${escapeHtml(row.comment_text)}</div>
+      <div class="meta">Session: ${escapeHtml(row.session_id || "-")}</div>
+      <div class="actions">
+        <button class="delete" onclick="updateStatus('${row.id}', 'deleted')">Trinti / slėpti</button>
+        <button class="duplicate" onclick="updateStatus('${row.id}', 'duplicate')">Dublikatas</button>
+        <button class="bad" onclick="updateStatus('${row.id}', 'inappropriate')">Netinkamas</button>
+        <button class="restore" onclick="updateStatus('${row.id}', 'active')">Atstatyti</button>
+      </div>
+    </div>
+  `).join("");
+}
+
+async function updateStatus(id, status) {
+  const { error } = await supabaseClient
+    .from("prototype_comments")
+    .update({ status })
+    .eq("id", id);
+
+  if (error) {
+    alert("Nepavyko atnaujinti: " + error.message);
+    return;
+  }
+
+  loadComments();
+}
+
+function exportCsv() {
+  const header = ["id","step_id","step_title","comment_text","session_id","status","created_at"];
+
+  const rows = currentRows.map(row =>
+    header.map(key => `"${String(row[key] ?? "").replaceAll('"', '""')}"`).join(",")
+  );
+
+  const csv = [header.join(","), ...rows].join("\n");
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "tf_prototype_comments.csv";
+  link.click();
+}
+
+function escapeHtml(text) {
+  return String(text || "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+loadComments();
+</script>
+
+</body>
+</html>
