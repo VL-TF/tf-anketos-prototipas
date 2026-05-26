@@ -427,7 +427,7 @@ button,.link-button {
 
       <section id="step1" class="step active">
         <div class="hero">
-          <h1>Internete neturi būti nesaugu.</h1>
+          <h1>Internete gali būti saugu.</h1>
           <p>Čia gali pranešti apie tai, kas tave neramina internete.</p>
         </div>
         <div class="card">
@@ -444,7 +444,7 @@ button,.link-button {
           <h2>Kur tai pastebėjai?</h2>
           <label>Platforma</label>
           <select id="platform" onchange="updateContentTypes(); updatePlatformNote(); toggleOtherPlatform();">
-            <option value="">Pasirink platformą</option>
+            <option value="">Pasirink</option>
             <option value="facebook">Facebook</option>
             <option value="instagram">Instagram</option>
             <option value="tiktok">TikTok</option>
@@ -463,11 +463,11 @@ button,.link-button {
 
           <div id="otherPlatformWrap" style="display:none;">
             <label>Įrašyk platformą</label>
-            <input id="otherPlatform" type="text" placeholder="Platformos pavadinimas" />
+            <input id="otherPlatform" type="text" placeholder="pavadinimas" />
           </div>
 
           <div id="platformNote" class="note" style="display:none;"></div>
-          <div id="error2" class="error">Pasirink platformą.</div>
+          <div id="error2" class="error">Nepalik tuščio lauko.</div>
 
           <div class="button-row">
             <button class="btn-back" onclick="goToStep(1)">Atgal</button>
@@ -499,7 +499,7 @@ button,.link-button {
       <section id="step4" class="step">
         <progress-block current="3" total="15" percent="21"></progress-block>
         <div class="card">
-          <h2>Kas čia blogai?</h2>
+          <h2>Kas nutiko?</h2>
             <div class="note">Jei nesi tikra/s, pasirink panašiausią. Mes vis tiek peržiūrėsime.</div>
           <p class="helper">Gali pažymėti kelis variantus.</p>
 
@@ -584,7 +584,7 @@ button,.link-button {
         <progress-block current="7" total="15" percent="49"></progress-block>
         <div class="card">
           <h2>Aprašymas</h2>
-          <p class="helper">Nebūtina, bet padeda suprasti situaciją.</p>
+          <p class="helper">Pildyti neprivaloma, gali eiti į kitą puslapį.</p>
           <textarea id="description" placeholder="Kas nutiko?"></textarea>
 
           <div class="button-row">
@@ -631,7 +631,6 @@ button,.link-button {
 
           <label class="option"><input type="radio" name="contentStatus" value="Taip, vis dar aktyvus" onchange="toggleLastSeen()" checked> Taip, vis dar aktyvus</label>
           <label class="option"><input type="radio" name="contentStatus" value="Nežinau" onchange="toggleLastSeen()"> Nežinau</label>
-          <label class="option"><input type="radio" name="contentStatus" value="Jau pašalintas" onchange="toggleLastSeen()"> Jau pašalintas</label>
 
           <div id="lastSeenWrap" style="display:none;">
             <label>Kada paskutinį kartą matei?</label>
@@ -654,7 +653,7 @@ button,.link-button {
           <select id="frequency" onchange="toggleFrequencyDetails()">
             <option>Vienkartinis</option>
             <option>Kartojasi</option>
-            <option>Vyksta dabar</option>
+          
           </select>
 
           <input id="frequencyDetails" type="text" placeholder="Jei kartojasi, trumpai parašyk kaip dažnai" style="margin-top:12px;display:none;" />
@@ -699,12 +698,14 @@ button,.link-button {
         <div class="card">
           <h2>Kontaktai</h2>
 
-          <label class="option"><input id="anonymous" type="checkbox" onchange="toggleEmail()"> Noriu likti anonimiškas</label>
+          
 
           <div id="emailWrap">
             <label>El. paštas</label>
             <input id="email" type="email" placeholder="tavo@email.com" />
             <p class="helper">El. paštas naudojamas tik pranešimui patvirtinti arba, jei reikėtų grįžti dėl informacijos.</p>
+            
+            <label class="option"><input id="anonymous" type="checkbox" onchange="toggleEmail()"> Noriu likti anonimiškas</label>
           </div>
 
           <div class="button-row">
