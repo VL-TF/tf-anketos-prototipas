@@ -441,7 +441,7 @@ button,.link-button {
       <section id="step2" class="step">
         <progress-block current="1" total="15" percent="7"></progress-block>
         <div class="card">
-          <h2>Kur tai pastebėjai?</h2>
+          <h2>Kur pastebėjai neteisėtą turinį?</h2>
           <label>Platforma</label>
           <select id="platform" onchange="updateContentTypes(); updatePlatformNote(); toggleOtherPlatform();">
             <option value="">Pasirink</option>
@@ -455,9 +455,7 @@ button,.link-button {
             <option value="whatsapp">WhatsApp</option>
             <option value="discord">Discord</option>
             <option value="reddit">Reddit</option>
-            <option value="ebay">eBay</option>
             <option value="viber">Viber</option>
-            <option value="grok">Grok</option>
             <option value="other">Kita</option>
           </select>
 
@@ -545,9 +543,9 @@ button,.link-button {
         <progress-block current="5" total="15" percent="35"></progress-block>
         <div class="card">
           <h2>Įklijuok nuorodą</h2>
-          <p class="helper">Įklijuok pilną puslapio adresą. Laukas priima tik URL formatą.</p>
+          <p class="helper">Įklijuok visą puslapio adresą. Laukas priima tik URL formatą.</p>
           <input id="url" type="url" inputmode="url" placeholder="https://..." oninput="validateUrlLive()" />
-          <div id="error6" class="error">Įvesk pilną URL, pvz. https://example.com/...</div>
+          <div id="error6" class="error">Įvesk visą URL, pvz. https://example.com/...</div>
 
           <div class="button-row">
             <button class="btn-back" onclick="goToStep(5)">Atgal</button>
@@ -561,7 +559,7 @@ button,.link-button {
         <progress-block current="6" total="15" percent="42"></progress-block>
         <div class="card">
           <h2>Įkelk įrodymą</h2>
-          <p class="helper">Įkelk pilno ekrano nuotrauką ar vaizdo įrašą. Nekelk asmeninių nuotraukų ar privačių duomenų.</p>
+          <p class="helper">Įkelk viso ekrano nuotrauką ar vaizdo įrašą. Nekelk asmeninių nuotraukų ar privačių duomenų.</p>
 
           <div class="upload-box">
             <strong>Ekrano nuotrauka arba video</strong>
@@ -612,7 +610,6 @@ button,.link-button {
               <option value="">Pasirink</option>
               <option>Taip</option>
               <option>Ne</option>
-              <option>Nežinau</option>
             </select>
           </div>
 
@@ -823,26 +820,24 @@ button,.link-button {
 
 <script>
 const contentMap = {
-  facebook:["Postas","Komentaras","Paskyra","Grupė","Žinutė"],
-  instagram:["Postas","Story","Reels","Komentaras","Paskyra","Žinutė"],
-  tiktok:["Video","Komentaras","Paskyra","Tiesioginė transliacija"],
-  youtube:["Video","Shorts","Komentaras","Kanalas"],
-  snapchat:["Paskyra","Story","Žinutė"],
+  facebook:["Įrašas (Post)", "Komentaras", "Paskyra", "Grupė", "Puslapis", "Istorija (Story)", "Trumpas vaizdo įrašas (Reels)", "Messenger žinutė", "Tiesioginė transliacija (Live stream)"],
+  instagram:["Įrašas (Post)","Istorija (Story)", "Trumpas vaizdo įrašas (Reels)","Komentaras","Paskyra", "Tiesioginė transliacija (Live stream)", "Privati žinutė (DM message)"],
+  tiktok:["Vaizdo įrašas (Video)","Komentaras","Paskyra","Tiesioginė transliacija (Live stream)", "Privati žinutė (DM message)"],
+  youtube:["Vaizdo įrašas (Video)","trumpi „YouTube“ vaizdo įrašai (Shorts)","Komentaras","Kanalas"],
+  snapchat:["Paskyra","Istorija (Story)","Žinutė"],
   x:["Įrašas","Komentaras","Paskyra"],
   telegram:["Grupė / kanalas","Žinutė","Paskyra"],
   whatsapp:["Grupė","Žinutė","Paskyra"],
   discord:["Serveris","Kanalas","Žinutė","Paskyra"],
-  reddit:["Postas","Komentaras","Subreddit","Paskyra"],
-  ebay:["Skelbimas","Paskyra","Žinutė"],
+  reddit:["Įrašas (Post)","Komentaras","Reddit poskyris (Subreddit)","Paskyra"],
   viber:["Grupė","Žinutė","Paskyra"],
-  grok:["Atsakymas","Paskyra","Kita"],
   other:["Įrašas","Komentaras","Paskyra","Kita"]
 };
 
 const platformNotes = {
-  instagram:"Pastaba: jei tai story, naudinga matyti username ir story UI.",
-  tiktok:"Pastaba: naudinga, kad matytųsi video ir username.",
-  snapchat:"Pastaba: pirmiausia kreipiamasi per viešą kanalą, tik jei nepavyksta – per TF. Reikia username ir aprašymo. Draudžiama kelti pornografinio tipo įrodymus.",
+  instagram:"Pastaba: jei tai story, naudinga matyti vartotojo vardą (username) ir istoriją (story) UI.",
+  tiktok:"Pastaba: naudinga, kad matytųsi video ir vartotojo vardą (username).",
+  snapchat:"Reikia vartotojo vardo (username) ir aprašymo.",
   viber:"Pastaba: jei tai grupė, naudinga įkelti grupės pavadinimą ir narių sąrašo ekrano nuotrauką.",
   discord:"Pastaba: naudinga serverio, kanalo ar žinutės nuoroda / ID.",
   telegram:"Pastaba: jei tai kanalas ar grupė, naudinga pavadinimas ir konkreti žinutės nuoroda.",
@@ -860,9 +855,7 @@ const platformCodes = {
   whatsapp:"WA",
   discord:"DC",
   reddit:"RD",
-  ebay:"EB",
   viber:"VB",
-  grok:"GK",
   other:"OT"
 };
 
