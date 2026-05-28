@@ -750,6 +750,22 @@ button,.link-button {
           <h2>Trumpa apklausa</h2>
           <p class="helper">Ši dalis neprivaloma. Ji padės suprasti, ar anketa aiški.</p>
 
+                    <label>Ar buvo lengva pildyti?</label>
+          <select id="surveyEase">
+            <option>Taip</option>
+            <option>Iš dalies</option>
+            <option>Ne</option>
+          </select>
+
+           <label>Kas buvo neaišku?</label>
+          <textarea id="surveyComment" placeholder="Parašyk, jei nori."></textarea>
+
+          <button class="btn-primary" onclick="submitSurvey()">Pateikti apklausą</button>
+          <button class="btn-back" style="margin-top:12px;" onclick="resetForm()">Praleisti</button>
+        </div>
+        <comment-box step="16" title="Survey"></comment-box>
+      </section>
+
           <label>Kas tu?</label>
           <select id="surveyIdentity">
             <option value="">Pasirink</option>
@@ -780,22 +796,6 @@ button,.link-button {
             <option>Kita</option>
             <option>Nenoriu sakyti</option>
           </select>
-
-          <label>Ar buvo lengva pildyti?</label>
-          <select id="surveyEase">
-            <option>Taip</option>
-            <option>Iš dalies</option>
-            <option>Ne</option>
-          </select>
-
-          <label>Kas buvo neaišku?</label>
-          <textarea id="surveyComment" placeholder="Parašyk, jei nori."></textarea>
-
-          <button class="btn-primary" onclick="submitSurvey()">Pateikti apklausą</button>
-          <button class="btn-back" style="margin-top:12px;" onclick="resetForm()">Praleisti</button>
-        </div>
-        <comment-box step="16" title="Survey"></comment-box>
-      </section>
 
       <section id="step99" class="step">
         <div class="hero">
