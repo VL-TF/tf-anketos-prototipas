@@ -461,7 +461,7 @@ button,.link-button {
       </section>
 
       <section id="step2" class="step">
-        <progress-block current="1" total="13" percent="8"></progress-block>
+        <progress-block current="1" total="9" percent="11"></progress-block>
         <div class="card">
           <h2>Kur pastebėjai neteisėtą turinį?</h2>
           <label>Platforma</label>
@@ -498,7 +498,7 @@ button,.link-button {
       </section>
 
       <section id="step3" class="step">
-        <progress-block current="2" total="13" percent="15"></progress-block>
+        <progress-block current="2" total="9" percent="22"></progress-block>
         <div class="card">
           <h2>Kur tai radai?</h2>
 
@@ -516,7 +516,7 @@ button,.link-button {
         <comment-box step="3" title="Turinio tipo pasirinkimas"></comment-box>
       </section>
       <section id="step5" class="step">
-        <progress-block current="3" total="13" percent="23"></progress-block>
+        <progress-block current="3" total="9" percent="33"></progress-block>
         <div class="card">
           <h2>Ar tai susiję su nepilnamečiu?</h2>
           <label class="option"><input type="radio" name="minor" value="Taip"> Taip</label>
@@ -532,7 +532,7 @@ button,.link-button {
       </section>
 
       <section id="step6" class="step">
-        <progress-block current="4" total="13" percent="31"></progress-block>
+        <progress-block current="4" total="9" percent="44"></progress-block>
         <div class="card">
           <h2>Įklijuok nuorodą</h2>
           <p class="helper">Įklijuok visą puslapio adresą. Laukas priima tik URL formatą.</p>
@@ -548,7 +548,7 @@ button,.link-button {
       </section>
 
       <section id="step7" class="step">
-        <progress-block current="5" total="13" percent="38"></progress-block>
+        <progress-block current="5" total="9" percent="56"></progress-block>
         <div class="card">
           <h2>Įkelk įrodymą</h2>
           <p class="helper">Įkelk viso ekrano nuotrauką ar vaizdo įrašą. Nekelk asmeninių nuotraukų ar privačių duomenų.</p>
@@ -571,7 +571,7 @@ button,.link-button {
       </section>
 
       <section id="step8" class="step">
-        <progress-block current="6" total="13" percent="46"></progress-block>
+        <progress-block current="6" total="9" percent="67"></progress-block>
         <div class="card">
           <h2>Aprašymas</h2>
           <p class="helper">Trumpai papasakok kas nutiko, kad geriau suprastume situaciją. Gal žinai kas dalyvavo? Ar turinys vis dar pasiekiamas?</p>
@@ -586,9 +586,9 @@ button,.link-button {
       </section>
 
       <section id="step9" class="step">
-        <progress-block current="7" total="13" percent="54"></progress-block>
+        <progress-block current="7" total="9" percent="78"></progress-block>
         <div class="card">
-          <h2>Ar jau pranešei platformai?</h2>
+          <h2>Ar jau kreipeisi į platformą?</h2>
 
           <label class="option"><input type="radio" name="reported" value="Taip" onchange="toggleReportedDetails()"> Taip</label>
           <label class="option"><input type="radio" name="reported" value="Ne" onchange="toggleReportedDetails()" checked> Ne</label>
@@ -610,11 +610,11 @@ button,.link-button {
             <button class="btn-primary" onclick="goToStep(10)">Toliau</button>
           </div>
         </div>
-        <comment-box step="9" title="Ar jau pranešta platformai"></comment-box>
+        <comment-box step="9" title="Ar jau kreiptasi į platformą"></comment-box>
       </section>
 
       <section id="step10" class="step">
-        <progress-block current="8" total="13" percent="62"></progress-block>
+        <progress-block current="8" total="9" percent="89"></progress-block>
         <div class="card">
           <h2>Ar turinys vis dar pasiekiamas?</h2>
 
@@ -626,42 +626,29 @@ button,.link-button {
             <input id="lastSeen" type="text" placeholder="Pvz., vakar, prieš savaitę..." />
           </div>
 
+          <h2 style="margin-top:22px;">Ar turinys pasikartojantis?</h2>
+          <label class="option"><input type="radio" name="repeatedContent" value="Ne" onchange="toggleRepeatedContent()" checked> Ne</label>
+          <label class="option"><input type="radio" name="repeatedContent" value="Taip" onchange="toggleRepeatedContent()"> Taip</label>
+          <label class="option"><input type="radio" name="repeatedContent" value="Nežinau" onchange="toggleRepeatedContent()"> Nežinau</label>
+
+          <div id="samePersonWrap" style="display:none;">
+            <label>Ar tai tas pats asmuo?</label>
+            <select id="samePerson">
+              <option>Nežinau</option>
+              <option>Taip</option>
+              <option>Ne</option>
+            </select>
+          </div>
+
           <div class="button-row">
             <button class="btn-back" onclick="goToStep(9)">Atgal</button>
-            <button class="btn-primary" onclick="goToStep(12)">Toliau</button>
-          </div>
-        </div>
-        <comment-box step="10" title="Turinio pasiekiamumas"></comment-box>
-      </section>
-      <section id="step12" class="step">
-        <progress-block current="9" total="13" percent="69"></progress-block>
-        <div class="card">
-          <h2>Ar tai tas pats asmuo?</h2>
-
-          <select id="samePerson">
-            <option>Nežinau</option>
-            <option>Taip</option>
-            <option>Ne</option>
-          </select>
-
-          <label>Ar turi daugiau nuorodų?</label>
-          <select id="moreUrls" onchange="toggleMoreUrls()">
-            <option selected>Ne</option>
-            <option>Taip</option>
-          </select>
-
-          <textarea id="moreUrlsText" placeholder="Įklijuok papildomas nuorodas" style="display:none;margin-top:12px;"></textarea>
-
-          <div class="button-row">
-            <button class="btn-back" onclick="goToStep(10)">Atgal</button>
             <button class="btn-primary" onclick="goToStep(13)">Toliau</button>
           </div>
         </div>
-        <comment-box step="12" title="Tas pats asmuo ir daugiau nuorodų"></comment-box>
+        <comment-box step="10" title="Turinio pasiekiamumas ir pasikartojimas"></comment-box>
       </section>
-
       <section id="step13" class="step">
-        <progress-block current="10" total="13" percent="77"></progress-block>
+        <progress-block current="9" total="9" percent="100"></progress-block>
         <div class="card">
           <h2>Kontaktai</h2>
  <p class="helper">Kartais platformos paprašo papildomos informacijos. Jei nepaliksi kontakto negalėsime susisiekti ir tai gali apsunkinti platformos sprendimo priėmimą.</p>
@@ -676,7 +663,7 @@ button,.link-button {
           </div>
 
           <div class="button-row">
-            <button class="btn-back" onclick="goToStep(12)">Atgal</button>
+            <button class="btn-back" onclick="goToStep(10)">Atgal</button>
             <button class="btn-primary" onclick="goToStep(14)">Toliau</button>
           </div>
         </div>
@@ -684,7 +671,6 @@ button,.link-button {
       </section>
 
       <section id="step14" class="step">
-        <progress-block current="11" total="13" percent="85"></progress-block>
         <div class="card">
           <h2>Patikrink</h2>
 
@@ -1006,6 +992,8 @@ function nextEvidence(){
   if(checked) goToStep(8);
 }
 
+
+
 function toggleReportedDetails(){
   const reported = document.querySelector('input[name="reported"]:checked')?.value;
   const show = reported === "Taip";
@@ -1028,13 +1016,13 @@ function toggleLastSeen(){
 }
 
 
-function toggleMoreUrls(){
-  const value = document.getElementById("moreUrls").value;
-  const show = value === "Taip";
-  document.getElementById("moreUrlsText").style.display = show ? "block" : "none";
+function toggleRepeatedContent(){
+  const repeated = document.querySelector('input[name="repeatedContent"]:checked')?.value;
+  const show = repeated === "Taip";
+  document.getElementById("samePersonWrap").style.display = show ? "block" : "none";
 
   if(!show){
-    document.getElementById("moreUrlsText").value = "";
+    document.getElementById("samePerson").selectedIndex = 0;
   }
 }
 function toggleOtherCity() {
@@ -1094,9 +1082,8 @@ function collectData(){
     platformResponse: document.getElementById("platformResponse").value,
     contentStatus: document.querySelector('input[name="contentStatus"]:checked')?.value || "",
     lastSeen: document.getElementById("lastSeen").value,
+    repeatedContent: document.querySelector('input[name="repeatedContent"]:checked')?.value || "",
     samePerson: document.getElementById("samePerson").value,
-    moreUrls: document.getElementById("moreUrls").value,
-    moreUrlsText: document.getElementById("moreUrlsText").value,
     anonymous: document.getElementById("anonymous").checked,
     email: document.getElementById("anonymous").checked ? "" : document.getElementById("email").value,
     createdAt: new Date().toISOString()
@@ -1156,13 +1143,14 @@ function resetForm(){
   document.querySelector('input[name="minor"][value="Nežinau"]').checked = true;
   document.querySelector('input[name="reported"][value="Ne"]').checked = true;
   document.querySelector('input[name="contentStatus"][value="Taip, vis dar aktyvus"]').checked = true;
+  document.querySelector('input[name="repeatedContent"][value="Ne"]').checked = true;
 
   document.getElementById("otherPlatformWrap").style.display = "none";
   document.getElementById("platformNote").style.display = "none";
   document.getElementById("otherCategory").style.display = "none";
   document.getElementById("reportedDetails").style.display = "none";
   document.getElementById("lastSeenWrap").style.display = "none";
-  document.getElementById("moreUrlsText").style.display = "none";
+  document.getElementById("samePersonWrap").style.display = "none";
   document.getElementById("emailWrap").style.display = "block";
   document.getElementById("email").disabled = false;
   document.getElementById("email").style.opacity = "1";
