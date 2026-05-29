@@ -466,7 +466,7 @@ button,.link-button {
           <h2>Kur pastebėjai neteisėtą turinį?</h2>
           <label>Platforma</label>
           <select id="platform" onchange="updateContentTypes(); updatePlatformNote(); toggleOtherPlatform();">
-            <option value="Pasirink vieną">Pasirink vieną</option>
+            <option value="">Pasirink vieną</option>
             <option value="facebook">Facebook</option>
             <option value="instagram">Instagram</option>
             <option value="tiktok">TikTok</option>
@@ -805,7 +805,13 @@ button,.link-button {
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
+const SUPABASE_URL = "https://zqvaqlmxstjindlcbef.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_xAQ2OqaewT3seUJkNUE1dg_nTU8OlQj";
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 const contentMap = {
   facebook:["Įrašas (Post)", "Komentaras", "Paskyra", "Grupė", "Puslapis", "Istorija (Story)", "Trumpas vaizdo įrašas (Reels)", "Messenger žinutė", "Tiesioginė transliacija (Live stream)"],
   instagram:["Įrašas (Post)","Istorija (Story)", "Trumpas vaizdo įrašas (Reels)","Komentaras","Paskyra", "Tiesioginė transliacija (Live stream)", "Privati žinutė (DM message)", "Transliavimo kanalas (Broadcast channel)"],
@@ -851,6 +857,11 @@ let generatedCaseId = "";
 let commentStore = JSON.parse(localStorage.getItem("tfPrototypeComments") || "{}");
 let submissions = JSON.parse(localStorage.getItem("tfPrototypeSubmissions") || "[]");
 let surveyStore = JSON.parse(localStorage.getItem("tfPrototypeSurvey") || "[]");
+let sessionId = localStorage.getItem("tfPrototypeSessionId");
+if (!sessionId) {
+  sessionId = (crypto.randomUUID ? crypto.randomUUID() : "sess_" + Math.random().toString(36).slice(2));
+  localStorage.setItem("tfPrototypeSessionId", sessionId);
+}
 
 class CommentBox extends HTMLElement {
   connectedCallback(){
@@ -1158,10 +1169,25 @@ function resetForm(){
   goToStep(1);
 }
 
-function saveComment(step, title){
+async function saveComment(step, title){
   const input = document.getElementById("commentInput" + step);
   const text = input.value.trim();
   if(!text) return;
+
+  const { error } = await supabaseClient
+    .from("prototype_comments")
+    .insert({
+      step_id: String(step),
+      comment_text: text,
+      session_id: sessionId,
+      status: "active"
+    });
+
+  if(error){
+    console.error("Supabase comment save error:", error);
+    alert("Komentaro išsaugoti nepavyko. Patikrink Supabase nustatymus.");
+    return;
+  }
 
   if(!commentStore[step]) commentStore[step] = [];
 
@@ -1175,6 +1201,7 @@ function saveComment(step, title){
   localStorage.setItem("tfPrototypeComments", JSON.stringify(commentStore));
   input.value = "";
   renderComments(step);
+  alert("Komentaras išsaugotas");
 }
 
 function renderComments(step){
