@@ -461,7 +461,7 @@ button,.link-button {
       </section>
 
       <section id="step2" class="step">
-        <progress-block current="1" total="9" percent="11"></progress-block>
+        <progress-block current="1" total="8" percent="13"></progress-block>
         <div class="card">
           <h2>Kur pastebėjai neteisėtą turinį?</h2>
           <label>Platforma</label>
@@ -498,7 +498,7 @@ button,.link-button {
       </section>
 
       <section id="step3" class="step">
-        <progress-block current="2" total="9" percent="22"></progress-block>
+        <progress-block current="2" total="8" percent="25"></progress-block>
         <div class="card">
           <h2>Kur tai radai?</h2>
 
@@ -515,24 +515,9 @@ button,.link-button {
         </div>
         <comment-box step="3" title="Turinio tipo pasirinkimas"></comment-box>
       </section>
-      <section id="step5" class="step">
-        <progress-block current="3" total="9" percent="33"></progress-block>
-        <div class="card">
-          <h2>Ar tai susiję su nepilnamečiu?</h2>
-          <label class="option"><input type="radio" name="minor" value="Taip"> Taip</label>
-          <label class="option"><input type="radio" name="minor" value="Ne"> Ne</label>
-          <label class="option"><input type="radio" name="minor" value="Nežinau" checked> Nežinau</label>
-
-          <div class="button-row">
-            <button class="btn-back" onclick="goToStep(3)">Atgal</button>
-            <button class="btn-primary" onclick="goToStep(6)">Toliau</button>
-          </div>
-        </div>
-        <comment-box step="5" title="Nepilnamečio įtraukimas"></comment-box>
-      </section>
 
       <section id="step6" class="step">
-        <progress-block current="4" total="9" percent="44"></progress-block>
+        <progress-block current="3" total="8" percent="38"></progress-block>
         <div class="card">
           <h2>Įklijuok nuorodą</h2>
           <p class="helper">Įklijuok visą puslapio adresą. Laukas priima tik URL formatą.</p>
@@ -540,7 +525,7 @@ button,.link-button {
           <div id="error6" class="error">Įvesk visą URL, pvz. https://example.com/...</div>
 
           <div class="button-row">
-            <button class="btn-back" onclick="goToStep(5)">Atgal</button>
+            <button class="btn-back" onclick="goToStep(3)">Atgal</button>
             <button class="btn-primary" onclick="nextUrl()">Toliau</button>
           </div>
         </div>
@@ -548,7 +533,7 @@ button,.link-button {
       </section>
 
       <section id="step7" class="step">
-        <progress-block current="5" total="9" percent="56"></progress-block>
+        <progress-block current="4" total="8" percent="50"></progress-block>
         <div class="card">
           <h2>Įkelk įrodymą</h2>
           <p class="helper">Įkelk viso ekrano nuotrauką ar vaizdo įrašą. Nekelk asmeninių nuotraukų ar privačių duomenų.</p>
@@ -571,7 +556,7 @@ button,.link-button {
       </section>
 
       <section id="step8" class="step">
-        <progress-block current="6" total="9" percent="67"></progress-block>
+        <progress-block current="5" total="8" percent="63"></progress-block>
         <div class="card">
           <h2>Aprašymas</h2>
           <p class="helper">Trumpai papasakok kas nutiko, kad geriau suprastume situaciją. Gal žinai kas dalyvavo? Ar turinys vis dar pasiekiamas?</p>
@@ -586,7 +571,7 @@ button,.link-button {
       </section>
 
       <section id="step9" class="step">
-        <progress-block current="7" total="9" percent="78"></progress-block>
+        <progress-block current="6" total="8" percent="75"></progress-block>
         <div class="card">
           <h2>Ar jau kreipeisi į platformą?</h2>
 
@@ -614,7 +599,7 @@ button,.link-button {
       </section>
 
       <section id="step10" class="step">
-        <progress-block current="8" total="9" percent="89"></progress-block>
+        <progress-block current="7" total="8" percent="88"></progress-block>
         <div class="card">
           <h2>Ar turinys vis dar pasiekiamas?</h2>
 
@@ -648,7 +633,7 @@ button,.link-button {
         <comment-box step="10" title="Turinio pasiekiamumas ir pasikartojimas"></comment-box>
       </section>
       <section id="step13" class="step">
-        <progress-block current="9" total="9" percent="100"></progress-block>
+        <progress-block current="8" total="8" percent="100"></progress-block>
         <div class="card">
           <h2>Kontaktai</h2>
  <p class="helper">Kartais platformos paprašo papildomos informacijos. Jei nepaliksi kontakto negalėsime susisiekti ir tai gali apsunkinti platformos sprendimo priėmimą.</p>
@@ -812,13 +797,11 @@ const SUPABASE_URL = "https://zqvaqlmxstjindlcbef.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_xAQ2OqaewT3seUJkNUE1dg_nTU8OlQj";
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  let sessionId = localStorage.getItem("tf_session_id");
-
+let sessionId = localStorage.getItem("tfPrototypeSessionId");
 if (!sessionId) {
-  sessionId = crypto.randomUUID();
-  localStorage.setItem("tf_session_id", sessionId);
+  sessionId = (crypto.randomUUID ? crypto.randomUUID() : "sess_" + Math.random().toString(36).slice(2));
+  localStorage.setItem("tfPrototypeSessionId", sessionId);
 }
-
 const contentMap = {
   facebook:["Įrašas (Post)", "Komentaras", "Paskyra", "Grupė", "Puslapis", "Istorija (Story)", "Trumpas vaizdo įrašas (Reels)", "Messenger žinutė", "Tiesioginė transliacija (Live stream)"],
   instagram:["Įrašas (Post)","Istorija (Story)", "Trumpas vaizdo įrašas (Reels)","Komentaras","Paskyra", "Tiesioginė transliacija (Live stream)", "Privati žinutė (DM message)", "Transliavimo kanalas (Broadcast channel)"],
@@ -864,11 +847,6 @@ let generatedCaseId = "";
 let commentStore = JSON.parse(localStorage.getItem("tfPrototypeComments") || "{}");
 let submissions = JSON.parse(localStorage.getItem("tfPrototypeSubmissions") || "[]");
 let surveyStore = JSON.parse(localStorage.getItem("tfPrototypeSurvey") || "[]");
-let sessionId = localStorage.getItem("tfPrototypeSessionId");
-if (!sessionId) {
-  sessionId = (crypto.randomUUID ? crypto.randomUUID() : "sess_" + Math.random().toString(36).slice(2));
-  localStorage.setItem("tfPrototypeSessionId", sessionId);
-}
 
 class CommentBox extends HTMLElement {
   connectedCallback(){
@@ -960,7 +938,7 @@ function nextPlatform(){
 function nextContentType(){
   const value = document.getElementById("contentType").value;
   showError("error3", !value);
-  if(value) goToStep(5);
+  if(value) goToStep(6);
 }
 
 function toggleOtherCategory(){
@@ -1090,7 +1068,7 @@ function collectData(){
     platform,
     otherPlatform: document.getElementById("otherPlatform").value,
     contentType: document.getElementById("contentType").value,
-    minor: document.querySelector('input[name="minor"]:checked')?.value || "",
+    minor: "",
     url: document.getElementById("url").value,
     evidenceCount: document.getElementById("evidence").files.length,
     safeEvidence: document.getElementById("safeEvidence").checked,
@@ -1158,7 +1136,6 @@ function resetForm(){
   document.querySelectorAll("input[type='checkbox']").forEach(el => el.checked = false);
   document.querySelectorAll("select").forEach(el => el.selectedIndex = 0);
 
-  document.querySelector('input[name="minor"][value="Nežinau"]').checked = true;
   document.querySelector('input[name="reported"][value="Ne"]').checked = true;
   document.querySelector('input[name="contentStatus"][value="Taip, vis dar aktyvus"]').checked = true;
   document.querySelector('input[name="repeatedContent"][value="Ne"]').checked = true;
@@ -1192,7 +1169,7 @@ async function saveComment(step, title){
 
   if(error){
     console.error("Supabase comment save error:", error);
-    alert("Komentaro išsaugoti nepavyko. Patikrink Supabase nustatymus.");
+    alert("Komentaro išsaugoti nepavyko: " + (error.message || JSON.stringify(error)));
     return;
   }
 
