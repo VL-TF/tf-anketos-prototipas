@@ -812,6 +812,13 @@ const SUPABASE_URL = "https://zqvaqlmxstjindlcbef.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_xAQ2OqaewT3seUJkNUE1dg_nTU8OlQj";
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+  let sessionId = localStorage.getItem("tf_session_id");
+
+if (!sessionId) {
+  sessionId = crypto.randomUUID();
+  localStorage.setItem("tf_session_id", sessionId);
+}
+
 const contentMap = {
   facebook:["Įrašas (Post)", "Komentaras", "Paskyra", "Grupė", "Puslapis", "Istorija (Story)", "Trumpas vaizdo įrašas (Reels)", "Messenger žinutė", "Tiesioginė transliacija (Live stream)"],
   instagram:["Įrašas (Post)","Istorija (Story)", "Trumpas vaizdo įrašas (Reels)","Komentaras","Paskyra", "Tiesioginė transliacija (Live stream)", "Privati žinutė (DM message)", "Transliavimo kanalas (Broadcast channel)"],
