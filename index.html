@@ -431,9 +431,31 @@ button,.link-button {
           <p>Čia gali pranešti apie tai, kas tave neramina internete.</p>
         </div>
         <div class="card">
-          <p>Užpildyk kelis trumpus žingsnius. Jei nori tik pasikalbėti, gali iškart rinktis pokalbį su Vaikų linija.</p>
-          <button class="btn-primary" onclick="goToStep(2)">Pradėti</button>
-          <button class="btn-secondary" style="margin-top:12px" onclick="goToStep(99)">Nori tik pasikalbėti?</button>
+          <p>Jei susiduri su netinkamu turiniu internete, gali daryti kelis dalykus:</p>
+
+          <div class="review-item">
+            <strong>1. Gali pateikti pranešimą apie neteisėtą turinį mums.</strong>
+            <span>Mes kreipsimės į platformą už tave.</span>
+            <button class="btn-primary" style="margin-top:12px" onclick="goToStep(2)">Užpildyti pranešimą</button>
+          </div>
+
+          <div class="review-item">
+            <strong>2. Gali kreiptis emocinės paramos.</strong>
+            <span>Čia gali tau padėti nusiraminti ir apgalvoti tolimesnius žingsnius.</span>
+            <button class="btn-secondary" style="margin-top:12px" onclick="goToStep(99)">Pasikalbėti su Vaikų linija</button>
+          </div>
+
+          <div class="review-item">
+            <strong>3. Gali pateikti pranešimą pačiai platformai.</strong>
+            <span>Čia rasi pagrindinių platformų pranešimų formas ir pagalbos nuorodas.</span>
+            <button class="btn-secondary" style="margin-top:12px" onclick="goToStep(98)">Platformų kontaktai</button>
+          </div>
+
+          <div class="review-item">
+            <strong>4. Švarus internetas</strong>
+            <span>Gali pateikti pranešimą per RRT karštąją liniją „Švarus internetas“.</span>
+            <a class="link-button btn-secondary" style="margin-top:12px" href="https://www.svarusinternetas.lt/pranesk/1" target="_blank" rel="noopener">Atidaryti anketą</a>
+          </div>
         </div>
         <comment-box step="1" title="Pradžios langas"></comment-box>
       </section>
@@ -444,7 +466,6 @@ button,.link-button {
           <h2>Kur pastebėjai neteisėtą turinį?</h2>
           <label>Platforma</label>
           <select id="platform" onchange="updateContentTypes(); updatePlatformNote(); toggleOtherPlatform();">
-            <option value="">Pasirink</option>
             <option value="facebook">Facebook</option>
             <option value="instagram">Instagram</option>
             <option value="tiktok">TikTok</option>
@@ -548,7 +569,7 @@ button,.link-button {
           <div id="error6" class="error">Įvesk visą URL, pvz. https://example.com/...</div>
 
           <div class="button-row">
-            <button class="btn-back" onclick="goToStep(5)">Atgal</button>
+            <button class="btn-back" onclick="goToStep(4)">Atgal</button>
             <button class="btn-primary" onclick="nextUrl()">Toliau</button>
           </div>
         </div>
@@ -582,8 +603,8 @@ button,.link-button {
         <progress-block current="7" total="15" percent="49"></progress-block>
         <div class="card">
           <h2>Aprašymas</h2>
-          <p class="helper">Pildyti neprivaloma, gali eiti į kitą puslapį.</p>
-          <textarea id="description" placeholder="Kas nutiko?"></textarea>
+          <p class="helper">Trumpai papasakok kas nutiko, kad geriau suprastume situaciją. Gal žinai kas dalyvavo ar tai vyksta pirmą kartą? Ar turinys vis dar pasiekiamas? Kiek kartų / kiek laiko tai vyksta?</p>
+          <textarea id="description" placeholder="Pildyti neprivaloma, gali eiti į kitą puslapį."></textarea>
 
           <div class="button-row">
             <button class="btn-back" onclick="goToStep(7)">Atgal</button>
@@ -694,7 +715,7 @@ button,.link-button {
         <progress-block current="12" total="15" percent="84"></progress-block>
         <div class="card">
           <h2>Kontaktai</h2>
-
+ <p class="helper">Kartais platformos paprašo papildomos informacijos. Jei nepaliksi kontakto negalėsime susisiekti ir tai gali apsunkinti platformos sprendimo priėmimą.</p>
           
 
           <div id="emailWrap">
@@ -737,9 +758,10 @@ button,.link-button {
         <div class="card">
           <h2>Ačiū, pranešimas gautas</h2>
           <div class="case-id" id="finalCaseId">VL-XX-0000-01</div>
-          <p>Peržiūrėsime informaciją ir, jei reikės, perduosime platformai.</p>
+          <p>Nusikopijuok ir išsisaugok šį kodą. Jo gali prireikti, jei vėliau norėsi pasitikslinti dėl savo pranešimo.</p>
+          <button class="btn-secondary" onclick="copyCaseId()">Kopijuoti kodą</button>
 
-          <button class="btn-secondary" onclick="goToStep(16)">Atsakyti į trumpą apklausą</button>
+          <button class="btn-secondary" style="margin-top:12px;" onclick="goToStep(16)">Atsakyti į trumpą apklausą</button>
           <button class="btn-primary" style="margin-top:12px;" onclick="resetForm()">Pradėti iš naujo</button>
         </div>
         <comment-box step="15" title="Pabaigos langas"></comment-box>
@@ -760,13 +782,7 @@ button,.link-button {
            <label>Kas buvo neaišku?</label>
           <textarea id="surveyComment" placeholder="Parašyk, jei nori."></textarea>
 
-          <button class="btn-primary" onclick="submitSurvey()">Pateikti apklausą</button>
-          <button class="btn-back" style="margin-top:12px;" onclick="resetForm()">Praleisti</button>
-        </div>
-        <comment-box step="16" title="Survey"></comment-box>
-      </section>
-
-          <label>Kas tu?</label>
+                    <label>Kas tu?</label>
           <select id="surveyIdentity">
             <option value="">Pasirink</option>
             <option>Mergaitė</option>
@@ -785,17 +801,54 @@ button,.link-button {
             <option>Nenoriu sakyti</option>
           </select>
 
-          <label>Iš kur esi?</label>
-          <select id="surveyCity">
-            <option value="">Pasirink</option>
-            <option>Vilnius</option>
-            <option>Kaunas</option>
-            <option>Klaipėda</option>
-            <option>Šiauliai</option>
-            <option>Panevėžys</option>
-            <option>Kita</option>
-            <option>Nenoriu sakyti</option>
-          </select>
+        <label>Iš kur esi?</label>
+
+<select id="surveyCity" onchange="toggleOtherCity()">
+  <option value="">Pasirink</option>
+  <option>Vilnius</option>
+  <option>Kaunas</option>
+  <option>Klaipėda</option>
+  <option>Šiauliai</option>
+  <option>Panevėžys</option>
+  <option>Kita</option>
+  <option>Nenoriu sakyti</option>
+</select>
+
+<input
+  id="otherCity"
+  type="text"
+  placeholder="Įrašyk"
+  style="display:none; margin-top:12px;"
+/>
+
+<div style="height:24px;"></div>
+
+          <button class="btn-primary" onclick="submitSurvey()">Pateikti apklausą</button>
+          <button class="btn-back" style="margin-top:12px;" onclick="resetForm()">Praleisti</button>
+        </div>
+        <comment-box step="16" title="Survey"></comment-box>
+      </section>
+
+      <section id="step98" class="step">
+        <div class="hero">
+          <h1>Pranešti platformai</h1>
+          <p>Čia sudėtos pagrindinės nuorodos, nuo kurių galima pradėti pranešimą pačiai platformai.</p>
+        </div>
+
+        <div class="card">
+          <a class="link-button btn-secondary" href="https://www.facebook.com/help/1380418588640631" target="_blank" rel="noopener">Facebook</a>
+          <a class="link-button btn-secondary" style="margin-top:10px" href="https://help.instagram.com/192435014247952" target="_blank" rel="noopener">Instagram</a>
+          <a class="link-button btn-secondary" style="margin-top:10px" href="https://support.tiktok.com/en/safety-hc/report-a-problem" target="_blank" rel="noopener">TikTok</a>
+          <a class="link-button btn-secondary" style="margin-top:10px" href="https://support.google.com/youtube/answer/2802027" target="_blank" rel="noopener">YouTube</a>
+          <a class="link-button btn-secondary" style="margin-top:10px" href="https://help.snapchat.com/hc/en-us/articles/7012399221652" target="_blank" rel="noopener">Snapchat</a>
+          <a class="link-button btn-secondary" style="margin-top:10px" href="https://help.x.com/en/rules-and-policies/twitter-report-violation" target="_blank" rel="noopener">X</a>
+          <a class="link-button btn-secondary" style="margin-top:10px" href="https://support.discord.com/hc/en-us/requests/new" target="_blank" rel="noopener">Discord</a>
+          <a class="link-button btn-secondary" style="margin-top:10px" href="https://support.reddithelp.com/hc/en-us/requests/new" target="_blank" rel="noopener">Reddit</a>
+        </div>
+
+        <button class="btn-back" onclick="goToStep(1)">Atgal</button>
+        <comment-box step="98" title="Platformų kontaktai"></comment-box>
+      </section>
 
       <section id="step99" class="step">
         <div class="hero">
@@ -966,7 +1019,7 @@ function toggleOtherCategory(){
 function nextCategory(){
   const checked = document.querySelectorAll(".category:checked");
   showError("error4", checked.length === 0);
-  if(checked.length) goToStep(5);
+  if(checked.length) goToStep(6);
 }
 
 function isValidUrl(value){
@@ -1045,13 +1098,27 @@ function toggleMoreUrls(){
     document.getElementById("moreUrlsText").value = "";
   }
 }
+function toggleOtherCity() {
+  const city = document.getElementById("surveyCity").value;
+  const field = document.getElementById("otherCity");
 
+  field.style.display = city === "Kita"
+    ? "block"
+    : "none";
+
+  if(city !== "Kita") {
+    field.value = "";
+  }
+}
 function toggleEmail(){
-  const anon = document.getElementById("anonymous").checked;
-  document.getElementById("emailWrap").style.display = anon ? "none" : "block";
+  const noContact = document.getElementById("anonymous").checked;
+  const email = document.getElementById("email");
 
-  if(anon){
-    document.getElementById("email").value = "";
+  email.disabled = noContact;
+  email.style.opacity = noContact ? ".55" : "1";
+
+  if(noContact){
+    email.value = "";
   }
 }
 
@@ -1139,6 +1206,11 @@ function submitSurvey(){
   resetForm();
 }
 
+function copyCaseId(){
+  const code = document.getElementById("finalCaseId").textContent;
+  navigator.clipboard?.writeText(code);
+}
+
 function resetForm(){
   generatedCaseId = "";
 
@@ -1158,6 +1230,8 @@ function resetForm(){
   document.getElementById("frequencyDetails").style.display = "none";
   document.getElementById("moreUrlsText").style.display = "none";
   document.getElementById("emailWrap").style.display = "block";
+  document.getElementById("email").disabled = false;
+  document.getElementById("email").style.opacity = "1";
 
   goToStep(1);
 }
