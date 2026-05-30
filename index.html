@@ -672,7 +672,7 @@ button,.link-button {
 
           <label class="option"><input id="safeEvidence" type="checkbox"> Įkeliu tik tokį turinį, kuriuo saugu dalintis.</label>
 
-          <div id="error2" class="error">Prašome užpildyti privalomus laukus (platforma, turinio tipas, nuoroda).</div>
+          <div id="error2" class="error">Prašome užpildyti privalomus laukus (platforma, turinio tipas, nuoroda, įrodymai).</div>
 
           <div class="button-row">
             <button class="btn-back" onclick="goToStep(1)">Atgal</button>
@@ -1047,6 +1047,7 @@ function goToStep(step){
   currentStep = step;
   if (step === 5) updateReview();
   renderComments(step);
+  document.querySelector(".screen").scrollTop = 0;
 }
 
 function toggleOtherPlatform(){
@@ -1101,8 +1102,9 @@ function nextCombinedStep(){
   const contentType = document.getElementById("contentType").value;
   const url = document.getElementById("url").value.trim();
   const safeEvidence = document.getElementById("safeEvidence").checked;
+  const hasEvidence = evidenceFiles.length > 0;
 
-  const invalid = !platform || !contentType || !url || !isValidUrl(url) || (platform === "other" && !other) || !safeEvidence;
+  const invalid = !platform || !contentType || !url || !isValidUrl(url) || (platform === "other" && !other) || !safeEvidence || !hasEvidence;
   showError("error2", invalid);
 
   if(!invalid) goToStep(3);
