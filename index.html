@@ -28,16 +28,24 @@
 body {
   margin:0;
   min-height:100vh;
-  background:
-    radial-gradient(circle at top left, rgba(230,64,17,.18), transparent 32%),
-    radial-gradient(circle at bottom right, rgba(41,171,226,.22), transparent 36%),
-    var(--cream);
+  background:var(--cream);
   font-family:'Dosis', Arial, sans-serif;
   color:var(--text);
   display:flex;
   justify-content:center;
   align-items:center;
   padding:24px;
+  position:relative;
+}
+
+body::before {
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  opacity:.22;
+  background-image:repeating-linear-gradient(174deg, transparent 0px, transparent 38px, rgba(0,83,134,.18) 39px, transparent 42px);
+  z-index:0;
 }
 
 .phone {
@@ -192,20 +200,54 @@ label {
   margin:12px 0 8px;
 }
 
-select,input,textarea {
+select,
+input[type="text"],
+input[type="url"],
+input[type="email"],
+input[type="date"],
+textarea {
   width:100%;
-  border:2px solid var(--line);
-  border-radius:18px;
-  padding:14px;
+  min-height:74px;
+  border:4px solid #C9DCE8;
+  border-radius:28px;
+  padding:0 28px;
   font-family:'Dosis', Arial, sans-serif;
-  font-size:17px;
+  font-size:18px;
   background:white;
   color:var(--text);
+  text-align:left;
+  line-height:1.2;
 }
 
-textarea { min-height:96px; resize:vertical; }
+select {
+  padding-right:50px;
+}
 
-select:focus,input:focus,textarea:focus {
+textarea {
+  min-height:120px;
+  padding:20px 28px;
+  resize:vertical;
+}
+
+input[type="date"] {
+  text-align:left !important;
+  -webkit-appearance:none;
+  appearance:none;
+}
+
+input[type="date"]::-webkit-datetime-edit,
+input[type="date"]::-webkit-date-and-time-value {
+  text-align:left;
+  justify-content:flex-start;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  margin-left:auto;
+}
+
+select:focus,
+input:focus,
+textarea:focus {
   outline:none;
   border-color:var(--cyan);
   box-shadow:0 0 0 4px rgba(41,171,226,.18);
@@ -336,6 +378,95 @@ button,.link-button {
   margin-top:8px;
 }
 
+.drop-zone {
+  border:3px dashed var(--cyan);
+  border-radius:22px;
+  padding:24px;
+  text-align:center;
+  background:#F8FCFE;
+  transition:all 0.3s ease;
+  cursor:pointer;
+}
+
+.drop-zone.drag-over {
+  border-color:var(--orange);
+  background:#FFF5F0;
+}
+
+.drop-zone-content {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:8px;
+}
+
+.drop-text {
+  color:var(--muted);
+  font-size:15px;
+  margin:0;
+}
+
+.evidence-preview {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(80px, 1fr));
+  gap:12px;
+  margin-top:16px;
+}
+
+.evidence-item {
+  position:relative;
+  border-radius:12px;
+  overflow:hidden;
+  border:2px solid var(--line);
+  background:white;
+}
+
+.evidence-item img,
+.evidence-item video {
+  width:100%;
+  height:80px;
+  object-fit:cover;
+  display:block;
+}
+
+.evidence-item .video-placeholder {
+  width:100%;
+  height:80px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--lightblue);
+  font-size:24px;
+}
+
+.evidence-item .delete-btn {
+  position:absolute;
+  top:4px;
+  right:4px;
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  background:var(--danger);
+  color:white;
+  border:none;
+  cursor:pointer;
+  font-size:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 2px 4px rgba(0,0,0,.2);
+}
+
+.evidence-item .file-info {
+  padding:6px;
+  font-size:11px;
+  color:var(--muted);
+  text-align:center;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
 .error.show { display:block; }
 
 .review-item {
@@ -434,37 +565,55 @@ button,.link-button {
           <p>Jei susiduri su netinkamu turiniu internete, gali daryti kelis dalykus:</p>
 
           <div class="review-item">
-            <strong>1. Gali pateikti pranešimą apie neteisėtą turinį mums.</strong>
+            <strong>Gali pateikti pranešimą apie neteisėtą turinį mums.</strong>
             <span>Mes kreipsimės į platformą už tave.</span>
             <button class="btn-primary" style="margin-top:12px" onclick="goToStep(2)">Užpildyti pranešimą</button>
           </div>
 
           <div class="review-item">
-            <strong>2. Gali kreiptis emocinės paramos.</strong>
+            <strong>Gali kreiptis emocinės paramos.</strong>
             <span>Čia gali tau padėti nusiraminti ir apgalvoti tolimesnius žingsnius.</span>
             <button class="btn-secondary" style="margin-top:12px" onclick="goToStep(99)">Pasikalbėti su Vaikų linija</button>
-          </div>
-
-          <div class="review-item">
-            <strong>3. Gali pateikti pranešimą pačiai platformai.</strong>
-            <span>Čia rasi pagrindinių platformų pranešimų formas ir pagalbos nuorodas.</span>
-            <button class="btn-secondary" style="margin-top:12px" onclick="goToStep(98)">Platformų kontaktai</button>
-          </div>
-
-          <div class="review-item">
-            <strong>4. Švarus internetas</strong>
-            <span>Gali pateikti pranešimą per RRT karštąją liniją „Švarus internetas“.</span>
-            <a class="link-button btn-secondary" style="margin-top:12px" href="https://www.svarusinternetas.lt/pranesk/1" target="_blank" rel="noopener">Atidaryti anketą</a>
           </div>
         </div>
         <comment-box step="1" title="Pradžios langas"></comment-box>
       </section>
 
+      <section id="step1.5" class="step">
+        <div class="hero">
+          <h1>Kiti žingsniai, kurių gali imtis</h1>
+          <p>Čia rasi platformų pranešimų formas ir kitus pagalbos šaltinius.</p>
+        </div>
+
+        <div class="card">
+          <div class="review-item">
+            <strong>Pranešti platformai</strong>
+            <span>Čia sudėtos pagrindinės nuorodos, nuo kurių galima pradėti pranešimą pačiai platformai.</span>
+            <button class="btn-secondary" style="margin-top:12px" onclick="goToStep(98)">Platformų kontaktai</button>
+          </div>
+
+          <div class="review-item">
+            <strong>Švarus internetas</strong>
+            <span>Gali pateikti pranešimą per RRT karštąją liniją „Švarus internetas“.</span>
+            <a class="link-button btn-secondary" style="margin-top:12px" href="https://www.svarusinternetas.lt/pranesk/1" target="_blank" rel="noopener">Atidaryti anketą</a>
+          </div>
+
+          <div class="review-item">
+            <strong>Vaikų linija</strong>
+            <span>Jeigu reikia emocinės paramos, gali susisiekti su Vaikų linija telefonu arba internetu.</span>
+            <button class="btn-secondary" style="margin-top:12px" onclick="goToStep(99)">Pasikalbėti su Vaikų linija</button>
+          </div>
+        </div>
+
+        <button class="btn-back" onclick="goToStep(1)">Atgal</button>
+        <comment-box step="1.5" title="Kiti žingsniai"></comment-box>
+      </section>
+
       <section id="step2" class="step">
-        <progress-block current="1" total="8" percent="13"></progress-block>
+        <progress-block current="1" total="6" percent="17"></progress-block>
         <div class="card">
           <h2>Kur pastebėjai neteisėtą turinį?</h2>
-          <label>Platforma</label>
+          <label>Platforma <span style="color:var(--danger);">*</span></label>
           <select id="platform" onchange="updateContentTypes(); updatePlatformNote(); toggleOtherPlatform();">
             <option value="">Pasirink vieną</option>
             <option value="facebook">Facebook</option>
@@ -487,96 +636,59 @@ button,.link-button {
           </div>
 
           <div id="platformNote" class="note" style="display:none;"></div>
-          <div id="error2" class="error">Nepalik tuščio lauko.</div>
 
-          <div class="button-row">
-            <button class="btn-back" onclick="goToStep(1)">Atgal</button>
-            <button class="btn-primary" onclick="nextPlatform()">Toliau</button>
-          </div>
-        </div>
-        <comment-box step="2" title="Platformos pasirinkimas"></comment-box>
-      </section>
-
-      <section id="step3" class="step">
-        <progress-block current="2" total="8" percent="25"></progress-block>
-        <div class="card">
-          <h2>Kur tai radai?</h2>
-
-          <label>Turinio tipas</label>
+          <label style="margin-top:15px;">Turinio tipas <span style="color:var(--danger);">*</span></label>
           <select id="contentType">
             <option value="">Pirma pasirink platformą</option>
           </select>
-          <div id="error3" class="error">Pasirink turinio tipą.</div>
 
-          <div class="button-row">
-            <button class="btn-back" onclick="goToStep(2)">Atgal</button>
-            <button class="btn-primary" onclick="nextContentType()">Toliau</button>
-          </div>
-        </div>
-        <comment-box step="3" title="Turinio tipo pasirinkimas"></comment-box>
-      </section>
-
-      <section id="step6" class="step">
-        <progress-block current="3" total="8" percent="38"></progress-block>
-        <div class="card">
-          <h2>Įklijuok nuorodą</h2>
+          <label style="margin-top:15px;">Įklijuok nuorodą <span style="color:var(--danger);">*</span></label>
           <p class="helper">Įklijuok visą puslapio adresą. Laukas priima tik URL formatą.</p>
           <input id="url" type="url" inputmode="url" placeholder="https://..." oninput="validateUrlLive()" />
-          <div id="error6" class="error">Įvesk visą URL, pvz. https://example.com/...</div>
 
-          <div class="button-row">
-            <button class="btn-back" onclick="goToStep(3)">Atgal</button>
-            <button class="btn-primary" onclick="nextUrl()">Toliau</button>
+          <label style="margin-top:15px;">Pridėk įrodymus <span style="color:var(--danger);">*</span></label>
+          <p class="helper">Gali pridėti ekrano nuotrauką arba vaizdo įrašą. Nebūtina, bet tai padeda greičiau įvertinti situaciją.</p>
+
+          <div id="dropZone" class="drop-zone">
+            <input
+              type="file"
+              id="evidenceInput"
+              multiple
+              accept="image/*,video/*,.heic,.heif"
+              style="display:none;"
+            />
+            <div class="drop-zone-content">
+              <button class="btn-secondary" onclick="document.getElementById('evidenceInput').click()">Pasirink failą</button>
+              <p style="margin:12px 0;">arba</p>
+              <p class="drop-text">Nutempk failą čia</p>
+              <p style="margin:12px 0;">arba</p>
+              <p class="drop-text">Įklijuok ekrano nuotrauką (Ctrl+V)</p>
+            </div>
           </div>
-        </div>
-        <comment-box step="6" title="Nuorodos laukas"></comment-box>
-      </section>
 
-      <section id="step7" class="step">
-        <progress-block current="4" total="8" percent="50"></progress-block>
-        <div class="card">
-          <h2>Įkelk įrodymą</h2>
-          <p class="helper">Įkelk viso ekrano nuotrauką ar vaizdo įrašą. Nekelk asmeninių nuotraukų ar privačių duomenų.</p>
-
-          <div class="upload-box">
-            <strong>Ekrano nuotrauka arba video</strong>
-            <input id="evidence" type="file" multiple onchange="showUploadStatus()" />
-            <p id="uploadStatus" class="helper"></p>
-          </div>
+          <div id="evidencePreview" class="evidence-preview"></div>
+          <p id="evidenceError" class="error" style="display:none;"></p>
+          <p id="evidenceSizeError" class="error" style="display:none;">Bendras įkeliamų failų dydis viršija 100 MB.</p>
 
           <label class="option"><input id="safeEvidence" type="checkbox"> Įkeliu tik tokį turinį, kuriuo saugu dalintis.</label>
-          <div id="error7" class="error">Pažymėk, kad įkeli saugų dalintis turinį.</div>
+
+          <div id="error2" class="error">Prašome užpildyti privalomus laukus (platforma, turinio tipas, nuoroda).</div>
 
           <div class="button-row">
-            <button class="btn-back" onclick="goToStep(6)">Atgal</button>
-            <button class="btn-primary" onclick="nextEvidence()">Toliau</button>
+            <button class="btn-back" onclick="goToStep(1)">Atgal</button>
+            <button class="btn-primary" onclick="nextCombinedStep()">Toliau</button>
           </div>
         </div>
-        <comment-box step="7" title="Įrodymai"></comment-box>
+        <comment-box step="2" title="Informacija apie turinį"></comment-box>
       </section>
 
-      <section id="step8" class="step">
-        <progress-block current="5" total="8" percent="63"></progress-block>
-        <div class="card">
-          <h2>Aprašymas</h2>
-          <p class="helper">Trumpai papasakok kas nutiko, kad geriau suprastume situaciją. Gal žinai kas dalyvavo? Ar turinys vis dar pasiekiamas?</p>
-          <textarea id="description" placeholder="Pildyti neprivaloma, gali eiti į kitą puslapį."></textarea>
-
-          <div class="button-row">
-            <button class="btn-back" onclick="goToStep(7)">Atgal</button>
-            <button class="btn-primary" onclick="goToStep(9)">Toliau</button>
-          </div>
-        </div>
-        <comment-box step="8" title="Aprašymas"></comment-box>
-      </section>
-
-      <section id="step9" class="step">
-        <progress-block current="6" total="8" percent="75"></progress-block>
+      <section id="step3" class="step">
+        <progress-block current="2" total="5" percent="40"></progress-block>
         <div class="card">
           <h2>Ar jau kreipeisi į platformą?</h2>
 
           <label class="option"><input type="radio" name="reported" value="Taip" onchange="toggleReportedDetails()"> Taip</label>
-          <label class="option"><input type="radio" name="reported" value="Ne" onchange="toggleReportedDetails()" checked> Ne</label>
+          <label class="option"><input type="radio" name="reported" value="Ne" onchange="toggleReportedDetails()"> Ne</label>
 
           <div id="reportedDetails" style="display:none;">
             <label>Kada?</label>
@@ -590,20 +702,9 @@ button,.link-button {
             </select>
           </div>
 
-          <div class="button-row">
-            <button class="btn-back" onclick="goToStep(8)">Atgal</button>
-            <button class="btn-primary" onclick="goToStep(10)">Toliau</button>
-          </div>
-        </div>
-        <comment-box step="9" title="Ar jau kreiptasi į platformą"></comment-box>
-      </section>
+          <h2 style="margin-top:22px;">Ar turinys vis dar pasiekiamas?</h2>
 
-      <section id="step10" class="step">
-        <progress-block current="7" total="8" percent="88"></progress-block>
-        <div class="card">
-          <h2>Ar turinys vis dar pasiekiamas?</h2>
-
-          <label class="option"><input type="radio" name="contentStatus" value="Taip, vis dar aktyvus" onchange="toggleLastSeen()" checked> Taip, vis dar aktyvus</label>
+          <label class="option"><input type="radio" name="contentStatus" value="Taip, vis dar aktyvus" onchange="toggleLastSeen()"> Taip, vis dar aktyvus</label>
           <label class="option"><input type="radio" name="contentStatus" value="Nežinau" onchange="toggleLastSeen()"> Nežinau</label>
 
           <div id="lastSeenWrap" style="display:none;">
@@ -612,7 +713,7 @@ button,.link-button {
           </div>
 
           <h2 style="margin-top:22px;">Ar turinys pasikartojantis?</h2>
-          <label class="option"><input type="radio" name="repeatedContent" value="Ne" onchange="toggleRepeatedContent()" checked> Ne</label>
+          <label class="option"><input type="radio" name="repeatedContent" value="Ne" onchange="toggleRepeatedContent()"> Ne</label>
           <label class="option"><input type="radio" name="repeatedContent" value="Taip" onchange="toggleRepeatedContent()"> Taip</label>
           <label class="option"><input type="radio" name="repeatedContent" value="Nežinau" onchange="toggleRepeatedContent()"> Nežinau</label>
 
@@ -626,36 +727,41 @@ button,.link-button {
           </div>
 
           <div class="button-row">
-            <button class="btn-back" onclick="goToStep(9)">Atgal</button>
-            <button class="btn-primary" onclick="goToStep(13)">Toliau</button>
+            <button class="btn-back" onclick="goToStep(2)">Atgal</button>
+            <button class="btn-primary" onclick="goToStep(4)">Toliau</button>
           </div>
         </div>
-        <comment-box step="10" title="Turinio pasiekiamumas ir pasikartojimas"></comment-box>
+        <comment-box step="3" title="Informacija apie pranešimą"></comment-box>
       </section>
-      <section id="step13" class="step">
-        <progress-block current="8" total="8" percent="100"></progress-block>
+
+      <section id="step4" class="step">
+        <progress-block current="3" total="5" percent="60"></progress-block>
         <div class="card">
-          <h2>Kontaktai</h2>
- <p class="helper">Kartais platformos paprašo papildomos informacijos. Jei nepaliksi kontakto negalėsime susisiekti ir tai gali apsunkinti platformos sprendimo priėmimą.</p>
-          
+          <h2>Aprašymas</h2>
+          <p class="helper">Trumpai papasakok kas nutiko, kad geriau suprastume situaciją. Gal žinai kas dalyvavo? Ar turinys vis dar pasiekiamas?</p>
+          <textarea id="description" placeholder="Pildyti neprivaloma, gali eiti į kitą puslapį."></textarea>
+
+          <h2 style="margin-top:22px;">Kontaktai</h2>
+          <p class="helper">Kartais platformos paprašo papildomos informacijos. Jei nepaliksi kontakto negalėsime susisiekti ir tai gali apsunkinti platformos sprendimo priėmimą.</p>
 
           <div id="emailWrap">
             <label>El. paštas</label>
             <input id="email" type="email" placeholder="tavo@email.com" />
             <p class="helper">El. paštas naudojamas tik pranešimui patvirtinti arba, jei reikėtų grįžti dėl informacijos.</p>
-            
+
             <label class="option"><input id="anonymous" type="checkbox" onchange="toggleEmail()"> Noriu likti anonimiškas</label>
           </div>
 
           <div class="button-row">
-            <button class="btn-back" onclick="goToStep(10)">Atgal</button>
-            <button class="btn-primary" onclick="goToStep(14)">Toliau</button>
+            <button class="btn-back" onclick="goToStep(3)">Atgal</button>
+            <button class="btn-primary" onclick="goToStep(5)">Toliau</button>
           </div>
         </div>
-        <comment-box step="13" title="Kontaktai"></comment-box>
+        <comment-box step="4" title="Aprašymas ir kontaktai"></comment-box>
       </section>
 
-      <section id="step14" class="step">
+      <section id="step5" class="step">
+        <progress-block current="4" total="5" percent="80"></progress-block>
         <div class="card">
           <h2>Patikrink</h2>
 
@@ -666,27 +772,33 @@ button,.link-button {
           <div class="review-item"><strong>Aprašymas</strong><span id="reviewDescription">-</span></div>
 
           <div class="button-row">
-            <button class="btn-back" onclick="goToStep(13)">Atgal</button>
+            <button class="btn-back" onclick="goToStep(4)">Atgal</button>
             <button class="btn-primary" onclick="submitForm()">Pateikti</button>
           </div>
         </div>
-        <comment-box step="14" title="Peržiūra"></comment-box>
+        <comment-box step="5" title="Peržiūra"></comment-box>
       </section>
 
-      <section id="step15" class="step">
+      <section id="step6" class="step">
         <div class="card">
           <h2>Ačiū, pranešimas gautas</h2>
           <div class="case-id" id="finalCaseId">VL-XX-0000-01</div>
           <p>Nusikopijuok ir išsisaugok šį kodą. Jo gali prireikti, jei vėliau norėsi pasitikslinti dėl savo pranešimo.</p>
           <button class="btn-secondary" onclick="copyCaseId()">Kopijuoti kodą</button>
 
-          <button class="btn-secondary" style="margin-top:12px;" onclick="goToStep(16)">Atsakyti į trumpą apklausą</button>
+          <div class="review-item" style="margin-top:20px;">
+            <strong>Kiti žingsniai, kurių gali imtis</strong>
+            <span>Čia rasi platformų pranešimų formas ir kitus pagalbos šaltinius.</span>
+            <button class="btn-primary" style="margin-top:12px; background:var(--blue);" onclick="goToStep(1.5)">Peržiūrėti kitus žingsnius</button>
+          </div>
+
+          <button class="btn-secondary" style="margin-top:12px;" onclick="goToStep(7)">Atsakyti į trumpą apklausą</button>
           <button class="btn-primary" style="margin-top:12px;" onclick="resetForm()">Pradėti iš naujo</button>
         </div>
-        <comment-box step="15" title="Pabaigos langas"></comment-box>
+        <comment-box step="6" title="Pabaigos langas"></comment-box>
       </section>
 
-      <section id="step16" class="step">
+      <section id="step7" class="step">
         <div class="card">
           <h2>Trumpa apklausa</h2>
           <p class="helper">Ši dalis neprivaloma. Ji padės suprasti, ar anketa aiški.</p>
@@ -722,30 +834,77 @@ button,.link-button {
 
         <label>Iš kur esi?</label>
 
-<select id="surveyCity" onchange="toggleOtherCity()">
-  <option value="">Pasirink</option>
-  <option>Vilnius</option>
-  <option>Kaunas</option>
-  <option>Klaipėda</option>
-  <option>Šiauliai</option>
-  <option>Panevėžys</option>
-  <option>Kita</option>
-  <option>Nenoriu sakyti</option>
-</select>
-
 <input
-  id="otherCity"
+  id="surveyCity"
   type="text"
-  placeholder="Įrašyk"
-  style="display:none; margin-top:12px;"
+  list="lithuanianCities"
+  placeholder="Pradėk rašyti miestą..."
 />
+
+<datalist id="lithuanianCities">
+  <option value="Vilnius" />
+  <option value="Kaunas" />
+  <option value="Klaipėda" />
+  <option value="Šiauliai" />
+  <option value="Panevėžys" />
+  <option value="Alytus" />
+  <option value="Marijampolė" />
+  <option value="Mažeikiai" />
+  <option value="Jonava" />
+  <option value="Kėdainiai" />
+  <option value="Utena" />
+  <option value="Telšiai" />
+  <option value="Tauragė" />
+  <option value="Ukmergė" />
+  <option value="Visaginas" />
+  <option value="Šilutė" />
+  <option value="Kretinga" />
+  <option value="Plungė" />
+  <option value="Radviliškis" />
+  <option value="Raseiniai" />
+  <option value="Šakiai" />
+  <option value="Šiauliai" />
+  <option value="Šilalė" />
+  <option value="Švenčionys" />
+  <option value="Trakai" />
+  <option value="Varėna" />
+  <option value="Vilkaviškis" />
+  <option value="Zarasai" />
+  <option value="Druskininkai" />
+  <option value="Neringa" />
+  <option value="Palanga" />
+  <option value="Birštonas" />
+  <option value="Anykščiai" />
+  <option value="Ignalina" />
+  <option value="Molėtai" />
+  <option value="Prienai" />
+  <option value="Rokiškis" />
+  <option value="Zarasai" />
+  <option value="Kita (užsienis)" />
+  <option value="Nenoriu sakyti" />
+</datalist>
 
 <div style="height:24px;"></div>
 
           <button class="btn-primary" onclick="submitSurvey()">Pateikti apklausą</button>
           <button class="btn-back" style="margin-top:12px;" onclick="resetForm()">Praleisti</button>
         </div>
-        <comment-box step="16" title="Survey"></comment-box>
+        <comment-box step="7" title="Survey"></comment-box>
+      </section>
+
+      <section id="step8" class="step">
+        <div class="hero">
+          <h1>Ačiū!</h1>
+          <p>Tavo neabejingumas padeda kurti saugesnę interneto erdvę visiems.</p>
+        </div>
+
+        <div class="card">
+          <p>Dėkojame, kad skiri laiko ir daliniesi savo patirtimi. Kiekvienas tavo pranešimas ir atsiliepimas padeda mums geriau suprasti, kaip galime padėti.</p>
+          <p style="margin-top:12px;">Jei vėl susidursi su netinkamu turiniu internete, žinok, kad tu ne vienas. Mes čia, kad padėtume.</p>
+
+          <button class="btn-primary" style="margin-top:12px;" onclick="goToStep(1)">Pradėti iš naujo</button>
+        </div>
+        <comment-box step="8" title="Padėka"></comment-box>
       </section>
 
       <section id="step98" class="step">
@@ -847,6 +1006,7 @@ let generatedCaseId = "";
 let commentStore = JSON.parse(localStorage.getItem("tfPrototypeComments") || "{}");
 let submissions = JSON.parse(localStorage.getItem("tfPrototypeSubmissions") || "[]");
 let surveyStore = JSON.parse(localStorage.getItem("tfPrototypeSurvey") || "[]");
+let evidenceFiles = [];
 
 class CommentBox extends HTMLElement {
   connectedCallback(){
@@ -885,7 +1045,7 @@ function goToStep(step){
   if (!target) return;
   target.classList.add("active");
   currentStep = step;
-  if (step === 14) updateReview();
+  if (step === 5) updateReview();
   renderComments(step);
 }
 
@@ -930,6 +1090,19 @@ function nextPlatform(){
   const other = document.getElementById("otherPlatform").value.trim();
 
   const invalid = !platform || (platform === "other" && !other);
+  showError("error2", invalid);
+
+  if(!invalid) goToStep(3);
+}
+
+function nextCombinedStep(){
+  const platform = document.getElementById("platform").value;
+  const other = document.getElementById("otherPlatform").value.trim();
+  const contentType = document.getElementById("contentType").value;
+  const url = document.getElementById("url").value.trim();
+  const safeEvidence = document.getElementById("safeEvidence").checked;
+
+  const invalid = !platform || !contentType || !url || !isValidUrl(url) || (platform === "other" && !other) || !safeEvidence;
   showError("error2", invalid);
 
   if(!invalid) goToStep(3);
@@ -1070,7 +1243,8 @@ function collectData(){
     contentType: document.getElementById("contentType").value,
     minor: "",
     url: document.getElementById("url").value,
-    evidenceCount: document.getElementById("evidence").files.length,
+    evidenceCount: evidenceFiles.length,
+    evidenceUrl: document.getElementById("evidenceUrl").value,
     safeEvidence: document.getElementById("safeEvidence").checked,
     description: document.getElementById("description").value,
     reported: document.querySelector('input[name="reported"]:checked')?.value || "",
@@ -1105,7 +1279,7 @@ function submitForm(){
   submissions.push(data);
   localStorage.setItem("tfPrototypeSubmissions", JSON.stringify(submissions));
   document.getElementById("finalCaseId").textContent = data.caseId;
-  goToStep(15);
+  goToStep(6);
 }
 
 function submitSurvey(){
@@ -1121,7 +1295,7 @@ function submitSurvey(){
 
   surveyStore.push(survey);
   localStorage.setItem("tfPrototypeSurvey", JSON.stringify(surveyStore));
-  resetForm();
+  goToStep(8);
 }
 
 function copyCaseId(){
@@ -1131,14 +1305,12 @@ function copyCaseId(){
 
 function resetForm(){
   generatedCaseId = "";
+  evidenceFiles = [];
 
   document.querySelectorAll("input[type='text'], input[type='url'], input[type='email'], textarea").forEach(el => el.value = "");
   document.querySelectorAll("input[type='checkbox']").forEach(el => el.checked = false);
+  document.querySelectorAll("input[type='radio']").forEach(el => el.checked = false);
   document.querySelectorAll("select").forEach(el => el.selectedIndex = 0);
-
-  document.querySelector('input[name="reported"][value="Ne"]').checked = true;
-  document.querySelector('input[name="contentStatus"][value="Taip, vis dar aktyvus"]').checked = true;
-  document.querySelector('input[name="repeatedContent"][value="Ne"]').checked = true;
 
   document.getElementById("otherPlatformWrap").style.display = "none";
   document.getElementById("platformNote").style.display = "none";
@@ -1150,8 +1322,214 @@ function resetForm(){
   document.getElementById("email").disabled = false;
   document.getElementById("email").style.opacity = "1";
 
+  document.getElementById("evidencePreview").innerHTML = "";
+  document.getElementById("evidenceError").style.display = "none";
+  document.getElementById("evidenceSizeError").style.display = "none";
+
   goToStep(1);
 }
+
+// Evidence upload functionality
+const dropZone = document.getElementById("dropZone");
+const evidenceInput = document.getElementById("evidenceInput");
+const evidencePreview = document.getElementById("evidencePreview");
+const evidenceError = document.getElementById("evidenceError");
+const evidenceSizeError = document.getElementById("evidenceSizeError");
+
+const allowedTypes = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/gif",
+  "image/webp",
+  "video/mp4",
+  "video/quicktime",
+  "image/heic",
+  "image/heif"
+];
+
+const MAX_TOTAL_SIZE = 100 * 1024 * 1024; // 100 MB
+
+function formatFileSize(bytes) {
+  if (bytes === 0) return "0 Bytes";
+  const k = 1024;
+  const sizes = ["Bytes", "KB", "MB", "GB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return Math.round(bytes / Math.pow(k, i) * 100) / 100 + " " + sizes[i];
+}
+
+function getTotalSize() {
+  return evidenceFiles.reduce((total, file) => total + file.size, 0);
+}
+
+function validateFile(file) {
+  const fileType = file.type || file.name.split(".").pop().toLowerCase();
+  const isAllowed = allowedTypes.some(type => {
+    if (type.startsWith("image/")) {
+      return fileType.startsWith("image/") || fileType === "heic" || fileType === "heif";
+    }
+    if (type.startsWith("video/")) {
+      return fileType.startsWith("video/");
+    }
+    return false;
+  });
+
+  if (!isAllowed) {
+    evidenceError.textContent = "Šis failo tipas nepalaikomas.";
+    evidenceError.style.display = "block";
+    return false;
+  }
+
+  evidenceError.style.display = "none";
+  return true;
+}
+
+function validateTotalSize() {
+  const totalSize = getTotalSize();
+  if (totalSize > MAX_TOTAL_SIZE) {
+    evidenceSizeError.style.display = "block";
+    return false;
+  }
+  evidenceSizeError.style.display = "none";
+  return true;
+}
+
+function addFiles(files) {
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    if (validateFile(file)) {
+      evidenceFiles.push(file);
+    }
+  }
+
+  if (validateTotalSize()) {
+    renderEvidencePreview();
+  } else {
+    // Remove files that exceed the limit
+    let currentSize = 0;
+    evidenceFiles = evidenceFiles.filter(file => {
+      if (currentSize + file.size <= MAX_TOTAL_SIZE) {
+        currentSize += file.size;
+        return true;
+      }
+      return false;
+    });
+    renderEvidencePreview();
+  }
+}
+
+function renderEvidencePreview() {
+  evidencePreview.innerHTML = "";
+
+  evidenceFiles.forEach((file, index) => {
+    const item = document.createElement("div");
+    item.className = "evidence-item";
+
+    const isVideo = file.type.startsWith("video/");
+    const isImage = file.type.startsWith("image/");
+
+    if (isVideo) {
+      const placeholder = document.createElement("div");
+      placeholder.className = "video-placeholder";
+      placeholder.textContent = "🎥";
+      item.appendChild(placeholder);
+    } else if (isImage) {
+      const img = document.createElement("img");
+      img.src = URL.createObjectURL(file);
+      img.alt = file.name;
+      item.appendChild(img);
+    } else {
+      // HEIC/HEIF files
+      const placeholder = document.createElement("div");
+      placeholder.className = "video-placeholder";
+      placeholder.textContent = "📷";
+      item.appendChild(placeholder);
+    }
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.className = "delete-btn";
+    deleteBtn.textContent = "✕";
+    deleteBtn.onclick = () => removeFile(index);
+    item.appendChild(deleteBtn);
+
+    const fileInfo = document.createElement("div");
+    fileInfo.className = "file-info";
+    fileInfo.textContent = `${file.name} (${formatFileSize(file.size)})`;
+    item.appendChild(fileInfo);
+
+    evidencePreview.appendChild(item);
+  });
+}
+
+function removeFile(index) {
+  evidenceFiles.splice(index, 1);
+  renderEvidencePreview();
+  validateTotalSize();
+}
+
+// File input change handler
+evidenceInput.addEventListener("change", (e) => {
+  addFiles(e.target.files);
+  evidenceInput.value = "";
+});
+
+// Drag and drop handlers
+dropZone.addEventListener("click", (e) => {
+  if (e.target === dropZone || e.target.closest(".drop-zone-content")) {
+    evidenceInput.click();
+  }
+});
+
+dropZone.addEventListener("dragenter", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  dropZone.classList.add("drag-over");
+});
+
+dropZone.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  dropZone.classList.add("drag-over");
+});
+
+dropZone.addEventListener("dragleave", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  if (e.target === dropZone) {
+    dropZone.classList.remove("drag-over");
+  }
+});
+
+dropZone.addEventListener("drop", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  dropZone.classList.remove("drag-over");
+
+  const files = e.dataTransfer.files;
+  addFiles(files);
+});
+
+// Paste handler
+document.addEventListener("paste", (e) => {
+  const items = e.clipboardData?.items;
+  if (!items) return;
+
+  const files = [];
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i];
+    if (item.type.startsWith("image/")) {
+      const file = item.getAsFile();
+      if (file) {
+        files.push(file);
+      }
+    }
+  }
+
+  if (files.length > 0) {
+    e.preventDefault();
+    addFiles(files);
+  }
+});
 
 async function saveComment(step, title){
   const input = document.getElementById("commentInput" + step);
