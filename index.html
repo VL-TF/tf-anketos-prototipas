@@ -335,6 +335,104 @@ button,.link-button {
   margin:12px 0;
 }
 
+.drop-zone {
+  background:#F0F7FA;
+  border:3px dashed #C9DCE8;
+  border-radius:22px;
+  padding:20px;
+  text-align:center;
+  margin-top:12px;
+  cursor:pointer;
+  transition:all 0.3s ease;
+}
+
+.drop-zone:hover {
+  border-color:var(--cyan);
+  background:#E8F4F8;
+}
+
+.drop-zone.dragover {
+  border-color:var(--orange);
+  background:#FFF3ED;
+}
+
+.drop-zone-content {
+  pointer-events:none;
+}
+
+.drop-zone-text {
+  margin:4px 0;
+  font-size:16px;
+  color:var(--muted);
+  font-weight:600;
+}
+
+.evidence-preview {
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:16px;
+}
+
+.evidence-item {
+  position:relative;
+  width:100px;
+  height:100px;
+  border-radius:16px;
+  overflow:hidden;
+  border:2px solid var(--line);
+  background:white;
+}
+
+.evidence-item img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.evidence-item .video-placeholder {
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  background:#F0F7FA;
+}
+
+.evidence-item .remove-btn {
+  position:absolute;
+  top:4px;
+  right:4px;
+  width:24px;
+  height:24px;
+  background:var(--danger);
+  color:white;
+  border:none;
+  border-radius:50%;
+  cursor:pointer;
+  font-size:14px;
+  font-weight:bold;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 2px 4px rgba(0,0,0,.2);
+}
+
+.evidence-item .file-info {
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  background:rgba(0,0,0,.7);
+  color:white;
+  padding:4px 6px;
+  font-size:11px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
 .comment-panel {
   background:#FFF;
   border:2px dashed var(--orange);
@@ -376,95 +474,6 @@ button,.link-button {
   color:var(--danger);
   font-weight:800;
   margin-top:8px;
-}
-
-.drop-zone {
-  border:3px dashed var(--cyan);
-  border-radius:22px;
-  padding:24px;
-  text-align:center;
-  background:#F8FCFE;
-  transition:all 0.3s ease;
-  cursor:pointer;
-}
-
-.drop-zone.drag-over {
-  border-color:var(--orange);
-  background:#FFF5F0;
-}
-
-.drop-zone-content {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:8px;
-}
-
-.drop-text {
-  color:var(--muted);
-  font-size:15px;
-  margin:0;
-}
-
-.evidence-preview {
-  display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(80px, 1fr));
-  gap:12px;
-  margin-top:16px;
-}
-
-.evidence-item {
-  position:relative;
-  border-radius:12px;
-  overflow:hidden;
-  border:2px solid var(--line);
-  background:white;
-}
-
-.evidence-item img,
-.evidence-item video {
-  width:100%;
-  height:80px;
-  object-fit:cover;
-  display:block;
-}
-
-.evidence-item .video-placeholder {
-  width:100%;
-  height:80px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:var(--lightblue);
-  font-size:24px;
-}
-
-.evidence-item .delete-btn {
-  position:absolute;
-  top:4px;
-  right:4px;
-  width:24px;
-  height:24px;
-  border-radius:50%;
-  background:var(--danger);
-  color:white;
-  border:none;
-  cursor:pointer;
-  font-size:14px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 2px 4px rgba(0,0,0,.2);
-}
-
-.evidence-item .file-info {
-  padding:6px;
-  font-size:11px;
-  color:var(--muted);
-  text-align:center;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
 }
 
 .error.show { display:block; }
@@ -585,6 +594,13 @@ button,.link-button {
           <p>Čia rasi platformų pranešimų formas ir kitus pagalbos šaltinius.</p>
         </div>
 
+          <div class="review-item">
+            <strong>Vaikų linija</strong>
+            <span>Jeigu reikia emocinės paramos, gali susisiekti su Vaikų linija telefonu arba internetu.</span>
+            <button class="btn-secondary" style="margin-top:12px" onclick="goToStep(99)">Pasikalbėti su Vaikų linija</button>
+          </div>
+        </div>
+        
         <div class="card">
           <div class="review-item">
             <strong>Pranešti platformai</strong>
@@ -594,16 +610,9 @@ button,.link-button {
 
           <div class="review-item">
             <strong>Švarus internetas</strong>
-            <span>Gali pateikti pranešimą per RRT karštąją liniją „Švarus internetas“.</span>
+            <span>Gali pateikti pranešimą per karštąją liniją „Švarus internetas“.</span>
             <a class="link-button btn-secondary" style="margin-top:12px" href="https://www.svarusinternetas.lt/pranesk/1" target="_blank" rel="noopener">Atidaryti anketą</a>
           </div>
-
-          <div class="review-item">
-            <strong>Vaikų linija</strong>
-            <span>Jeigu reikia emocinės paramos, gali susisiekti su Vaikų linija telefonu arba internetu.</span>
-            <button class="btn-secondary" style="margin-top:12px" onclick="goToStep(99)">Pasikalbėti su Vaikų linija</button>
-          </div>
-        </div>
 
         <button class="btn-back" onclick="goToStep(1)">Atgal</button>
         <comment-box step="1.5" title="Kiti žingsniai"></comment-box>
@@ -646,7 +655,7 @@ button,.link-button {
           <p class="helper">Įklijuok visą puslapio adresą. Laukas priima tik URL formatą.</p>
           <input id="url" type="url" inputmode="url" placeholder="https://..." oninput="validateUrlLive()" />
 
-          <label style="margin-top:15px;">Pridėk įrodymus <span style="color:var(--danger);">*</span></label>
+          <label style="margin-top:15px;">Pridėk įrodymus</label>
           <p class="helper">Gali pridėti ekrano nuotrauką arba vaizdo įrašą. Nebūtina, bet tai padeda greičiau įvertinti situaciją.</p>
 
           <div id="dropZone" class="drop-zone">
@@ -658,21 +667,20 @@ button,.link-button {
               style="display:none;"
             />
             <div class="drop-zone-content">
-              <button class="btn-secondary" onclick="document.getElementById('evidenceInput').click()">Pasirink failą</button>
-              <p style="margin:12px 0;">arba</p>
-              <p class="drop-text">Nutempk failą čia</p>
-              <p style="margin:12px 0;">arba</p>
-              <p class="drop-text">Įklijuok ekrano nuotrauką (Ctrl+V)</p>
+              <p class="drop-zone-text">Pasirink failą</p>
+              <p class="drop-zone-text">arba</p>
+              <p class="drop-zone-text">Nutempk failą čia</p>
+              <p class="drop-zone-text">arba</p>
+              <p class="drop-zone-text">Įklijuok ekrano nuotrauką (Ctrl+V)</p>
             </div>
           </div>
 
           <div id="evidencePreview" class="evidence-preview"></div>
-          <p id="evidenceError" class="error" style="display:none;"></p>
-          <p id="evidenceSizeError" class="error" style="display:none;">Bendras įkeliamų failų dydis viršija 100 MB.</p>
+          <div id="evidenceError" class="error" style="display:none;"></div>
 
           <label class="option"><input id="safeEvidence" type="checkbox"> Įkeliu tik tokį turinį, kuriuo saugu dalintis.</label>
 
-          <div id="error2" class="error">Prašome užpildyti privalomus laukus (platforma, turinio tipas, nuoroda, įrodymai).</div>
+          <div id="error2" class="error">Prašome užpildyti privalomus laukus (platforma, turinio tipas, nuoroda).</div>
 
           <div class="button-row">
             <button class="btn-back" onclick="goToStep(1)">Atgal</button>
@@ -742,7 +750,7 @@ button,.link-button {
           <textarea id="description" placeholder="Pildyti neprivaloma, gali eiti į kitą puslapį."></textarea>
 
           <h2 style="margin-top:22px;">Kontaktai</h2>
-          <p class="helper">Kartais platformos paprašo papildomos informacijos. Jei paliksi kontakto galėsime susisiekti ir tai gali padėti platformos priimti sprendimą.</p>
+          <p class="helper">Kartais platformos paprašo papildomos informacijos. Jei paliksi kontaktą galėsime susisiekti ir tai gali padėti platformoms greičiau priimti sprendimą.</p>
 
           <div id="emailWrap">
             <label>El. paštas</label>
@@ -1006,7 +1014,6 @@ let generatedCaseId = "";
 let commentStore = JSON.parse(localStorage.getItem("tfPrototypeComments") || "{}");
 let submissions = JSON.parse(localStorage.getItem("tfPrototypeSubmissions") || "[]");
 let surveyStore = JSON.parse(localStorage.getItem("tfPrototypeSurvey") || "[]");
-let evidenceFiles = [];
 
 class CommentBox extends HTMLElement {
   connectedCallback(){
@@ -1047,7 +1054,6 @@ function goToStep(step){
   currentStep = step;
   if (step === 5) updateReview();
   renderComments(step);
-  document.querySelector(".screen").scrollTop = 0;
 }
 
 function toggleOtherPlatform(){
@@ -1102,9 +1108,8 @@ function nextCombinedStep(){
   const contentType = document.getElementById("contentType").value;
   const url = document.getElementById("url").value.trim();
   const safeEvidence = document.getElementById("safeEvidence").checked;
-  const hasEvidence = evidenceFiles.length > 0;
 
-  const invalid = !platform || !contentType || !url || !isValidUrl(url) || (platform === "other" && !other) || !safeEvidence || !hasEvidence;
+  const invalid = !platform || !contentType || !url || !isValidUrl(url) || (platform === "other" && !other) || !safeEvidence;
   showError("error2", invalid);
 
   if(!invalid) goToStep(3);
@@ -1138,23 +1143,168 @@ function isValidUrl(value){
 
 function validateUrlLive(){
   const value = document.getElementById("url").value.trim();
-  if(!value) {
-    showError("error6", false);
-    return;
+  const error = document.getElementById("error2");
+  if(value && !isValidUrl(value)){
+    error.textContent = "Įvesk tinkamą URL adresą.";
+    error.classList.add("show");
+  } else {
+    error.textContent = "Prašome užpildyti privalomus laukus (platforma, turinio tipas, nuoroda).";
+    error.classList.remove("show");
   }
-  showError("error6", !isValidUrl(value));
 }
+
+let evidenceFiles = [];
+
+function initEvidenceUpload(){
+  const dropZone = document.getElementById("dropZone");
+  const evidenceInput = document.getElementById("evidenceInput");
+  const evidencePreview = document.getElementById("evidencePreview");
+  const evidenceError = document.getElementById("evidenceError");
+
+  if(!dropZone || !evidenceInput) return;
+
+  dropZone.addEventListener("click", () => evidenceInput.click());
+
+  evidenceInput.addEventListener("change", (e) => {
+    handleFiles(e.target.files);
+    evidenceInput.value = "";
+  });
+
+  dropZone.addEventListener("dragenter", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dropZone.classList.add("dragover");
+  });
+
+  dropZone.addEventListener("dragover", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dropZone.classList.add("dragover");
+  });
+
+  dropZone.addEventListener("dragleave", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dropZone.classList.remove("dragover");
+  });
+
+  dropZone.addEventListener("drop", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dropZone.classList.remove("dragover");
+    handleFiles(e.dataTransfer.files);
+  });
+
+  document.addEventListener("paste", handlePaste);
+}
+
+function handlePaste(e){
+  const items = e.clipboardData?.items;
+  if(!items) return;
+
+  const files = [];
+  for(let i = 0; i < items.length; i++){
+    if(items[i].type.startsWith("image/")){
+      const file = items[i].getAsFile();
+      if(file) files.push(file);
+    }
+  }
+
+  if(files.length > 0){
+    handleFiles(files);
+  }
+}
+
+function handleFiles(files){
+  const evidenceError = document.getElementById("evidenceError");
+  const supportedFormats = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp", "video/mp4", "video/quicktime", "image/heic", "image/heif"];
+  const maxSize = 100 * 1024 * 1024;
+  let totalSize = evidenceFiles.reduce((sum, f) => sum + f.size, 0);
+
+  for(let file of files){
+    if(!supportedFormats.includes(file.type) && !file.name.match(/\.(heic|heif)$/i)){
+      evidenceError.textContent = "Šis failo tipas nepalaikomas.";
+      evidenceError.style.display = "block";
+      setTimeout(() => evidenceError.style.display = "none", 3000);
+      continue;
+    }
+
+    totalSize += file.size;
+    if(totalSize > maxSize){
+      evidenceError.textContent = "Bendras įkeliamų failų dydis viršija 100 MB.";
+      evidenceError.style.display = "block";
+      setTimeout(() => evidenceError.style.display = "none", 3000);
+      return;
+    }
+
+    evidenceFiles.push(file);
+  }
+
+  renderEvidencePreview();
+}
+
+function renderEvidencePreview(){
+  const evidencePreview = document.getElementById("evidencePreview");
+  if(!evidencePreview) return;
+
+  evidencePreview.innerHTML = "";
+
+  evidenceFiles.forEach((file, index) => {
+    const item = document.createElement("div");
+    item.className = "evidence-item";
+
+    if(file.type.startsWith("image/")){
+      const img = document.createElement("img");
+      const url = URL.createObjectURL(file);
+      img.src = url;
+      img.onload = () => URL.revokeObjectURL(url);
+      item.appendChild(img);
+    } else if(file.type.startsWith("video/")){
+      const placeholder = document.createElement("div");
+      placeholder.className = "video-placeholder";
+      placeholder.textContent = "🎥";
+      item.appendChild(placeholder);
+    } else {
+      const placeholder = document.createElement("div");
+      placeholder.className = "video-placeholder";
+      placeholder.textContent = "📄";
+      item.appendChild(placeholder);
+    }
+
+    const removeBtn = document.createElement("button");
+    removeBtn.className = "remove-btn";
+    removeBtn.textContent = "✕";
+    removeBtn.onclick = () => removeEvidenceFile(index);
+    item.appendChild(removeBtn);
+
+    const fileInfo = document.createElement("div");
+    fileInfo.className = "file-info";
+    const size = formatFileSize(file.size);
+    fileInfo.textContent = `${file.name} (${size})`;
+    item.appendChild(fileInfo);
+
+    evidencePreview.appendChild(item);
+  });
+}
+
+function removeEvidenceFile(index){
+  evidenceFiles.splice(index, 1);
+  renderEvidencePreview();
+}
+
+function formatFileSize(bytes){
+  if(bytes < 1024) return bytes + " B";
+  if(bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+  return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+}
+
+initEvidenceUpload();
 
 function nextUrl(){
   const value = document.getElementById("url").value.trim();
   const invalid = !isValidUrl(value);
   showError("error6", invalid);
   if(!invalid) goToStep(7);
-}
-
-function showUploadStatus(){
-  const files = document.getElementById("evidence").files;
-  document.getElementById("uploadStatus").textContent = files.length ? `Pasirinkta failų: ${files.length}` : "";
 }
 
 function nextEvidence(){
@@ -1246,7 +1396,6 @@ function collectData(){
     minor: "",
     url: document.getElementById("url").value,
     evidenceCount: evidenceFiles.length,
-    evidenceUrl: document.getElementById("evidenceUrl").value,
     safeEvidence: document.getElementById("safeEvidence").checked,
     description: document.getElementById("description").value,
     reported: document.querySelector('input[name="reported"]:checked')?.value || "",
@@ -1324,214 +1473,11 @@ function resetForm(){
   document.getElementById("email").disabled = false;
   document.getElementById("email").style.opacity = "1";
 
-  document.getElementById("evidencePreview").innerHTML = "";
-  document.getElementById("evidenceError").style.display = "none";
-  document.getElementById("evidenceSizeError").style.display = "none";
+  const evidencePreview = document.getElementById("evidencePreview");
+  if(evidencePreview) evidencePreview.innerHTML = "";
 
   goToStep(1);
 }
-
-// Evidence upload functionality
-const dropZone = document.getElementById("dropZone");
-const evidenceInput = document.getElementById("evidenceInput");
-const evidencePreview = document.getElementById("evidencePreview");
-const evidenceError = document.getElementById("evidenceError");
-const evidenceSizeError = document.getElementById("evidenceSizeError");
-
-const allowedTypes = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/gif",
-  "image/webp",
-  "video/mp4",
-  "video/quicktime",
-  "image/heic",
-  "image/heif"
-];
-
-const MAX_TOTAL_SIZE = 100 * 1024 * 1024; // 100 MB
-
-function formatFileSize(bytes) {
-  if (bytes === 0) return "0 Bytes";
-  const k = 1024;
-  const sizes = ["Bytes", "KB", "MB", "GB"];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return Math.round(bytes / Math.pow(k, i) * 100) / 100 + " " + sizes[i];
-}
-
-function getTotalSize() {
-  return evidenceFiles.reduce((total, file) => total + file.size, 0);
-}
-
-function validateFile(file) {
-  const fileType = file.type || file.name.split(".").pop().toLowerCase();
-  const isAllowed = allowedTypes.some(type => {
-    if (type.startsWith("image/")) {
-      return fileType.startsWith("image/") || fileType === "heic" || fileType === "heif";
-    }
-    if (type.startsWith("video/")) {
-      return fileType.startsWith("video/");
-    }
-    return false;
-  });
-
-  if (!isAllowed) {
-    evidenceError.textContent = "Šis failo tipas nepalaikomas.";
-    evidenceError.style.display = "block";
-    return false;
-  }
-
-  evidenceError.style.display = "none";
-  return true;
-}
-
-function validateTotalSize() {
-  const totalSize = getTotalSize();
-  if (totalSize > MAX_TOTAL_SIZE) {
-    evidenceSizeError.style.display = "block";
-    return false;
-  }
-  evidenceSizeError.style.display = "none";
-  return true;
-}
-
-function addFiles(files) {
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-    if (validateFile(file)) {
-      evidenceFiles.push(file);
-    }
-  }
-
-  if (validateTotalSize()) {
-    renderEvidencePreview();
-  } else {
-    // Remove files that exceed the limit
-    let currentSize = 0;
-    evidenceFiles = evidenceFiles.filter(file => {
-      if (currentSize + file.size <= MAX_TOTAL_SIZE) {
-        currentSize += file.size;
-        return true;
-      }
-      return false;
-    });
-    renderEvidencePreview();
-  }
-}
-
-function renderEvidencePreview() {
-  evidencePreview.innerHTML = "";
-
-  evidenceFiles.forEach((file, index) => {
-    const item = document.createElement("div");
-    item.className = "evidence-item";
-
-    const isVideo = file.type.startsWith("video/");
-    const isImage = file.type.startsWith("image/");
-
-    if (isVideo) {
-      const placeholder = document.createElement("div");
-      placeholder.className = "video-placeholder";
-      placeholder.textContent = "🎥";
-      item.appendChild(placeholder);
-    } else if (isImage) {
-      const img = document.createElement("img");
-      img.src = URL.createObjectURL(file);
-      img.alt = file.name;
-      item.appendChild(img);
-    } else {
-      // HEIC/HEIF files
-      const placeholder = document.createElement("div");
-      placeholder.className = "video-placeholder";
-      placeholder.textContent = "📷";
-      item.appendChild(placeholder);
-    }
-
-    const deleteBtn = document.createElement("button");
-    deleteBtn.className = "delete-btn";
-    deleteBtn.textContent = "✕";
-    deleteBtn.onclick = () => removeFile(index);
-    item.appendChild(deleteBtn);
-
-    const fileInfo = document.createElement("div");
-    fileInfo.className = "file-info";
-    fileInfo.textContent = `${file.name} (${formatFileSize(file.size)})`;
-    item.appendChild(fileInfo);
-
-    evidencePreview.appendChild(item);
-  });
-}
-
-function removeFile(index) {
-  evidenceFiles.splice(index, 1);
-  renderEvidencePreview();
-  validateTotalSize();
-}
-
-// File input change handler
-evidenceInput.addEventListener("change", (e) => {
-  addFiles(e.target.files);
-  evidenceInput.value = "";
-});
-
-// Drag and drop handlers
-dropZone.addEventListener("click", (e) => {
-  if (e.target === dropZone || e.target.closest(".drop-zone-content")) {
-    evidenceInput.click();
-  }
-});
-
-dropZone.addEventListener("dragenter", (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  dropZone.classList.add("drag-over");
-});
-
-dropZone.addEventListener("dragover", (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  dropZone.classList.add("drag-over");
-});
-
-dropZone.addEventListener("dragleave", (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  if (e.target === dropZone) {
-    dropZone.classList.remove("drag-over");
-  }
-});
-
-dropZone.addEventListener("drop", (e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  dropZone.classList.remove("drag-over");
-
-  const files = e.dataTransfer.files;
-  addFiles(files);
-});
-
-// Paste handler
-document.addEventListener("paste", (e) => {
-  const items = e.clipboardData?.items;
-  if (!items) return;
-
-  const files = [];
-  for (let i = 0; i < items.length; i++) {
-    const item = items[i];
-    if (item.type.startsWith("image/")) {
-      const file = item.getAsFile();
-      if (file) {
-        files.push(file);
-      }
-    }
-  }
-
-  if (files.length > 0) {
-    e.preventDefault();
-    addFiles(files);
-  }
-});
 
 async function saveComment(step, title){
   const input = document.getElementById("commentInput" + step);
