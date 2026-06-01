@@ -655,7 +655,7 @@ button,.link-button {
           <p class="helper">Įklijuok visą puslapio adresą. Laukas priima tik URL formatą.</p>
           <input id="url" type="url" inputmode="url" placeholder="https://..." oninput="validateUrlLive()" />
 
-          <label style="margin-top:15px;">Pridėk įrodymus <span style="color:var(--danger);">*</span></label>
+          <label style="margin-top:15px;">Pridėk įrodymus</label>
           <p class="helper">Gali pridėti ekrano nuotrauką arba vaizdo įrašą. Nebūtina, bet tai padeda greičiau įvertinti situaciją.</p>
 
           <div id="dropZone" class="drop-zone">
@@ -680,7 +680,7 @@ button,.link-button {
 
           <label class="option"><input id="safeEvidence" type="checkbox"> Įkeliu tik tokį turinį, kuriuo saugu dalintis.</label>
 
-          <div id="error2" class="error">Prašome užpildyti privalomus laukus (platforma, turinio tipas, nuoroda, įrodymai).</div>
+          <div id="error2" class="error">Prašome užpildyti privalomus laukus (platforma, turinio tipas, nuoroda).</div>
 
           <div class="button-row">
             <button class="btn-back" onclick="goToStep(1)">Atgal</button>
@@ -750,7 +750,7 @@ button,.link-button {
           <textarea id="description" placeholder="Pildyti neprivaloma, gali eiti į kitą puslapį."></textarea>
 
           <h2 style="margin-top:22px;">Kontaktai</h2>
-          <p class="helper">Kartais platformos paprašo papildomos informacijos. Jei nepaliksi kontakto negalėsime susisiekti ir tai gali apsunkinti platformos sprendimo priėmimą.</p>
+          <p class="helper">Kartais platformos paprašo papildomos informacijos. Jei paliksi kontaktą galėsime susisiekti ir tai gali padėti platformoms greičiau priimti sprendimą.</p>
 
           <div id="emailWrap">
             <label>El. paštas</label>
@@ -1109,7 +1109,7 @@ function nextCombinedStep(){
   const url = document.getElementById("url").value.trim();
   const safeEvidence = document.getElementById("safeEvidence").checked;
 
-  const invalid = !platform || !contentType || !url || !isValidUrl(url) || (platform === "other" && !other) || !safeEvidence || evidenceFiles.length === 0;
+  const invalid = !platform || !contentType || !url || !isValidUrl(url) || (platform === "other" && !other) || !safeEvidence;
   showError("error2", invalid);
 
   if(!invalid) goToStep(3);
