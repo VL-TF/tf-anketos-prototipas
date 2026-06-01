@@ -585,24 +585,9 @@ button,.link-button {
             <button class="btn-secondary" style="margin-top:12px" onclick="goToStep(99)">Pasikalbėti su Vaikų linija</button>
           </div>
         </div>
-        <comment-box step="1" title="Pradžios langas"></comment-box>
       </section>
 
-      <section id="step1.5" class="step">
-        <div class="hero">
-          <h1>Kiti žingsniai, kurių gali imtis</h1>
-          <p>Čia rasi platformų pranešimų formas ir kitus pagalbos šaltinius.</p>
-        </div>
-
-          <div class="review-item">
-            <strong>Vaikų linija</strong>
-            <span>Jeigu reikia emocinės paramos, gali susisiekti su Vaikų linija telefonu arba internetu.</span>
-            <button class="btn-secondary" style="margin-top:12px" onclick="goToStep(99)">Pasikalbėti su Vaikų linija</button>
-          </div>
-        </div>
-        
         <button class="btn-back" onclick="goToStep(1)">Atgal</button>
-        <comment-box step="1.5" title="Kiti žingsniai"></comment-box>
       </section>
 
       <section id="step2" class="step">
@@ -642,7 +627,7 @@ button,.link-button {
           <p class="helper">Įklijuok visą puslapio adresą. Laukas priima tik URL formatą.</p>
           <input id="url" type="url" inputmode="url" placeholder="https://..." oninput="validateUrlLive()" />
 
-          <label style="margin-top:15px;">Pridėk įrodymus</label>
+          <label style="margin-top:15px;">Pridėk įrodymus<span style="color:var(--danger);">*</span></label>
           <p class="helper">Gali pridėti ekrano nuotrauką arba vaizdo įrašą. Nebūtina, bet tai padeda greičiau įvertinti situaciją.</p>
 
           <div id="dropZone" class="drop-zone">
@@ -674,7 +659,6 @@ button,.link-button {
             <button class="btn-primary" onclick="nextCombinedStep()">Toliau</button>
           </div>
         </div>
-        <comment-box step="2" title="Informacija apie turinį"></comment-box>
       </section>
 
       <section id="step3" class="step">
@@ -726,7 +710,6 @@ button,.link-button {
             <button class="btn-primary" onclick="goToStep(4)">Toliau</button>
           </div>
         </div>
-        <comment-box step="3" title="Informacija apie pranešimą"></comment-box>
       </section>
 
       <section id="step4" class="step">
@@ -752,7 +735,6 @@ button,.link-button {
             <button class="btn-primary" onclick="goToStep(5)">Toliau</button>
           </div>
         </div>
-        <comment-box step="4" title="Aprašymas ir kontaktai"></comment-box>
       </section>
 
       <section id="step5" class="step">
@@ -771,7 +753,6 @@ button,.link-button {
             <button class="btn-primary" onclick="submitForm()">Pateikti</button>
           </div>
         </div>
-        <comment-box step="5" title="Peržiūra"></comment-box>
       </section>
 
       <section id="step6" class="step">
@@ -790,7 +771,6 @@ button,.link-button {
           <button class="btn-secondary" style="margin-top:12px;" onclick="goToStep(7)">Atsakyti į trumpą apklausą</button>
           <button class="btn-primary" style="margin-top:12px;" onclick="resetForm()">Pradėti iš naujo</button>
         </div>
-        <comment-box step="6" title="Pabaigos langas"></comment-box>
       </section>
 
       <section id="step7" class="step">
@@ -884,7 +864,6 @@ button,.link-button {
           <button class="btn-primary" onclick="submitSurvey()">Pateikti apklausą</button>
           <button class="btn-back" style="margin-top:12px;" onclick="resetForm()">Praleisti</button>
         </div>
-        <comment-box step="7" title="Survey"></comment-box>
       </section>
 
       <section id="step8" class="step">
@@ -899,7 +878,6 @@ button,.link-button {
 
           <button class="btn-primary" style="margin-top:12px;" onclick="goToStep(1)">Pradėti iš naujo</button>
         </div>
-        <comment-box step="8" title="Padėka"></comment-box>
       </section>
 
       <section id="step98" class="step">
@@ -920,7 +898,6 @@ button,.link-button {
         </div>
 
         <button class="btn-back" onclick="goToStep(1)">Atgal</button>
-        <comment-box step="98" title="Platformų kontaktai"></comment-box>
       </section>
 
       <section id="step99" class="step">
@@ -937,7 +914,6 @@ button,.link-button {
         </div>
 
         <button class="btn-back" onclick="goToStep(1)">Atgal</button>
-        <comment-box step="99" title="Tik pasikalbėti"></comment-box>
       </section>
 
     </div>
@@ -998,17 +974,9 @@ const platformCodes = {
 
 let currentStep = 1;
 let generatedCaseId = "";
-let commentStore = JSON.parse(localStorage.getItem("tfPrototypeComments") || "{}");
 let submissions = JSON.parse(localStorage.getItem("tfPrototypeSubmissions") || "[]");
 let surveyStore = JSON.parse(localStorage.getItem("tfPrototypeSurvey") || "[]");
 
-class CommentBox extends HTMLElement {
-  connectedCallback(){
-    const step = this.getAttribute("step");
-    const title = this.getAttribute("title");
-    this.innerHTML = `
-      <div class="comment-panel">
-      
 class ProgressBlock extends HTMLElement {
   connectedCallback(){
     this.innerHTML = `
@@ -1028,7 +996,6 @@ function goToStep(step){
   target.classList.add("active");
   currentStep = step;
   if (step === 5) updateReview();
-  renderComments(step);
 }
 
 function toggleOtherPlatform(){
@@ -1452,76 +1419,6 @@ function resetForm(){
   if(evidencePreview) evidencePreview.innerHTML = "";
 
   goToStep(1);
-}
-
-async function saveComment(step, title){
-  const input = document.getElementById("commentInput" + step);
-  const text = input.value.trim();
-  if(!text) return;
-
-  const { error } = await supabaseClient
-    .from("prototype_comments")
-    .insert({
-      step_id: String(step),
-      comment_text: text,
-      session_id: sessionId,
-      status: "active"
-    });
-
-  if(error){
-    console.error("Supabase comment save error:", error);
-    alert("Komentaro išsaugoti nepavyko: " + (error.message || JSON.stringify(error)));
-    return;
-  }
-
-  if(!commentStore[step]) commentStore[step] = [];
-
-  commentStore[step].unshift({
-    text,
-    title,
-    createdAt: new Date().toLocaleString("lt-LT"),
-    status:"Active"
-  });
-
-  localStorage.setItem("tfPrototypeComments", JSON.stringify(commentStore));
-  input.value = "";
-  renderComments(step);
-  alert("Komentaras išsaugotas");
-}
-
-function renderComments(step){
-  const container = document.getElementById("comments" + step);
-  if(!container) return;
-
-  const isAdmin = document.getElementById("adminMode")?.checked;
-  const comments = (commentStore[step] || []).filter(c => c.status === "Active");
-
-  container.innerHTML = comments.map((c, index) => `
-    <div class="saved-comment">
-      ${isAdmin ? `<button class="delete-comment" onclick="deleteComment('${step}', ${index})">Trinti</button>` : ""}
-      ${escapeHtml(c.text)}
-      <small>${escapeHtml(c.createdAt)}</small>
-    </div>
-  `).join("");
-}
-
-function deleteComment(step, visibleIndex){
-  const active = (commentStore[step] || []).filter(c => c.status === "Active");
-  const target = active[visibleIndex];
-  if(!target) return;
-
-  target.status = "Deleted";
-  localStorage.setItem("tfPrototypeComments", JSON.stringify(commentStore));
-  renderComments(step);
-}
-
-function escapeHtml(text){
-  return String(text || "")
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
 }
 </script>
 
