@@ -601,7 +601,6 @@ button,.link-button {
           </div>
         </div>
         
-
         <button class="btn-back" onclick="goToStep(1)">Atgal</button>
         <comment-box step="1.5" title="Kiti žingsniai"></comment-box>
       </section>
@@ -1009,19 +1008,7 @@ class CommentBox extends HTMLElement {
     const title = this.getAttribute("title");
     this.innerHTML = `
       <div class="comment-panel">
-        <h3>Komentarai apie šį langą</h3>
-        <textarea id="commentInput${step}" placeholder="Parašyk komentarą apie: ${escapeHtml(title)}"></textarea>
-        <div style="margin-top:10px;">
-          <button class="btn-secondary" onclick="saveComment('${step}','${escapeHtml(title)}')">Išsaugoti komentarą</button>
-        </div>
-        <div class="saved-comments" id="comments${step}"></div>
-      </div>
-    `;
-    renderComments(step);
-  }
-}
-customElements.define("comment-box", CommentBox);
-
+      
 class ProgressBlock extends HTMLElement {
   connectedCallback(){
     this.innerHTML = `
