@@ -964,11 +964,42 @@ customElements.define("progress-block", ProgressBlock);
 
 function goToStep(step){
   document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
+
   const target = document.getElementById("step" + step);
   if (!target) return;
+
   target.classList.add("active");
   currentStep = step;
+
   if (step === 5) updateReview();
+
+  const screen = document.querySelector(".screen");
+  if (screen) {
+    screen.scrollTo({
+      top: 0,
+      behavior: "instant"
+    });
+  }
+}
+
+function goToStep(step){
+  document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
+
+  const target = document.getElementById("step" + step);
+  if (!target) return;
+
+  target.classList.add("active");
+  currentStep = step;
+
+  if (step === 5) updateReview();
+
+  const screen = document.querySelector(".screen");
+  if (screen) {
+    screen.scrollTo({
+      top: 0,
+      behavior: "instant"
+    });
+  }
 }
 
 function toggleOtherPlatform(){
