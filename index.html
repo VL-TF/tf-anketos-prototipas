@@ -340,6 +340,41 @@ button,.link-button {
   font-weight:700;
 }
 
+.case-codes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 14px 0;
+}
+
+.case-code-card {
+  background: var(--blue);
+  color: white;
+  border-radius: 18px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.case-code-text {
+  font-weight: 800;
+  font-size: 18px;
+  word-break: break-word;
+}
+
+.copy-code-btn {
+  width: auto;
+  min-width: 86px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  background: white;
+  color: var(--blue);
+  box-shadow: none;
+  font-size: 14px;
+}
+
 .upload-box {
   border:2px dashed var(--cyan);
   background:#F8FCFE;
@@ -746,9 +781,16 @@ button,.link-button {
       <section id="step6" class="step">
         <div class="card">
           <h2>Ačiū, pranešimas gautas</h2>
-          <div class="case-id" id="finalCaseId">VL-XX-0000-01</div>
-          <p>Nusikopijuok ir išsisaugok šį kodą. Jo gali prireikti, jei vėliau norėsi pasitikslinti dėl savo pranešimo.</p>
-          <button class="btn-secondary" onclick="copyCaseId()">Kopijuoti kodą</button>
+          <p id="finalMessage">Nusikopijuok ir išsisaugok šį kodą. Jo gali prireikti, jei vėliau norėsi pasitikslinti dėl savo pranešimo.</p>
+          <div id="caseCodesList" class="case-codes-list"></div>
+          <button
+            id="copyAllCodesBtn"
+            class="btn-secondary"
+            onclick="copyAllCaseIds()"
+            style="display:none;"
+          >
+            Kopijuoti visus kodus
+          </button>
 
           <div class="review-item" style="margin-top:20px;">
             <strong>Kiti žingsniai, kurių gali imtis</strong>
@@ -1414,12 +1456,7 @@ function submitForm(){
   submissions.push(...caseItems);
   localStorage.setItem("tfPrototypeSubmissions", JSON.stringify(submissions));
 
-  if(caseItems.length > 1){
-    document.getElementById("finalCaseId").textContent = `${baseCaseCode}-1 ... ${baseCaseCode}-${caseItems.length}`;
-  } else {
-    document.getElementById("finalCaseId").textContent = currentCase.caseId;
-  }
-
+  renderFinalCaseCodes();
   goToStep(6);
 }
 
@@ -1442,6 +1479,47 @@ function submitSurvey(){
 function copyCaseId(){
   const code = document.getElementById("finalCaseId").textContent;
   navigator.clipboard?.writeText(code);
+}
+
+function renderFinalCaseCodes() {
+  const list = document.getElementById("caseCodesList");
+  const copyAllBtn = document.getElementById("copyAllCodesBtn");
+  const message = document.getElementById("finalMessage");
+
+  const codes = caseItems.map(item => item.caseId);
+
+  list.innerHTML = "";
+
+  codes.forEach(code => {
+    const card = document.createElement("div");
+    card.className = "case-code-card";
+
+    card.innerHTML = `
+      <span class="case-code-text">${code}</span>
+      <button class="copy-code-btn" onclick="copySingleCaseId('${code}')">
+        Kopijuoti
+      </button>
+    `;
+
+    list.appendChild(card);
+  });
+
+  copyAllBtn.style.display = codes.length > 1 ? "block" : "none";
+
+  if(codes.length > 1){
+    message.textContent = "Pateikti keli atvejai. Išsisaugok šiuos kodus. Jų gali prireikti, jei vėliau norėsi pasitikslinti dėl savo pranešimų.";
+  } else {
+    message.textContent = "Nusikopijuok ir išsisaugok šį kodą. Jo gali prireikti, jei vėliau norėsi pasitikslinti dėl savo pranešimo.";
+  }
+}
+
+function copySingleCaseId(code) {
+  navigator.clipboard?.writeText(code);
+}
+
+function copyAllCaseIds() {
+  const codes = caseItems.map(item => item.caseId).join("\n");
+  navigator.clipboard?.writeText(codes);
 }
 
 function setValueIfExists(id, value = "") {
