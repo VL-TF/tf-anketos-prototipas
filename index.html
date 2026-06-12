@@ -315,6 +315,20 @@ button,.link-button {
   margin-top:18px;
 }
 
+.review-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.review-actions button {
+  width: 100%;
+  min-height: 58px;
+  white-space: normal;
+  line-height: 1.2;
+}
+
 .note {
   background:var(--lightblue);
   border:2px solid rgba(0,83,134,.10);
@@ -570,7 +584,7 @@ button,.link-button {
         <div class="card">
           <h2>Kur pastebėjai neteisėtą turinį?</h2>
           <label>Platforma <span style="color:var(--danger);">*</span></label>
-          <select id="platform" onchange="updateContentTypes(); updatePlatformNote(); toggleOtherPlatform();">
+          <select id="platform" onchange="updatePlatformNote(); toggleOtherPlatform(); validatePlatformUrlMatch();">
             <option value="">Pasirink vieną</option>
             <option value="facebook">Facebook</option>
             <option value="instagram">Instagram</option>
@@ -593,14 +607,14 @@ button,.link-button {
 
           <div id="platformNote" class="note" style="display:none;"></div>
 
-          <label style="margin-top:15px;">Turinio tipas <span style="color:var(--danger);">*</span></label>
-          <select id="contentType">
-            <option value="">Pirma pasirink platformą</option>
-          </select>
-
           <label style="margin-top:15px;">Įklijuok nuorodą <span style="color:var(--danger);">*</span></label>
           <p class="helper">Įklijuok visą puslapio adresą. Laukas priima tik URL formatą.</p>
-          <input id="url" type="url" inputmode="url" placeholder="https://..." oninput="validateUrlLive()" />
+          <input id="url" type="url" inputmode="url" placeholder="https://..." oninput="validateUrlLive(); validatePlatformUrlMatch()" />
+
+          <div id="platformMismatchWarning" class="note" style="display:none; margin-top:10px; color:var(--warning);">
+            Atrodo, kad nuoroda gali neatitikti pasirinktos platformos. Patikrink, ar platforma ir nuoroda teisingos.
+            <label class="option" style="margin-top:8px;"><input id="confirmMismatch" type="checkbox"> Suprantu, tęsti vis tiek</label>
+          </div>
 
           <label style="margin-top:15px;">Pridėk įrodymus<span style="color:var(--danger);">*</span></label>
           <p class="helper">Gali pridėti ekrano nuotrauką arba vaizdo įrašą. Nebūtina, bet tai padeda greičiau įvertinti situaciją.</p>
@@ -623,15 +637,15 @@ button,.link-button {
           <div id="evidencePreview" class="evidence-preview"></div>
           <div id="evidenceError" class="error" style="display:none;"></div>
 
-          <label class="option"><input id="safeEvidence" type="checkbox"> Įkeliu tik tokį turinį, kuriuo saugu dalintis.</label>
+          <label class="option"><input id="safeEvidence" type="checkbox"> Įkeliu tik ekrano nuotraukas ar vaizdo įrašus, susijusius su mano pranešimu.</label>
 
-          <div id="error2" class="error">Prašome užpildyti privalomus laukus (platforma, turinio tipas, nuoroda).</div>
+          <div id="error2" class="error">Prašome užpildyti privalomus laukus (platforma, nuoroda).</div>
 
           <div class="button-row">
             <button class="btn-back" onclick="goToStep(1)">Atgal</button>
             <button class="btn-primary" onclick="nextCombinedStep()">Toliau</button>
           </div>
-        </div>
+
       </section>
 
       <section id="step3" class="step">
@@ -672,9 +686,9 @@ button,.link-button {
           <div id="samePersonWrap" style="display:none;">
             <label>Ar tai tas pats asmuo?</label>
             <select id="samePerson">
-              <option>Nežinau</option>
               <option>Taip</option>
               <option>Ne</option>
+              <option>Nežinau</option>
             </select>
           </div>
 
@@ -717,14 +731,15 @@ button,.link-button {
 
           <div class="review-item"><strong>Atvejo numeris</strong><span id="reviewCaseId">-</span></div>
           <div class="review-item"><strong>Platforma</strong><span id="reviewPlatform">-</span></div>
-          <div class="review-item"><strong>Turinio tipas</strong><span id="reviewType">-</span></div>
           <div class="review-item"><strong>Nuoroda</strong><span id="reviewUrl">-</span></div>
           <div class="review-item"><strong>Aprašymas</strong><span id="reviewDescription">-</span></div>
 
-          <div class="button-row">
-            <button class="btn-back" onclick="goToStep(4)">Atgal</button>
+          <div class="review-actions">
             <button class="btn-primary" onclick="submitForm()">Pateikti</button>
+            <button class="btn-secondary" onclick="addAnotherCase()">+ Pridįti dar vieną atvejį</button>
+            <button class="btn-back" onclick="goToStep(4)">Atgal</button>
           </div>
+        </div>
         </div>
       </section>
 
@@ -742,7 +757,7 @@ button,.link-button {
           </div>
 
           <button class="btn-secondary" style="margin-top:12px;" onclick="goToStep(7)">Atsakyti į trumpą apklausą</button>
-          <button class="btn-primary" style="margin-top:12px;" onclick="resetForm()">Pradėti iš naujo</button>
+          <button class="btn-primary" style="margin-top:12px;" onclick="resetForm()">Pridėti dar vieną atvejį</button>
         </div>
       </section>
 
@@ -905,24 +920,9 @@ if (!sessionId) {
   sessionId = (crypto.randomUUID ? crypto.randomUUID() : "sess_" + Math.random().toString(36).slice(2));
   localStorage.setItem("tfPrototypeSessionId", sessionId);
 }
-const contentMap = {
-  facebook:["Įrašas (Post)", "Komentaras", "Paskyra", "Grupė", "Puslapis", "Istorija (Story)", "Trumpas vaizdo įrašas (Reels)", "Messenger žinutė", "Tiesioginė transliacija (Live stream)"],
-  instagram:["Įrašas (Post)","Istorija (Story)", "Trumpas vaizdo įrašas (Reels)","Komentaras","Paskyra", "Tiesioginė transliacija (Live stream)", "Privati žinutė (DM message)", "Transliavimo kanalas (Broadcast channel)"],
-  tiktok:["Vaizdo įrašas (Video)","Komentaras","Paskyra","Tiesioginė transliacija (Live stream)", "Privati žinutė (DM message)"],
-  youtube:["Vaizdo įrašas (Video)","trumpi „YouTube“ vaizdo įrašai (Shorts)","Komentaras","Kanalas", "Tiesioginė transliacija (Live stream)", "Bendruomenės įrašas (Community post)"],
-  snapchat:["Paskyra","Istorija (Story)","Žinutė", "Trumpų vaizdo įrašų skiltis (Spotlight)"],
-  x:["Įrašas (Post)","Komentaras","Paskyra", "Privati žinutė (DM message)", "Tiesioginė transliacija (Live stream)"],
-  telegram:["Grupė / kanalas","Žinutė","Paskyra", "Privati grupė",  "Viešas kanalas"],
-  whatsapp:["Grupė","Žinutė","Paskyra", "Kanalas"],
-  discord:["Serveris","Kanalas","Žinutė","Paskyra"],
-  reddit:["Įrašas (Post)","Komentaras","Reddit poskyris (Subreddit)","Paskyra", "Privati žinutė (Private message)", "Pokalbis (Chat)"],
-  viber:["Grupė","Žinutė","Paskyra"],
-  other:["Įrašas","Komentaras","Paskyra","Kita"]
-};
-
 const platformNotes = {
-  instagram:"Pastaba: jei tai story, naudinga matyti vartotojo vardą (username) ir istoriją (story) UI.",
-  tiktok:"Pastaba: naudinga, kad matytųsi video ir vartotojo vardą (username).",
+  instagram:"Pastaba: jei tai trumpa istorija (story), naudinga matyti vartotojo vardą (username).",
+  tiktok:"Pastaba: naudinga, kad matytųsi video ir vartotojo vardas (username).",
   snapchat:"Reikia vartotojo vardo (username) ir aprašymo.",
   viber:"Pastaba: jei tai grupė, naudinga įkelti grupės pavadinimą ir narių sąrašo ekrano nuotrauką.",
   discord:"Pastaba: naudinga serverio, kanalo ar žinutės nuoroda / ID.",
@@ -945,8 +945,27 @@ const platformCodes = {
   other:"OT"
 };
 
+const platformDomains = {
+  facebook: ["facebook.com", "fb.com", "m.facebook.com"],
+  instagram: ["instagram.com"],
+  tiktok: ["tiktok.com", "vm.tiktok.com"],
+  youtube: ["youtube.com", "youtu.be"],
+  snapchat: ["snapchat.com"],
+  x: ["x.com", "twitter.com"],
+  telegram: ["t.me", "telegram.me", "telegram.org"],
+  whatsapp: ["whatsapp.com", "wa.me"],
+  discord: ["discord.com", "discord.gg"],
+  reddit: ["reddit.com", "redd.it"],
+  viber: ["viber.com"],
+  other: []
+};
+
 let currentStep = 1;
 let generatedCaseId = "";
+let caseAppendix = 0;
+let baseCaseCode = "";
+let caseItems = [];
+let currentCaseIndex = 1;
 let submissions = JSON.parse(localStorage.getItem("tfPrototypeSubmissions") || "[]");
 let surveyStore = JSON.parse(localStorage.getItem("tfPrototypeSurvey") || "[]");
 
@@ -1007,21 +1026,6 @@ function toggleOtherPlatform(){
   document.getElementById("otherPlatformWrap").style.display = isOther ? "block" : "none";
 }
 
-function updateContentTypes(){
-  const platform = document.getElementById("platform").value;
-  const select = document.getElementById("contentType");
-  select.innerHTML = '<option value="">Pasirink turinio tipą</option>';
-
-  if(!platform || !contentMap[platform]) return;
-
-  contentMap[platform].forEach(type=>{
-    const opt = document.createElement("option");
-    opt.value = type;
-    opt.textContent = type;
-    select.appendChild(opt);
-  });
-}
-
 function updatePlatformNote(){
   const platform = document.getElementById("platform").value;
   const note = document.getElementById("platformNote");
@@ -1051,20 +1055,15 @@ function nextPlatform(){
 function nextCombinedStep(){
   const platform = document.getElementById("platform").value;
   const other = document.getElementById("otherPlatform").value.trim();
-  const contentType = document.getElementById("contentType").value;
   const url = document.getElementById("url").value.trim();
   const safeEvidence = document.getElementById("safeEvidence").checked;
+  const confirmMismatch = document.getElementById("confirmMismatch").checked;
 
-  const invalid = !platform || !contentType || !url || !isValidUrl(url) || (platform === "other" && !other) || !safeEvidence;
+  const urlMatches = doesUrlMatchPlatform(platform, url);
+  const invalid = !platform || !url || !isValidUrl(url) || (platform === "other" && !other) || !safeEvidence || (!urlMatches && !confirmMismatch);
   showError("error2", invalid);
 
   if(!invalid) goToStep(3);
-}
-
-function nextContentType(){
-  const value = document.getElementById("contentType").value;
-  showError("error3", !value);
-  if(value) goToStep(6);
 }
 
 function toggleOtherCategory(){
@@ -1087,6 +1086,42 @@ function isValidUrl(value){
   }
 }
 
+function getUrlHostname(url){
+  try {
+    return new URL(url).hostname;
+  } catch {
+    return "";
+  }
+}
+
+function doesUrlMatchPlatform(platform, url){
+  if(platform === "other") return true;
+  const domains = platformDomains[platform] || [];
+  const hostname = getUrlHostname(url);
+  if(!hostname) return true;
+  return domains.some(domain => hostname === domain || hostname.endsWith("." + domain));
+}
+
+function validatePlatformUrlMatch(){
+  const platform = document.getElementById("platform").value;
+  const url = document.getElementById("url").value.trim();
+  const warning = document.getElementById("platformMismatchWarning");
+  const confirmCheckbox = document.getElementById("confirmMismatch");
+
+  if(!platform || !url || platform === "other"){
+    warning.style.display = "none";
+    confirmCheckbox.checked = false;
+    return;
+  }
+
+  if(!doesUrlMatchPlatform(platform, url)){
+    warning.style.display = "block";
+  } else {
+    warning.style.display = "none";
+    confirmCheckbox.checked = false;
+  }
+}
+
 function validateUrlLive(){
   const value = document.getElementById("url").value.trim();
   const error = document.getElementById("error2");
@@ -1094,7 +1129,7 @@ function validateUrlLive(){
     error.textContent = "Įvesk tinkamą URL adresą.";
     error.classList.add("show");
   } else {
-    error.textContent = "Prašome užpildyti privalomus laukus (platforma, turinio tipas, nuoroda).";
+    error.textContent = "Prašome užpildyti privalomus laukus (platforma, nuoroda).";
     error.classList.remove("show");
   }
 }
@@ -1326,19 +1361,21 @@ function generateRandom4(){
 }
 
 function generateCaseId(platform, index = 1){
-  const code = platformCodes[platform] || "OT";
-  return `VL-${code}-${generateRandom4()}-${String(index).padStart(2,"0")}`;
+  if(!baseCaseCode){
+    const code = platformCodes[platform] || "OT";
+    baseCaseCode = `VL-${code}-${generateRandom4()}`;
+  }
+  return `${baseCaseCode}-${index}`;
 }
 
 function collectData(){
   const platform = document.getElementById("platform").value;
-  if(!generatedCaseId) generatedCaseId = generateCaseId(platform, 1);
+  const caseId = generateCaseId(platform, currentCaseIndex);
 
   return {
-    caseId: generatedCaseId,
+    caseId,
     platform,
     otherPlatform: document.getElementById("otherPlatform").value,
-    contentType: document.getElementById("contentType").value,
     minor: "",
     url: document.getElementById("url").value,
     evidenceCount: evidenceFiles.length,
@@ -1366,16 +1403,23 @@ function updateReview(){
 
   document.getElementById("reviewCaseId").textContent = data.caseId;
   document.getElementById("reviewPlatform").textContent = platformLabel || "-";
-  document.getElementById("reviewType").textContent = data.contentType || "-";
   document.getElementById("reviewUrl").textContent = data.url || "-";
   document.getElementById("reviewDescription").textContent = data.description || "-";
 }
 
 function submitForm(){
-  const data = collectData();
-  submissions.push(data);
+  const currentCase = collectData();
+  caseItems.push(currentCase);
+
+  submissions.push(...caseItems);
   localStorage.setItem("tfPrototypeSubmissions", JSON.stringify(submissions));
-  document.getElementById("finalCaseId").textContent = data.caseId;
+
+  if(caseItems.length > 1){
+    document.getElementById("finalCaseId").textContent = `${baseCaseCode}-1 ... ${baseCaseCode}-${caseItems.length}`;
+  } else {
+    document.getElementById("finalCaseId").textContent = currentCase.caseId;
+  }
+
   goToStep(6);
 }
 
@@ -1400,8 +1444,32 @@ function copyCaseId(){
   navigator.clipboard?.writeText(code);
 }
 
+function setValueIfExists(id, value = "") {
+  const el = document.getElementById(id);
+  if (el) el.value = value;
+}
+
+function setCheckedIfExists(id, checked = false) {
+  const el = document.getElementById(id);
+  if (el) el.checked = checked;
+}
+
+function setDisplayIfExists(id, display = "none") {
+  const el = document.getElementById(id);
+  if (el) el.style.display = display;
+}
+
+function setSelectedIndexIfExists(id, index = 0) {
+  const el = document.getElementById(id);
+  if (el) el.selectedIndex = index;
+}
+
 function resetForm(){
   generatedCaseId = "";
+  caseAppendix = 0;
+  baseCaseCode = "";
+  caseItems = [];
+  currentCaseIndex = 1;
   evidenceFiles = [];
 
   document.querySelectorAll("input[type='text'], input[type='url'], input[type='email'], textarea").forEach(el => el.value = "");
@@ -1423,7 +1491,66 @@ function resetForm(){
   const evidencePreview = document.getElementById("evidencePreview");
   if(evidencePreview) evidencePreview.innerHTML = "";
 
+  document.getElementById("platformMismatchWarning").style.display = "none";
+  document.getElementById("confirmMismatch").checked = false;
+
   goToStep(1);
+}
+
+function addAnotherCase(){
+  const platform = document.getElementById("platform").value;
+  const other = document.getElementById("otherPlatform").value.trim();
+  const url = document.getElementById("url").value.trim();
+  const safeEvidence = document.getElementById("safeEvidence").checked;
+
+  const invalid = !platform || !url || !isValidUrl(url) || (platform === "other" && !other) || !safeEvidence;
+  showError("error2", invalid);
+
+  if(invalid){
+    goToStep(2);
+    return;
+  }
+
+  try {
+    const currentCase = collectData();
+    caseItems.push(currentCase);
+    currentCaseIndex++;
+
+    setSelectedIndexIfExists("platform", 0);
+    setValueIfExists("otherPlatform", "");
+    setValueIfExists("url", "");
+    setCheckedIfExists("safeEvidence", false);
+    evidenceFiles = [];
+
+    setValueIfExists("description", "");
+
+    document.querySelectorAll('input[name="reported"]').forEach(el => el.checked = false);
+    setValueIfExists("reportedDate", "");
+    setValueIfExists("platformResponse", "");
+
+    document.querySelectorAll('input[name="contentStatus"]').forEach(el => el.checked = false);
+    setValueIfExists("lastSeen", "");
+    document.querySelectorAll('input[name="repeatedContent"]').forEach(el => el.checked = false);
+    setSelectedIndexIfExists("samePerson", 0);
+
+    setDisplayIfExists("otherPlatformWrap", "none");
+    setDisplayIfExists("platformNote", "none");
+    setDisplayIfExists("reportedDetails", "none");
+    setDisplayIfExists("lastSeenWrap", "none");
+    setDisplayIfExists("samePersonWrap", "none");
+
+    const evidencePreview = document.getElementById("evidencePreview");
+    if(evidencePreview) evidencePreview.innerHTML = "";
+
+    setDisplayIfExists("error2", "none");
+    setDisplayIfExists("platformMismatchWarning", "none");
+    setCheckedIfExists("confirmMismatch", false);
+
+    goToStep(2);
+  } catch (error) {
+    console.error("addAnotherCase error:", error);
+    alert("Klaida: " + error.message);
+  }
 }
 </script>
 
