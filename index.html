@@ -340,6 +340,38 @@ button,.link-button {
   font-weight:700;
 }
 
+.warning-note {
+  background: #FFF3ED;
+  border: 2px solid rgba(230, 64, 17, 0.35);
+  color: #7A2E12;
+  border-radius: 20px;
+  padding: 14px;
+  margin: 14px 0;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.warning-note::before {
+  content: "⚠️ ";
+}
+
+.platform-note {
+  background: #EAF7FC;
+  border: 2px solid rgba(41, 171, 226, 0.35);
+  color: var(--blue);
+  border-radius: 20px;
+  padding: 14px;
+  margin: 14px 0;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.warning-option {
+  background: #FFF3ED;
+  border: 2px solid rgba(230, 64, 17, 0.35);
+  color: #7A2E12;
+}
+
 .case-codes-list {
   display: flex;
   flex-direction: column;
@@ -640,15 +672,15 @@ button,.link-button {
             <input id="otherPlatform" type="text" placeholder="pavadinimas" />
           </div>
 
-          <div id="platformNote" class="note" style="display:none;"></div>
+          <div id="platformNote" class="platform-note" style="display:none;"></div>
 
           <label style="margin-top:15px;">Įklijuok nuorodą <span style="color:var(--danger);">*</span></label>
           <p class="helper">Įklijuok visą puslapio adresą. Laukas priima tik URL formatą.</p>
           <input id="url" type="url" inputmode="url" placeholder="https://..." oninput="validateUrlLive(); validatePlatformUrlMatch()" />
 
-          <div id="platformMismatchWarning" class="note" style="display:none; margin-top:10px; color:var(--warning);">
+          <div id="platformMismatchWarning" class="warning-note" style="display:none;">
             Atrodo, kad nuoroda gali neatitikti pasirinktos platformos. Patikrink, ar platforma ir nuoroda teisingos.
-            <label class="option" style="margin-top:8px;"><input id="confirmMismatch" type="checkbox"> Suprantu, tęsti vis tiek</label>
+            <label class="option warning-option" style="margin-top:8px;"><input id="confirmMismatch" type="checkbox"> Suprantu, tęsti vis tiek</label>
           </div>
 
           <label style="margin-top:15px;">Pridėk įrodymus<span style="color:var(--danger);">*</span></label>
