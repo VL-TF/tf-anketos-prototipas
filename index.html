@@ -603,6 +603,19 @@ button,.link-button {
   margin:16px 0;
 }
 
+.institution-box {
+  background: #FFF3ED;
+  border: 2px solid rgba(230, 64, 17, 0.28);
+  border-radius: 22px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.institution-box h3 {
+  color: var(--blue);
+  margin-top: 0;
+}
+
 @media(max-width:460px){
   body { padding:0; }
   .phone { width:100%; height:100vh; border-radius:0; padding:0; }
@@ -650,6 +663,12 @@ button,.link-button {
         <progress-block current="1" total="6" percent="17"></progress-block>
         <div class="card">
           <h2>Kur pastebėjai neteisėtą turinį?</h2>
+
+          <label class="option">
+            <input id="isInstitutionReport" type="checkbox" onchange="toggleInstitutionFields()">
+            Pildau kaip institucija ar organizacija
+          </label>
+
           <label>Platforma <span style="color:var(--danger);">*</span></label>
           <select id="platform" onchange="updatePlatformNote(); toggleOtherPlatform(); validatePlatformUrlMatch();">
             <option value="">Pasirink vieną</option>
@@ -681,6 +700,61 @@ button,.link-button {
           <div id="platformMismatchWarning" class="warning-note" style="display:none;">
             Atrodo, kad nuoroda gali neatitikti pasirinktos platformos. Patikrink, ar platforma ir nuoroda teisingos.
             <label class="option warning-option" style="margin-top:8px;"><input id="confirmMismatch" type="checkbox"> Suprantu, tęsti vis tiek</label>
+          </div>
+
+          <div id="institutionFields" class="institution-box" style="display:none;">
+            <h3>Institucijos / organizacijos informacija</h3>
+
+            <label>Organizacijos / institucijos pavadinimas <span style="color:var(--danger);">*</span></label>
+            <input id="institutionName" type="text" placeholder="Įvesk pavadinimą" />
+
+            <label>Kontaktinis asmuo</label>
+            <input id="institutionContactPerson" type="text" placeholder="Vardas, pavardė" />
+
+            <label>Pareigos</label>
+            <input id="institutionContactRole" type="text" placeholder="Pareigos" />
+
+            <label>Oficialus el. paštas <span style="color:var(--danger);">*</span></label>
+            <input id="institutionEmail" type="email" placeholder="institucija@pavyzdys.lt" />
+
+            <label>Vidinis bylos / rašto numeris</label>
+            <input id="institutionReferenceNumber" type="text" placeholder="Pvz., BYL-2024-001" />
+
+            <label>Prašymo tipas</label>
+            <select id="institutionRequestType">
+              <option value="">Pasirink</option>
+              <option>Pašalinti turinį</option>
+              <option>Apriboti prieigą</option>
+              <option>Skubiai peržiūrėti</option>
+              <option>Išsaugoti įrodymus</option>
+              <option>Kita</option>
+            </select>
+
+            <label>Teisės aktai / teisinis pagrindas <span style="color:var(--danger);">*</span></label>
+            <textarea id="legalBasis" placeholder="Įrašyk vieną ar kelis teisės aktus, kuriais grindžiamas prašymas šalinti turinį."></textarea>
+            <p class="helper">Galima įrašyti kelis teisės aktus ar straipsnius. Pvz., nacionalinis įstatymas, DSA, nepilnamečių apsaugos ar asmens duomenų apsaugos pagrindas.</p>
+
+            <label>Video laiko žyma</label>
+            <input id="videoTimestamp" type="text" placeholder="Jei tai video, nurodyk apytikslę minutę, pvz. 01:25–02:10" />
+            <p class="helper">Jei tai video ar tiesioginė transliacija, nurodyk apytikslę vietą, kurioje matomas pažeidimas.</p>
+
+            <label>Skubos pagrindas</label>
+            <select id="urgencyReason">
+              <option value="">Pasirink</option>
+              <option>Nėra skubos</option>
+              <option>Grėsmė vaikui</option>
+              <option>Savižalos rizika</option>
+              <option>Smurtas</option>
+              <option>Seksualinis turinys</option>
+              <option>Asmens duomenų viešinimas</option>
+              <option>Kita</option>
+            </select>
+
+            <label>Papildomos su šiuo atveju susijusios nuorodos</label>
+            <textarea id="additionalUrls" placeholder="Jei susijusių nuorodų daugiau, įklijuok jas čia, po vieną eilutėje."></textarea>
+
+            <label>Pastaba platformai</label>
+            <textarea id="platformNoteForInstitution" placeholder="Trumpa oficiali pastaba platformai, jei reikia."></textarea>
           </div>
 
           <label style="margin-top:15px;">Pridėk įrodymus<span style="color:var(--danger);">*</span></label>
@@ -769,9 +843,31 @@ button,.link-button {
       <section id="step4" class="step">
         <progress-block current="3" total="5" percent="60"></progress-block>
         <div class="card">
-          <h2>Aprašymas</h2>
-          <p class="helper">Trumpai papasakok kas nutiko, kad geriau suprastume situaciją. Gal žinai kas dalyvavo? Ar turinys vis dar pasiekiamas?</p>
-          <textarea id="description" placeholder="Pildyti neprivaloma, gali eiti į kitą puslapį."></textarea>
+          <h2>Padėk mums suprasti situaciją</h2>
+          <p class="helper">Atsakyk trumpai. Jei nenori arba nežinai, gali palikti tuščią.</p>
+
+          <label>Kas nutiko?</label>
+          <textarea id="qaWhatHappened" placeholder="Pvz., kažkas tyčiojasi, grasina, dalijasi žalingu turiniu..."></textarea>
+
+          <label>Kas tai daro?</label>
+          <textarea id="qaWhoDidIt" placeholder="Pvz., pažįstamas žmogus, paskyra, grupė, nežinau..."></textarea>
+
+          <label>Kam tai nutiko?</label>
+          <textarea id="qaWhoAffected" placeholder="Pvz., man, draugui, kitam vaikui, žmonių grupei..."></textarea>
+
+          <label>Ar tai vyksta dabar, ar įvyko anksčiau?</label>
+          <textarea id="qaWhen" placeholder="Pvz., dabar, vakar, prieš savaitę, nežinau..."></textarea>
+
+          <label>Ką dar svarbu žinoti?</label>
+          <textarea id="qaAdditional" placeholder="Pvz., ar tai kartojasi, ar buvo grasinimų, ar jau pranešei platformai..."></textarea>
+
+          <button class="btn-secondary" style="margin-top:12px;" onclick="generateDescriptionSummary()">Sugeneruoti santrauką</button>
+
+          <div id="summaryReviewWrap" style="display:none; margin-top:18px;">
+            <label>Santrauka</label>
+            <p class="helper">Gali patvirtinti arba pataisyti tekstą prieš tęsiant.</p>
+            <textarea id="description"></textarea>
+          </div>
 
           <h2 style="margin-top:22px;">Kontaktai</h2>
           <p class="helper">Kartais platformos paprašo papildomos informacijos. Jei paliksi kontaktą galėsime susisiekti ir tai gali padėti platformoms greičiau priimti sprendimą.</p>
@@ -786,7 +882,7 @@ button,.link-button {
 
           <div class="button-row">
             <button class="btn-back" onclick="goToStep(3)">Atgal</button>
-            <button class="btn-primary" onclick="goToStep(5)">Toliau</button>
+            <button class="btn-primary" onclick="nextDescriptionStep()">Toliau</button>
           </div>
         </div>
       </section>
@@ -800,6 +896,15 @@ button,.link-button {
           <div class="review-item"><strong>Platforma</strong><span id="reviewPlatform">-</span></div>
           <div class="review-item"><strong>Nuoroda</strong><span id="reviewUrl">-</span></div>
           <div class="review-item"><strong>Aprašymas</strong><span id="reviewDescription">-</span></div>
+
+          <div id="institutionReviewSection" style="display:none;">
+            <div class="review-item"><strong>Organizacija</strong><span id="reviewInstitutionName">-</span></div>
+            <div class="review-item"><strong>Oficialus el. paštas</strong><span id="reviewInstitutionEmail">-</span></div>
+            <div class="review-item"><strong>Teisinis pagrindas</strong><span id="reviewLegalBasis">-</span></div>
+            <div class="review-item"><strong>Prašymo tipas</strong><span id="reviewRequestType">-</span></div>
+            <div class="review-item" id="reviewVideoTimestamp" style="display:none;"><strong>Video laiko žyma</strong><span></span></div>
+            <div class="review-item" id="reviewAdditionalUrls" style="display:none;"><strong>Papildomos nuorodos</strong><span></span></div>
+          </div>
 
           <div class="review-actions">
             <button class="btn-primary" onclick="submitForm()">Pateikti</button>
@@ -957,6 +1062,13 @@ button,.link-button {
           <a class="link-button btn-secondary" style="margin-top:10px" href="https://help.x.com/en/rules-and-policies/twitter-report-violation" target="_blank" rel="noopener">X</a>
           <a class="link-button btn-secondary" style="margin-top:10px" href="https://support.discord.com/hc/en-us/requests/new" target="_blank" rel="noopener">Discord</a>
           <a class="link-button btn-secondary" style="margin-top:10px" href="https://support.reddithelp.com/hc/en-us/requests/new" target="_blank" rel="noopener">Reddit</a>
+          <a class="link-button btn-secondary" style="margin-top:10px" href="https://telegram.org/faq#q-how-do-i-report-illegal-content" target="_blank" rel="noopener">Telegram</a>
+          <a class="link-button btn-secondary" style="margin-top:10px" href="https://faq.whatsapp.com/general/security-and-privacy/reporting-safety-issues" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="link-button btn-secondary" style="margin-top:10px" href="https://support.viber.com/docs/report-problem" target="_blank" rel="noopener">Viber</a>
+          <a class="link-button btn-secondary" style="margin-top:10px" href="https://help.pinterest.com/en/article/report-a-pin-or-board" target="_blank" rel="noopener">Pinterest</a>
+          <a class="link-button btn-secondary" style="margin-top:10px" href="https://help.twitch.tv/s/article/how-to-file-a-report" target="_blank" rel="noopener">Twitch</a>
+          <a class="link-button btn-secondary" style="margin-top:10px" href="https://en.help.roblox.com/hc/en-us/articles/203313380-Contacting-Roblox" target="_blank" rel="noopener">Roblox</a>
+          <a class="link-button btn-secondary" style="margin-top:10px" href="https://help.minecraft.net/hc/en-us/articles/360034636592-Reporting-Players" target="_blank" rel="noopener">Minecraft</a>
         </div>
 
         <button class="btn-back" onclick="goToStep(1)">Atgal</button>
@@ -1132,9 +1244,27 @@ function nextCombinedStep(){
   const url = document.getElementById("url").value.trim();
   const safeEvidence = document.getElementById("safeEvidence").checked;
   const confirmMismatch = document.getElementById("confirmMismatch").checked;
+  const isInstitutionReport = document.getElementById("isInstitutionReport").checked;
 
   const urlMatches = doesUrlMatchPlatform(platform, url);
-  const invalid = !platform || !url || !isValidUrl(url) || (platform === "other" && !other) || !safeEvidence || (!urlMatches && !confirmMismatch);
+  let invalid = !platform || !url || !isValidUrl(url) || (platform === "other" && !other) || !safeEvidence || (!urlMatches && !confirmMismatch);
+
+  // Institution field validation
+  if (isInstitutionReport) {
+    const institutionName = document.getElementById("institutionName").value.trim();
+    const institutionEmail = document.getElementById("institutionEmail").value.trim();
+    const legalBasis = document.getElementById("legalBasis").value.trim();
+
+    if (!institutionName || !institutionEmail || !legalBasis) {
+      invalid = true;
+      document.getElementById("error2").textContent = "Prašome užpildyti privalomus institucijos laukus (pavadinimas, el. paštas, teisinis pagrindas).";
+    } else {
+      document.getElementById("error2").textContent = "Prašome užpildyti privalomus laukus (platforma, nuoroda).";
+    }
+  } else {
+    document.getElementById("error2").textContent = "Prašome užpildyti privalomus laukus (platforma, nuoroda).";
+  }
+
   showError("error2", invalid);
 
   if(!invalid) goToStep(3);
@@ -1425,6 +1555,79 @@ function toggleEmail(){
   }
 }
 
+function toggleInstitutionFields() {
+  const checked = document.getElementById("isInstitutionReport").checked;
+  const block = document.getElementById("institutionFields");
+
+  block.style.display = checked ? "block" : "none";
+
+  if (!checked) {
+    clearInstitutionFields();
+  }
+}
+
+function clearInstitutionFields() {
+  const ids = [
+    "institutionName",
+    "institutionContactPerson",
+    "institutionContactRole",
+    "institutionEmail",
+    "institutionReferenceNumber",
+    "institutionRequestType",
+    "legalBasis",
+    "videoTimestamp",
+    "urgencyReason",
+    "additionalUrls",
+    "platformNoteForInstitution"
+  ];
+
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (el.tagName === "SELECT") el.selectedIndex = 0;
+    else el.value = "";
+  });
+}
+
+function generateDescriptionSummary() {
+  const what = document.getElementById("qaWhatHappened").value.trim();
+  const who = document.getElementById("qaWhoDidIt").value.trim();
+  const affected = document.getElementById("qaWhoAffected").value.trim();
+  const when = document.getElementById("qaWhen").value.trim();
+  const additional = document.getElementById("qaAdditional").value.trim();
+
+  const parts = [];
+
+  if (what) parts.push("Kas nutiko: " + what);
+  if (who) parts.push("Kas tai daro: " + who);
+  if (affected) parts.push("Kam tai nutiko: " + affected);
+  if (when) parts.push("Kada / ar vyksta dabar: " + when);
+  if (additional) parts.push("Papildoma informacija: " + additional);
+
+  const summary = parts.length
+    ? parts.join("\n")
+    : "";
+
+  document.getElementById("description").value = summary;
+  document.getElementById("summaryReviewWrap").style.display = summary ? "block" : "none";
+}
+
+function nextDescriptionStep() {
+  const description = document.getElementById("description").value.trim();
+  const hasQaAnswers =
+    document.getElementById("qaWhatHappened").value.trim() ||
+    document.getElementById("qaWhoDidIt").value.trim() ||
+    document.getElementById("qaWhoAffected").value.trim() ||
+    document.getElementById("qaWhen").value.trim() ||
+    document.getElementById("qaAdditional").value.trim();
+
+  if (!description && hasQaAnswers) {
+    generateDescriptionSummary();
+  }
+
+  goToStep(5);
+}
+
 function generateRandom4(){
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
   let out = "";
@@ -1464,6 +1667,18 @@ function collectData(){
     samePerson: document.getElementById("samePerson").value,
     anonymous: document.getElementById("anonymous").checked,
     email: document.getElementById("anonymous").checked ? "" : document.getElementById("email").value,
+    isInstitutionReport: document.getElementById("isInstitutionReport")?.checked || false,
+    institutionName: document.getElementById("institutionName")?.value || "",
+    institutionContactPerson: document.getElementById("institutionContactPerson")?.value || "",
+    institutionContactRole: document.getElementById("institutionContactRole")?.value || "",
+    institutionEmail: document.getElementById("institutionEmail")?.value || "",
+    institutionReferenceNumber: document.getElementById("institutionReferenceNumber")?.value || "",
+    institutionRequestType: document.getElementById("institutionRequestType")?.value || "",
+    legalBasis: document.getElementById("legalBasis")?.value || "",
+    videoTimestamp: document.getElementById("videoTimestamp")?.value || "",
+    urgencyReason: document.getElementById("urgencyReason")?.value || "",
+    additionalUrls: document.getElementById("additionalUrls")?.value || "",
+    platformNoteForInstitution: document.getElementById("platformNoteForInstitution")?.value || "",
     createdAt: new Date().toISOString()
   };
 }
@@ -1479,6 +1694,34 @@ function updateReview(){
   document.getElementById("reviewPlatform").textContent = platformLabel || "-";
   document.getElementById("reviewUrl").textContent = data.url || "-";
   document.getElementById("reviewDescription").textContent = data.description || "-";
+
+  // Institution fields in review
+  const institutionReviewSection = document.getElementById("institutionReviewSection");
+  if (data.isInstitutionReport) {
+    institutionReviewSection.style.display = "block";
+    document.getElementById("reviewInstitutionName").textContent = data.institutionName || "-";
+    document.getElementById("reviewInstitutionEmail").textContent = data.institutionEmail || "-";
+    document.getElementById("reviewLegalBasis").textContent = data.legalBasis || "-";
+    document.getElementById("reviewRequestType").textContent = data.institutionRequestType || "-";
+    
+    const videoTimestampEl = document.getElementById("reviewVideoTimestamp");
+    if (data.videoTimestamp) {
+      videoTimestampEl.style.display = "block";
+      videoTimestampEl.textContent = "Video laiko žyma: " + data.videoTimestamp;
+    } else {
+      videoTimestampEl.style.display = "none";
+    }
+    
+    const additionalUrlsEl = document.getElementById("reviewAdditionalUrls");
+    if (data.additionalUrls) {
+      additionalUrlsEl.style.display = "block";
+      additionalUrlsEl.textContent = "Papildomos nuorodos: " + data.additionalUrls;
+    } else {
+      additionalUrlsEl.style.display = "none";
+    }
+  } else {
+    institutionReviewSection.style.display = "none";
+  }
 }
 
 function submitForm(){
@@ -1604,6 +1847,12 @@ function resetForm(){
   document.getElementById("platformMismatchWarning").style.display = "none";
   document.getElementById("confirmMismatch").checked = false;
 
+  document.getElementById("summaryReviewWrap").style.display = "none";
+
+  // Clear institution fields
+  document.getElementById("institutionFields").style.display = "none";
+  clearInstitutionFields();
+
   goToStep(1);
 }
 
@@ -1634,6 +1883,13 @@ function addAnotherCase(){
 
     setValueIfExists("description", "");
 
+    setValueIfExists("qaWhatHappened", "");
+    setValueIfExists("qaWhoDidIt", "");
+    setValueIfExists("qaWhoAffected", "");
+    setValueIfExists("qaWhen", "");
+    setValueIfExists("qaAdditional", "");
+    setDisplayIfExists("summaryReviewWrap", "none");
+
     document.querySelectorAll('input[name="reported"]').forEach(el => el.checked = false);
     setValueIfExists("reportedDate", "");
     setValueIfExists("platformResponse", "");
@@ -1655,6 +1911,11 @@ function addAnotherCase(){
     setDisplayIfExists("error2", "none");
     setDisplayIfExists("platformMismatchWarning", "none");
     setCheckedIfExists("confirmMismatch", false);
+
+    // Clear institution fields
+    setCheckedIfExists("isInstitutionReport", false);
+    setDisplayIfExists("institutionFields", "none");
+    clearInstitutionFields();
 
     goToStep(2);
   } catch (error) {
