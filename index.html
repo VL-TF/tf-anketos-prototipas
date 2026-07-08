@@ -668,7 +668,8 @@ button,.link-button {
           <select id="reporterType" onchange="toggleReporterType()">
             <option value="person">Asmuo</option>
             <option value="school">Mokykla / švietimo įstaiga</option>
-            <option value="institution">Institucija / organizacija</option>
+            <option value="institution">Institucija / organizacija su oficialiu teisiniu pagrindu</option>
+            <option value="community">Kita organizacija / bendruomenė</option>
           </select>
 
           <label>Platforma <span style="color:var(--danger);">*</span></label>
@@ -754,9 +755,24 @@ button,.link-button {
 
             <label>Papildomos su šiuo atveju susijusios nuorodos</label>
             <textarea id="additionalUrls" placeholder="Jei susijusių nuorodų daugiau, įklijuok jas čia, po vieną eilutėje."></textarea>
-
             <label>Pastaba platformai</label>
             <textarea id="platformNoteForInstitution" placeholder="Trumpa oficiali pastaba platformai, jei reikia."></textarea>
+
+            <label style="margin-top:15px;">Ar jau ėmėtės veiksmų?</label>
+            <label class="option"><input type="checkbox" id="institutionActionTalkedPerson" class="institutionAction" onchange="handleActionOther('institution')"> Kalbėta su vaiku</label>
+            <label class="option"><input type="checkbox" id="institutionActionTalkedParents" class="institutionAction" onchange="handleActionOther('institution')"> Kalbėta su tėvais / globėjais</label>
+            <label class="option"><input type="checkbox" id="institutionActionTalkedPoster" class="institutionAction" onchange="handleActionOther('institution')"> Kalbėta su asmeniu, kuris paskelbė turinį</label>
+            <label class="option"><input type="checkbox" id="institutionActionPlatform" class="institutionAction" onchange="handleActionOther('institution')"> Kreiptasi į platformą</label>
+            <label class="option"><input type="checkbox" id="institutionActionPolice" class="institutionAction" onchange="handleActionOther('institution')"> Kreiptasi į policiją</label>
+            <label class="option"><input type="checkbox" id="institutionActionChildRights" class="institutionAction" onchange="handleActionOther('institution')"> Kreiptasi į Vaiko teisių apsaugos tarnybą</label>
+            <label class="option"><input type="checkbox" id="institutionActionOtherInstitution" class="institutionAction" onchange="handleActionOther('institution')"> Kreiptasi į kitą instituciją</label>
+            <label class="option"><input type="checkbox" id="institutionActionNone" class="institutionAction" onchange="handleActionNone('institution')"> Veiksmų nesiimta</label>
+            <label class="option"><input type="checkbox" id="institutionActionOther" class="institutionAction" onchange="handleActionOther('institution')"> Kita</label>
+
+            <div id="institutionActionOtherWrap" style="display:none;">
+              <label>Įrašykite</label>
+              <input id="institutionActionOtherText" type="text" placeholder="Trumpai paaiškink" />
+            </div>
           </div>
 
           <div id="schoolFields" class="institution-box" style="display:none;">
@@ -797,20 +813,23 @@ button,.link-button {
             <label class="option"><input type="radio" name="sameSchool" value="Ne"> Ne</label>
             <label class="option"><input type="radio" name="sameSchool" value="Nežinau"> Nežinau</label>
 
-            <label style="margin-top:15px;">Ar mokykla jau ėmėsi veiksmų?</label>
-            <label class="option"><input type="checkbox" id="schoolActionTalkedStudent" class="schoolAction"> Kalbėta su mokiniu</label>
-            <label class="option"><input type="checkbox" id="schoolActionTalkedParents" class="schoolAction"> Kalbėta su tėvais</label>
-            <label class="option"><input type="checkbox" id="schoolActionPlatform" class="schoolAction"> Kreiptasi į platformą</label>
-            <label class="option"><input type="checkbox" id="schoolActionPolice" class="schoolAction"> Kreiptasi į policiją</label>
-            <label class="option"><input type="checkbox" id="schoolActionChildRights" class="schoolAction"> Kreiptasi į Vaiko teisių apsaugos tarnybą</label>
-            <label class="option"><input type="checkbox" id="schoolActionOther" class="schoolAction" onchange="toggleSchoolActionOther()"> Kita</label>
+            <label style="margin-top:15px;">Ar jau ėmėtės veiksmų?</label>
+            <label class="option"><input type="checkbox" id="schoolActionTalkedStudent" class="schoolAction" onchange="handleActionOther('school')"> Kalbėta su vaiku</label>
+            <label class="option"><input type="checkbox" id="schoolActionTalkedParents" class="schoolAction" onchange="handleActionOther('school')"> Kalbėta su tėvais / globėjais</label>
+            <label class="option"><input type="checkbox" id="schoolActionTalkedPoster" class="schoolAction" onchange="handleActionOther('school')"> Kalbėta su asmeniu, kuris paskelbė turinį</label>
+            <label class="option"><input type="checkbox" id="schoolActionPlatform" class="schoolAction" onchange="handleActionOther('school')"> Kreiptasi į platformą</label>
+            <label class="option"><input type="checkbox" id="schoolActionPolice" class="schoolAction" onchange="handleActionOther('school')"> Kreiptasi į policiją</label>
+            <label class="option"><input type="checkbox" id="schoolActionChildRights" class="schoolAction" onchange="handleActionOther('school')"> Kreiptasi į Vaiko teisių apsaugos tarnybą</label>
+            <label class="option"><input type="checkbox" id="schoolActionOtherInstitution" class="schoolAction" onchange="handleActionOther('school')"> Kreiptasi į kitą instituciją</label>
+            <label class="option"><input type="checkbox" id="schoolActionNone" class="schoolAction" onchange="handleActionNone('school')"> Veiksmų nesiimta</label>
+            <label class="option"><input type="checkbox" id="schoolActionOther" class="schoolAction" onchange="handleActionOther('school')"> Kita</label>
 
             <div id="schoolActionOtherWrap" style="display:none;">
-              <label>Paaiškink</label>
+              <label>Įrašykite</label>
               <input id="schoolActionOtherText" type="text" placeholder="Trumpai paaiškink" />
             </div>
 
-            <label style="margin-top:15px;">Kodėl kreipiatės į Trusted Flagger?</label>
+            <label style="margin-top:15px;">Kodėl kreipiatės į Patikimą pranešėją?</label>
             <select id="schoolReason" onchange="toggleSchoolReasonOther()">
               <option value="">Pasirink</option>
               <option value="Platforma nereaguoja">Platforma nereaguoja</option>
@@ -837,6 +856,66 @@ button,.link-button {
 
             <label style="margin-top:15px;">Papildoma informacija mokyklai</label>
             <textarea id="schoolAdditionalInfo" placeholder="Jei reikia, papildomai aprašyk situaciją"></textarea>
+          </div>
+
+          <div id="communityFields" class="institution-box" style="display:none;">
+            <h3>Organizacijos / bendruomenės informacija</h3>
+
+            <label>Organizacijos / bendruomenės pavadinimas <span style="color:var(--danger);">*</span></label>
+            <input id="communityName" type="text" placeholder="Įvesk organizacijos pavadinimą" />
+
+            <label>Kontaktinis asmuo</label>
+            <input id="communityContact" type="text" placeholder="Vardas, pavardė" />
+
+            <label>Pareigos</label>
+            <input id="communityRole" type="text" placeholder="Pareigos" />
+
+            <label>El. paštas <span style="color:var(--danger);">*</span></label>
+            <input id="communityEmail" type="email" placeholder="organizacija@pavyzdys.lt" />
+
+            <label style="margin-top:15px;">Ar jau ėmėtės veiksmų?</label>
+            <label class="option"><input type="checkbox" id="communityActionTalkedPerson" class="communityAction" onchange="handleActionOther('community')"> Kalbėta su vaiku</label>
+            <label class="option"><input type="checkbox" id="communityActionTalkedParents" class="communityAction" onchange="handleActionOther('community')"> Kalbėta su tėvais / globėjais</label>
+            <label class="option"><input type="checkbox" id="communityActionTalkedPoster" class="communityAction" onchange="handleActionOther('community')"> Kalbėta su asmeniu, kuris paskelbė turinį</label>
+            <label class="option"><input type="checkbox" id="communityActionPlatform" class="communityAction" onchange="handleActionOther('community')"> Kreiptasi į platformą</label>
+            <label class="option"><input type="checkbox" id="communityActionPolice" class="communityAction" onchange="handleActionOther('community')"> Kreiptasi į policiją</label>
+            <label class="option"><input type="checkbox" id="communityActionChildRights" class="communityAction" onchange="handleActionOther('community')"> Kreiptasi į Vaiko teisių apsaugos tarnybą</label>
+            <label class="option"><input type="checkbox" id="communityActionOtherInstitution" class="communityAction" onchange="handleActionOther('community')"> Kreiptasi į kitą instituciją</label>
+            <label class="option"><input type="checkbox" id="communityActionNone" class="communityAction" onchange="handleActionNone('community')"> Veiksmų nesiimta</label>
+            <label class="option"><input type="checkbox" id="communityActionOther" class="communityAction" onchange="handleActionOther('community')"> Kita</label>
+
+            <div id="communityActionOtherWrap" style="display:none;">
+              <label>Įrašykite</label>
+              <input id="communityActionOtherText" type="text" placeholder="Trumpai paaiškink" />
+            </div>
+
+            <label style="margin-top:15px;">Kodėl kreipiatės į Trusted Flagger?</label>
+            <select id="communityReason" onchange="toggleCommunityReasonOther()">
+              <option value="">Pasirink</option>
+              <option value="Platforma nereaguoja">Platforma nereaguoja</option>
+              <option value="Turinys vis dar prieinamas">Turinys vis dar prieinamas</option>
+              <option value="Norime greitesnio įvertinimo">Norime greitesnio įvertinimo</option>
+              <option value="Turinys kelia grėsmę vaikui">Turinys kelia grėsmę vaikui</option>
+              <option value="Kita">Kita</option>
+            </select>
+
+            <div id="communityReasonOtherWrap" style="display:none;">
+              <label>Paaiškink</label>
+              <input id="communityReasonOther" type="text" placeholder="Trumpai paaiškink" />
+            </div>
+
+            <label style="margin-top:15px;">Ar šis turinys paveikė</label>
+            <select id="affectedPersons">
+              <option value="">Pasirink</option>
+              <option value="Vieną asmenį">Vieną asmenį</option>
+              <option value="Kelis asmenis">Kelis asmenis</option>
+              <option value="Grupę">Grupę</option>
+              <option value="Visą bendruomenę">Visą bendruomenę</option>
+              <option value="Nežinoma">Nežinoma</option>
+            </select>
+
+            <label style="margin-top:15px;">Papildoma informacija</label>
+            <textarea id="communityAdditionalInfo" placeholder="Jei reikia, papildomai aprašyk situaciją"></textarea>
           </div>
 
           <label style="margin-top:15px;">Pridėk įrodymus<span style="color:var(--danger);">*</span></label>
@@ -984,6 +1063,7 @@ button,.link-button {
             <div class="review-item"><strong>Oficialus el. paštas</strong><span id="reviewInstitutionEmail">-</span></div>
             <div class="review-item"><strong>Teisinis pagrindas</strong><span id="reviewLegalBasis">-</span></div>
             <div class="review-item"><strong>Prašymo tipas</strong><span id="reviewRequestType">-</span></div>
+            <div class="review-item"><strong>Veiksmai</strong><span id="reviewInstitutionActions">-</span></div>
             <div class="review-item" id="reviewVideoTimestamp" style="display:none;"><strong>Video laiko žyma</strong><span></span></div>
             <div class="review-item" id="reviewAdditionalUrls" style="display:none;"><strong>Papildomos nuorodos</strong><span></span></div>
           </div>
@@ -995,6 +1075,14 @@ button,.link-button {
             <div class="review-item"><strong>Klasė</strong><span id="reviewSchoolClass">-</span></div>
             <div class="review-item"><strong>Kokius veiksmus mokykla jau atliko</strong><span id="reviewSchoolActions">-</span></div>
             <div class="review-item"><strong>Kodėl kreipiasi</strong><span id="reviewSchoolReason">-</span></div>
+          </div>
+
+          <div id="communityReviewSection" style="display:none;">
+            <div class="review-item"><strong>Organizacija / bendruomenė</strong><span id="reviewCommunityName">-</span></div>
+            <div class="review-item"><strong>Kontaktinis asmuo</strong><span id="reviewCommunityContact">-</span></div>
+            <div class="review-item"><strong>El. paštas</strong><span id="reviewCommunityEmail">-</span></div>
+            <div class="review-item"><strong>Kokius veiksmus jau ėmėtės</strong><span id="reviewCommunityActions">-</span></div>
+            <div class="review-item"><strong>Kodėl kreipiasi</strong><span id="reviewCommunityReason">-</span></div>
           </div>
 
           <div class="review-actions">
@@ -1352,6 +1440,21 @@ function nextCombinedStep(){
     } else {
       document.getElementById("error2").textContent = "Prašome užpildyti privalomus laukus (platforma, nuoroda).";
     }
+
+    // Check at least one action is selected
+    const hasAction = document.querySelectorAll(".institutionAction:checked").length > 0;
+    if (!hasAction) {
+      invalid = true;
+      document.getElementById("error2").textContent = "Prašome pasirinkti bent vieną veiksmą.";
+    }
+
+    // If "Kita" is selected, other text is required
+    const otherChecked = document.getElementById("institutionActionOther").checked;
+    const otherText = document.getElementById("institutionActionOtherText").value.trim();
+    if (otherChecked && !otherText) {
+      invalid = true;
+      document.getElementById("error2").textContent = "Prašome įrašyti paaiškinimą pasirinkus 'Kita'.";
+    }
   }
 
   // School field validation
@@ -1364,6 +1467,49 @@ function nextCombinedStep(){
       document.getElementById("error2").textContent = "Prašome užpildyti privalomus mokyklos laukus (pavadinimas, el. paštas).";
     } else {
       document.getElementById("error2").textContent = "Prašome užpildyti privalomus laukus (platforma, nuoroda).";
+    }
+
+    // Check at least one action is selected
+    const hasAction = document.querySelectorAll(".schoolAction:checked").length > 0;
+    if (!hasAction) {
+      invalid = true;
+      document.getElementById("error2").textContent = "Prašome pasirinkti bent vieną veiksmą.";
+    }
+
+    // If "Kita" is selected, other text is required
+    const otherChecked = document.getElementById("schoolActionOther").checked;
+    const otherText = document.getElementById("schoolActionOtherText").value.trim();
+    if (otherChecked && !otherText) {
+      invalid = true;
+      document.getElementById("error2").textContent = "Prašome įrašyti paaiškinimą pasirinkus 'Kita'.";
+    }
+  }
+
+  // Community field validation
+  if (reporterType === "community") {
+    const communityName = document.getElementById("communityName").value.trim();
+    const communityEmail = document.getElementById("communityEmail").value.trim();
+
+    if (!communityName || !communityEmail) {
+      invalid = true;
+      document.getElementById("error2").textContent = "Prašome užpildyti privalomus organizacijos laukus (pavadinimas, el. paštas).";
+    } else {
+      document.getElementById("error2").textContent = "Prašome užpildyti privalomus laukus (platforma, nuoroda).";
+    }
+
+    // Check at least one action is selected
+    const hasAction = document.querySelectorAll(".communityAction:checked").length > 0;
+    if (!hasAction) {
+      invalid = true;
+      document.getElementById("error2").textContent = "Prašome pasirinkti bent vieną veiksmą.";
+    }
+
+    // If "Kita" is selected, other text is required
+    const otherChecked = document.getElementById("communityActionOther").checked;
+    const otherText = document.getElementById("communityActionOtherText").value.trim();
+    if (otherChecked && !otherText) {
+      invalid = true;
+      document.getElementById("error2").textContent = "Prašome įrašyti paaiškinimą pasirinkus 'Kita'.";
     }
   }
 
@@ -1676,18 +1822,112 @@ function toggleReporterType() {
   const reporterType = document.getElementById("reporterType").value;
   const institutionBlock = document.getElementById("institutionFields");
   const schoolBlock = document.getElementById("schoolFields");
+  const communityBlock = document.getElementById("communityFields");
 
   institutionBlock.style.display = reporterType === "institution" ? "block" : "none";
   schoolBlock.style.display = reporterType === "school" ? "block" : "none";
+  communityBlock.style.display = reporterType === "community" ? "block" : "none";
 
   if (reporterType === "person") {
     clearInstitutionFields();
     clearSchoolFields();
+    clearCommunityFields();
   } else if (reporterType === "institution") {
     clearSchoolFields();
+    clearCommunityFields();
   } else if (reporterType === "school") {
     clearInstitutionFields();
+    clearCommunityFields();
+  } else if (reporterType === "community") {
+    clearInstitutionFields();
+    clearSchoolFields();
   }
+}
+
+function handleActionNone(type) {
+  const noneCheckbox = document.getElementById(type + "ActionNone");
+  const actionClass = type + "Action";
+  const otherWrap = document.getElementById(type + "ActionOtherWrap");
+  const otherCheckbox = document.getElementById(type + "ActionOther");
+
+  if (noneCheckbox.checked) {
+    // Uncheck all other actions
+    document.querySelectorAll("." + actionClass).forEach(el => {
+      if (el.id !== type + "ActionNone") {
+        el.checked = false;
+        el.disabled = true;
+      }
+    });
+    // Hide other text field
+    if (otherWrap) otherWrap.style.display = "none";
+  } else {
+    // Re-enable all other actions
+    document.querySelectorAll("." + actionClass).forEach(el => {
+      if (el.id !== type + "ActionNone") {
+        el.disabled = false;
+      }
+    });
+  }
+}
+
+function handleActionOther(type) {
+  const noneCheckbox = document.getElementById(type + "ActionNone");
+  const otherCheckbox = document.getElementById(type + "ActionOther");
+  const otherWrap = document.getElementById(type + "ActionOtherWrap");
+
+  // If this is the "other" checkbox being checked, uncheck "none"
+  if (otherCheckbox.checked) {
+    noneCheckbox.checked = false;
+  }
+
+  // If any action (except "none") is being checked, uncheck "none"
+  const actionClass = type + "Action";
+  document.querySelectorAll("." + actionClass).forEach(el => {
+    if (el.id !== type + "ActionNone" && el.checked) {
+      noneCheckbox.checked = false;
+    }
+  });
+
+  // Show/hide other text field
+  if (otherWrap) {
+    otherWrap.style.display = otherCheckbox.checked ? "block" : "none";
+  }
+}
+
+function toggleCommunityActionOther() {
+  const checked = document.getElementById("communityActionOther").checked;
+  document.getElementById("communityActionOtherWrap").style.display = checked ? "block" : "none";
+}
+
+function toggleCommunityReasonOther() {
+  const value = document.getElementById("communityReason").value;
+  document.getElementById("communityReasonOtherWrap").style.display = value === "Kita" ? "block" : "none";
+}
+
+function clearCommunityFields() {
+  const ids = [
+    "communityName",
+    "communityContact",
+    "communityRole",
+    "communityEmail",
+    "communityActionOtherText",
+    "communityReason",
+    "communityReasonOther",
+    "affectedPersons",
+    "communityAdditionalInfo"
+  ];
+
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (el.tagName === "SELECT") el.selectedIndex = 0;
+    else el.value = "";
+  });
+
+  document.querySelectorAll(".communityAction").forEach(el => {
+    el.checked = false;
+    el.disabled = false;
+  });
 }
 
 function toggleSchoolActionOther() {
@@ -1721,7 +1961,10 @@ function clearSchoolFields() {
     else el.value = "";
   });
 
-  document.querySelectorAll(".schoolAction").forEach(el => el.checked = false);
+  document.querySelectorAll(".schoolAction").forEach(el => {
+    el.checked = false;
+    el.disabled = false;
+  });
   document.querySelectorAll('input[name="sameSchool"]').forEach(el => el.checked = false);
 }
 
@@ -1737,7 +1980,8 @@ function clearInstitutionFields() {
     "videoTimestamp",
     "urgencyReason",
     "additionalUrls",
-    "platformNoteForInstitution"
+    "platformNoteForInstitution",
+    "institutionActionOtherText"
   ];
 
   ids.forEach(id => {
@@ -1745,6 +1989,11 @@ function clearInstitutionFields() {
     if (!el) return;
     if (el.tagName === "SELECT") el.selectedIndex = 0;
     else el.value = "";
+  });
+
+  document.querySelectorAll(".institutionAction").forEach(el => {
+    el.checked = false;
+    el.disabled = false;
   });
 }
 
@@ -1846,17 +2095,48 @@ function collectData(){
     schoolEmail: document.getElementById("schoolEmail")?.value || "",
     schoolClass: document.getElementById("schoolClass")?.value || "",
     sameSchool: document.querySelector('input[name="sameSchool"]:checked')?.value || "",
+    schoolActionNone: document.getElementById("schoolActionNone")?.checked || false,
     schoolActionTalkedStudent: document.getElementById("schoolActionTalkedStudent")?.checked || false,
     schoolActionTalkedParents: document.getElementById("schoolActionTalkedParents")?.checked || false,
+    schoolActionTalkedPoster: document.getElementById("schoolActionTalkedPoster")?.checked || false,
     schoolActionPlatform: document.getElementById("schoolActionPlatform")?.checked || false,
     schoolActionPolice: document.getElementById("schoolActionPolice")?.checked || false,
     schoolActionChildRights: document.getElementById("schoolActionChildRights")?.checked || false,
+    schoolActionOtherInstitution: document.getElementById("schoolActionOtherInstitution")?.checked || false,
     schoolActionOther: document.getElementById("schoolActionOther")?.checked || false,
     schoolActionOtherText: document.getElementById("schoolActionOtherText")?.value || "",
     schoolReason: document.getElementById("schoolReason")?.value || "",
     schoolReasonOther: document.getElementById("schoolReasonOther")?.value || "",
     affectedStudents: document.getElementById("affectedStudents")?.value || "",
     schoolAdditionalInfo: document.getElementById("schoolAdditionalInfo")?.value || "",
+    communityName: document.getElementById("communityName")?.value || "",
+    communityContact: document.getElementById("communityContact")?.value || "",
+    communityRole: document.getElementById("communityRole")?.value || "",
+    communityEmail: document.getElementById("communityEmail")?.value || "",
+    communityActionNone: document.getElementById("communityActionNone")?.checked || false,
+    communityActionTalkedPerson: document.getElementById("communityActionTalkedPerson")?.checked || false,
+    communityActionTalkedParents: document.getElementById("communityActionTalkedParents")?.checked || false,
+    communityActionTalkedPoster: document.getElementById("communityActionTalkedPoster")?.checked || false,
+    communityActionPlatform: document.getElementById("communityActionPlatform")?.checked || false,
+    communityActionPolice: document.getElementById("communityActionPolice")?.checked || false,
+    communityActionChildRights: document.getElementById("communityActionChildRights")?.checked || false,
+    communityActionOtherInstitution: document.getElementById("communityActionOtherInstitution")?.checked || false,
+    communityActionOther: document.getElementById("communityActionOther")?.checked || false,
+    communityActionOtherText: document.getElementById("communityActionOtherText")?.value || "",
+    communityReason: document.getElementById("communityReason")?.value || "",
+    communityReasonOther: document.getElementById("communityReasonOther")?.value || "",
+    affectedPersons: document.getElementById("affectedPersons")?.value || "",
+    communityAdditionalInfo: document.getElementById("communityAdditionalInfo")?.value || "",
+    institutionActionNone: document.getElementById("institutionActionNone")?.checked || false,
+    institutionActionTalkedPerson: document.getElementById("institutionActionTalkedPerson")?.checked || false,
+    institutionActionTalkedParents: document.getElementById("institutionActionTalkedParents")?.checked || false,
+    institutionActionTalkedPoster: document.getElementById("institutionActionTalkedPoster")?.checked || false,
+    institutionActionPlatform: document.getElementById("institutionActionPlatform")?.checked || false,
+    institutionActionPolice: document.getElementById("institutionActionPolice")?.checked || false,
+    institutionActionChildRights: document.getElementById("institutionActionChildRights")?.checked || false,
+    institutionActionOtherInstitution: document.getElementById("institutionActionOtherInstitution")?.checked || false,
+    institutionActionOther: document.getElementById("institutionActionOther")?.checked || false,
+    institutionActionOtherText: document.getElementById("institutionActionOtherText")?.value || "",
     createdAt: new Date().toISOString()
   };
 }
@@ -1881,6 +2161,18 @@ function updateReview(){
     document.getElementById("reviewInstitutionEmail").textContent = data.institutionEmail || "-";
     document.getElementById("reviewLegalBasis").textContent = data.legalBasis || "-";
     document.getElementById("reviewRequestType").textContent = data.institutionRequestType || "-";
+    
+    const actions = [];
+    if (data.institutionActionNone) actions.push("Veiksmų nesiimta");
+    if (data.institutionActionTalkedPerson) actions.push("Kalbėta su vaiku");
+    if (data.institutionActionTalkedParents) actions.push("Kalbėta su tėvais / globėjais");
+    if (data.institutionActionTalkedPoster) actions.push("Kalbėta su asmeniu, kuris paskelbė turinį");
+    if (data.institutionActionPlatform) actions.push("Kreiptasi į platformą");
+    if (data.institutionActionPolice) actions.push("Kreiptasi į policiją");
+    if (data.institutionActionChildRights) actions.push("Kreiptasi į Vaiko teisių apsaugos tarnybą");
+    if (data.institutionActionOtherInstitution) actions.push("Kreiptasi į kitą instituciją");
+    if (data.institutionActionOther) actions.push(data.institutionActionOtherText || "Kita");
+    document.getElementById("reviewInstitutionActions").textContent = actions.length ? actions.join(", ") : "-";
     
     const videoTimestampEl = document.getElementById("reviewVideoTimestamp");
     if (data.videoTimestamp) {
@@ -1914,11 +2206,14 @@ function updateReview(){
     document.getElementById("reviewSchoolClass").textContent = classLabel;
     
     const actions = [];
-    if (data.schoolActionTalkedStudent) actions.push("Kalbėta su mokiniu");
-    if (data.schoolActionTalkedParents) actions.push("Kalbėta su tėvais");
+    if (data.schoolActionNone) actions.push("Veiksmų nesiimta");
+    if (data.schoolActionTalkedStudent) actions.push("Kalbėta su vaiku");
+    if (data.schoolActionTalkedParents) actions.push("Kalbėta su tėvais / globėjais");
+    if (data.schoolActionTalkedPoster) actions.push("Kalbėta su asmeniu, kuris paskelbė turinį");
     if (data.schoolActionPlatform) actions.push("Kreiptasi į platformą");
     if (data.schoolActionPolice) actions.push("Kreiptasi į policiją");
     if (data.schoolActionChildRights) actions.push("Kreiptasi į Vaiko teisių apsaugos tarnybą");
+    if (data.schoolActionOtherInstitution) actions.push("Kreiptasi į kitą instituciją");
     if (data.schoolActionOther) actions.push(data.schoolActionOtherText || "Kita");
     document.getElementById("reviewSchoolActions").textContent = actions.length ? actions.join(", ") : "-";
     
@@ -1930,6 +2225,36 @@ function updateReview(){
     }
   } else {
     schoolReviewSection.style.display = "none";
+  }
+
+  // Community fields in review
+  const communityReviewSection = document.getElementById("communityReviewSection");
+  if (data.reporterType === "community") {
+    communityReviewSection.style.display = "block";
+    document.getElementById("reviewCommunityName").textContent = data.communityName || "-";
+    document.getElementById("reviewCommunityContact").textContent = data.communityContact || "-";
+    document.getElementById("reviewCommunityEmail").textContent = data.communityEmail || "-";
+    
+    const actions = [];
+    if (data.communityActionNone) actions.push("Veiksmų nesiimta");
+    if (data.communityActionTalkedPerson) actions.push("Kalbėta su vaiku");
+    if (data.communityActionTalkedParents) actions.push("Kalbėta su tėvais / globėjais");
+    if (data.communityActionTalkedPoster) actions.push("Kalbėta su asmeniu, kuris paskelbė turinį");
+    if (data.communityActionPlatform) actions.push("Kreiptasi į platformą");
+    if (data.communityActionPolice) actions.push("Kreiptasi į policiją");
+    if (data.communityActionChildRights) actions.push("Kreiptasi į Vaiko teisių apsaugos tarnybą");
+    if (data.communityActionOtherInstitution) actions.push("Kreiptasi į kitą instituciją");
+    if (data.communityActionOther) actions.push(data.communityActionOtherText || "Kita");
+    document.getElementById("reviewCommunityActions").textContent = actions.length ? actions.join(", ") : "-";
+    
+    const reason = data.communityReason;
+    if (reason === "Kita") {
+      document.getElementById("reviewCommunityReason").textContent = data.communityReasonOther || "-";
+    } else {
+      document.getElementById("reviewCommunityReason").textContent = reason || "-";
+    }
+  } else {
+    communityReviewSection.style.display = "none";
   }
 }
 
@@ -2066,6 +2391,10 @@ function resetForm(){
   document.getElementById("schoolFields").style.display = "none";
   clearSchoolFields();
 
+  // Clear community fields
+  document.getElementById("communityFields").style.display = "none";
+  clearCommunityFields();
+
   // Reset reporter type to default
   document.getElementById("reporterType").selectedIndex = 0;
 
@@ -2136,6 +2465,10 @@ function addAnotherCase(){
     // Clear school fields
     setDisplayIfExists("schoolFields", "none");
     clearSchoolFields();
+
+    // Clear community fields
+    setDisplayIfExists("communityFields", "none");
+    clearCommunityFields();
 
     // Reset reporter type to default
     setSelectedIndexIfExists("reporterType", 0);
