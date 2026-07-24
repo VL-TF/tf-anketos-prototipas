@@ -643,7 +643,7 @@ button,.link-button {
           <p>Čia gali pranešti apie tai, kas tave neramina internete.</p>
         </div>
         <div class="card">
-          <p>Jei susiduri su netinkamu turiniu internete, gali daryti kelis dalykus:</p>
+          <p>Jei susiduri su neteisėtu turiniu internete, gali daryti kelis dalykus:</p>
 
           <div class="review-item">
             <strong>Gali pateikti pranešimą apie neteisėtą turinį mums.</strong>
@@ -709,7 +709,7 @@ button,.link-button {
             <h3>Institucijos / organizacijos informacija</h3>
 
             <label>Organizacijos / institucijos pavadinimas <span style="color:var(--danger);">*</span></label>
-            <input id="institutionName" type="text" placeholder="Įvesk pavadinimą" />
+            <input id="institutionName" type="text" placeholder="Įveskite pavadinimą" />
 
             <label>Kontaktinis asmuo</label>
             <input id="institutionContactPerson" type="text" placeholder="Vardas, pavardė" />
@@ -725,21 +725,19 @@ button,.link-button {
 
             <label>Prašymo tipas</label>
             <select id="institutionRequestType">
-              <option value="">Pasirink</option>
+              <option value="">Pasirinkite</option>
               <option>Pašalinti turinį</option>
               <option>Apriboti prieigą</option>
-              <option>Skubiai peržiūrėti</option>
-              <option>Išsaugoti įrodymus</option>
               <option>Kita</option>
             </select>
 
             <label>Teisės aktai / teisinis pagrindas <span style="color:var(--danger);">*</span></label>
-            <textarea id="legalBasis" placeholder="Įrašyk vieną ar kelis teisės aktus, kuriais grindžiamas prašymas šalinti turinį."></textarea>
-            <p class="helper">Galima įrašyti kelis teisės aktus ar straipsnius. Pvz., nacionalinis įstatymas, DSA, nepilnamečių apsaugos ar asmens duomenų apsaugos pagrindas.</p>
+            <textarea id="legalBasis" placeholder="Įrašykite vieną ar kelis teisės aktus, kuriais grindžiamas prašymas šalinti turinį."></textarea>
+            <p class="helper">Galima įrašyti kelis teisės aktus ar straipsnius. Pvz., nacionalinis įstatymas, SPA, nepilnamečių apsaugos ar asmens duomenų apsaugos nuo neigiamo viešosios informacijos poveikio įstatymas ar BDAR.</p>
 
             <label>Video laiko žyma</label>
-            <input id="videoTimestamp" type="text" placeholder="Jei tai video, nurodyk apytikslę minutę, pvz. 01:25–02:10" />
-            <p class="helper">Jei tai video ar tiesioginė transliacija, nurodyk apytikslę vietą, kurioje matomas pažeidimas.</p>
+            <input id="videoTimestamp" type="text" placeholder="Jei tai video, nurodykite apytikslę minutę, pvz. 01:25–02:10" />
+            <p class="helper">Jei tai video ar tiesioginė transliacija, nurodykite apytikslę vietą, kurioje matomas pažeidimas.</p>
 
             <label>Skubos pagrindas</label>
             <select id="urgencyReason">
@@ -754,12 +752,12 @@ button,.link-button {
             </select>
 
             <label>Papildomos su šiuo atveju susijusios nuorodos</label>
-            <textarea id="additionalUrls" placeholder="Jei susijusių nuorodų daugiau, įklijuok jas čia, po vieną eilutėje."></textarea>
+            <textarea id="additionalUrls" placeholder="Jei susijusių nuorodų daugiau, įklijuokite jas čia, po vieną eilutėje."></textarea>
             <label>Pastaba platformai</label>
             <textarea id="platformNoteForInstitution" placeholder="Trumpa oficiali pastaba platformai, jei reikia."></textarea>
 
             <label style="margin-top:15px;">Ar jau ėmėtės veiksmų?</label>
-            <label class="option"><input type="checkbox" id="institutionActionTalkedPerson" class="institutionAction" onchange="handleActionOther('institution')"> Kalbėta su vaiku</label>
+            <label class="option"><input type="checkbox" id="institutionActionTalkedPerson" class="institutionAction" onchange="handleActionOther('institution')"> Kalbėta su nukentėjusiu vaiku</label>
             <label class="option"><input type="checkbox" id="institutionActionTalkedParents" class="institutionAction" onchange="handleActionOther('institution')"> Kalbėta su tėvais / globėjais</label>
             <label class="option"><input type="checkbox" id="institutionActionTalkedPoster" class="institutionAction" onchange="handleActionOther('institution')"> Kalbėta su asmeniu, kuris paskelbė turinį</label>
             <label class="option"><input type="checkbox" id="institutionActionPlatform" class="institutionAction" onchange="handleActionOther('institution')"> Kreiptasi į platformą</label>
@@ -854,8 +852,8 @@ button,.link-button {
               <option value="Nežinoma">Nežinoma</option>
             </select>
 
-            <label style="margin-top:15px;">Papildoma informacija mokyklai</label>
-            <textarea id="schoolAdditionalInfo" placeholder="Jei reikia, papildomai aprašyk situaciją"></textarea>
+            <label style="margin-top:15px;">Papildoma informacija</label>
+            <textarea id="schoolAdditionalInfo" placeholder="Jei reikia, papildomai aprašykite situaciją"></textarea>
           </div>
 
           <div id="communityFields" class="institution-box" style="display:none;">
@@ -1031,12 +1029,12 @@ button,.link-button {
           </div>
 
           <h2 style="margin-top:22px;">Kontaktai</h2>
-          <p class="helper">Kartais platformos paprašo papildomos informacijos. Jei paliksi kontaktą galėsime susisiekti ir tai gali padėti platformoms greičiau priimti sprendimą.</p>
+          <p class="helper">Kartais platformoms, nagrinėjančioms mūsų pateiktus pranešimus dėl neteisėto turinio, gali prireikti papildomos informacijos. Jei nurodysi savo el. paštą, prireikus galėsime su tavimi susisiekti ir platformai pateikti prašomą papildomą informaciją, kad pranešimas būtų išnagrinėtas ir sprendimas priimtas kuo greičiau.</p>
 
           <div id="emailWrap">
             <label>El. paštas</label>
             <input id="email" type="email" placeholder="tavo@email.com" />
-            <p class="helper">El. paštas naudojamas tik pranešimui patvirtinti arba, jei reikėtų grįžti dėl informacijos.</p>
+            <p class="helper">Tavo el. pašto adresą naudosime tik pranešimo gavimui patvirtinti ir, esant poreikiui, susisiekti dėl papildomos informacijos gavimo. Jis nebus naudojamas jokiais kitais tikslais.</p>
 
             <label class="option"><input id="anonymous" type="checkbox" onchange="toggleEmail()"> Noriu likti anonimiškas</label>
           </div>
@@ -1122,7 +1120,7 @@ button,.link-button {
       <section id="step7" class="step">
         <div class="card">
           <h2>Trumpa apklausa</h2>
-          <p class="helper">Ši dalis neprivaloma. Ji padės suprasti, ar anketa aiški.</p>
+          <p class="helper">Ši dalis nėra privaloma tam, jog tavo pateiktas pranešimas būtų išnagrinėtas. Ji skirta mums padėti suprasti, ar pranešimo apie neteisėtą turinį internete forma yra pakankamai tiksli ir aiški.</p>
 
                     <label>Ar buvo lengva pildyti?</label>
           <select id="surveyEase">
